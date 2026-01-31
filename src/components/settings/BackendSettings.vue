@@ -45,14 +45,6 @@
           <div class="setting-item-label">
             {{ $t(portConfig.label) }}
           </div>
-          <input
-            class="input input-sm w-20 sm:w-24"
-            type="number"
-            v-model="configs[portConfig.key as keyof Config]"
-            @change="
-              updateConfigs({ [portConfig.key]: Number(configs[portConfig.key as keyof Config]) })
-            "
-          />
         </div>
       </div>
       <div
@@ -66,12 +58,6 @@
           <div class="setting-item-label">
             {{ $t('tunMode') }}
           </div>
-          <input
-            class="toggle"
-            type="checkbox"
-            v-model="configs.tun.enable"
-            @change="hanlderTunModeChange"
-          />
         </div>
         <div
           v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.allowLan`]"
@@ -80,12 +66,6 @@
           <div class="setting-item-label">
             {{ $t('allowLan') }}
           </div>
-          <input
-            class="toggle"
-            type="checkbox"
-            v-model="configs['allow-lan']"
-            @change="handlerAllowLanChange"
-          />
         </div>
         <template v-if="!activeBackend?.disableUpgradeCore">
           <div
@@ -215,7 +195,7 @@ import BackendSwitch from '@/components/settings/BackendSwitch.vue'
 import DnsQuery from '@/components/settings/DnsQuery.vue'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { showNotification } from '@/helper/notification'
-import { configs, fetchConfigs, updateConfigs } from '@/store/config'
+import { configs, fetchConfigs } from '@/store/config'
 import { fetchProxies, hasSmartGroup } from '@/store/proxies'
 import {
   autoUpgradeCore,
@@ -224,7 +204,6 @@ import {
   hiddenSettingsItems,
 } from '@/store/settings'
 import { activeBackend } from '@/store/setup'
-import type { Config } from '@/types'
 import { computed, ref } from 'vue'
 import UpgradeCoreModal from './UpgradeCoreModal.vue'
 
@@ -346,12 +325,12 @@ const handlerCheckUpgradeCoreChange = () => {
   }
 }
 
-const hanlderTunModeChange = async () => {
-  await updateConfigs({ tun: { enable: configs.value?.tun.enable } })
-}
-const handlerAllowLanChange = async () => {
-  await updateConfigs({ ['allow-lan']: configs.value?.['allow-lan'] })
-}
+// const hanlderTunModeChange = async () => {
+//   await updateConfigs({ tun: { enable: configs.value?.tun.enable } })
+// }
+// const handlerAllowLanChange = async () => {
+//   await updateConfigs({ ['allow-lan']: configs.value?.['allow-lan'] })
+// }
 
 const handleFlushDNSCache = async () => {
   await flushDNSCacheAPI()

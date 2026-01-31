@@ -1,10 +1,8 @@
-import { disconnectByIdAPI, isSingBox, updateProxyProviderAPI } from '@/api'
+import { updateProxyProviderAPI } from '@/api'
 import { renderGroups } from '@/composables/proxies'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { PROXY_SORT_TYPE, PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
-import { configs, updateConfigs } from '@/store/config'
-import { activeConnections } from '@/store/connections'
 import {
   allProxiesLatencyTest,
   fetchProxies,
@@ -34,7 +32,6 @@ import {
   ChevronUpIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/vue/24/outline'
-import { every } from 'lodash'
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -68,26 +65,6 @@ export default defineComponent({
     const hasProviders = computed(() => {
       return proxyProviederList.value.length > 0
     })
-
-    const defaultModes = ['direct', 'rule', 'global']
-    const modeList = computed(() => {
-      return configs.value?.['mode-list'] || configs.value?.['modes'] || defaultModes
-    })
-    const needTranslateModes = computed(() => {
-      return every(modeList.value, (mode) => defaultModes.includes(mode.toLowerCase()))
-    })
-
-    const handlerModeChange = (e: Event) => {
-      const mode = (e.target as HTMLSelectElement).value
-      updateConfigs({ mode })
-      if (isSingBox.value && automaticDisconnection.value) {
-        activeConnections.value.forEach((connection) => {
-          if (connection.rule.includes('clash_mode')) {
-            disconnectByIdAPI(connection.id)
-          }
-        })
-      }
-    }
 
     const handlerClickLatencyTestAll = async () => {
       if (isAllLatencyTesting.value) return
@@ -152,24 +129,6 @@ export default defineComponent({
         >
           <ArrowPathIcon class={['h-4 w-4', isUpgrading.value && 'animate-spin']} />
         </button>
-      )
-      const modeSelect = configs.value && (
-        <select
-          class={['select select-sm inline-block', isLargeCtrlsBar.value ? 'min-w-40' : 'min-w-24']}
-          v-model={configs.value.mode}
-          onChange={handlerModeChange}
-        >
-          {modeList.value.map((mode) => {
-            return (
-              <option
-                key={mode}
-                value={mode}
-              >
-                {needTranslateModes.value ? t(mode.toLowerCase()) : mode}
-              </option>
-            )
-          })}
-        </select>
       )
       const sort = (
         <select
@@ -339,7 +298,6 @@ export default defineComponent({
             </div>
           )}
           <div class="flex w-full gap-2">
-            {modeSelect}
             {searchInput}
             {settingsModal}
             {toggleCollapseAll}
@@ -349,7 +307,6 @@ export default defineComponent({
       ) : (
         <div class="flex gap-2 p-2">
           {hasProviders.value && tabs}
-          {modeSelect}
           <div class="flex flex-1">{searchInput}</div>
           {upgradeAllIcon}
           {settingsModal}
