@@ -1,12 +1,11 @@
 import { updateProxyProviderAPI } from '@/api'
 import { renderGroups } from '@/composables/proxies'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
-import { PROXY_SORT_TYPE, PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
+import { PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
 import {
   allProxiesLatencyTest,
   fetchProxies,
-  hasSmartGroup,
   proxiesFilter,
   proxiesTabShow,
   proxyGroupList,
@@ -21,9 +20,7 @@ import {
   manageHiddenGroup,
   minProxyCardWidth,
   proxyCardSize,
-  proxySortType,
   twoColumnProxyGroup,
-  useSmartGroupSort,
 } from '@/store/settings'
 import {
   ArrowPathIcon,
@@ -130,23 +127,6 @@ export default defineComponent({
           <ArrowPathIcon class={['h-4 w-4', isUpgrading.value && 'animate-spin']} />
         </button>
       )
-      const sort = (
-        <select
-          class={['select select-sm']}
-          v-model={proxySortType.value}
-        >
-          {Object.values(PROXY_SORT_TYPE).map((type) => {
-            return (
-              <option
-                key={type}
-                value={type}
-              >
-                {t(type)}
-              </option>
-            )
-          })}
-        </select>
-      )
 
       const latencyTestAll = (
         <button
@@ -201,20 +181,6 @@ export default defineComponent({
             title={t('proxySettings')}
           >
             <div class="flex flex-col gap-4 p-2 text-sm">
-              <div class="flex items-center gap-2">
-                {t('sortBy')}
-                {sort}
-              </div>
-              {hasSmartGroup.value && (
-                <div class="flex items-center gap-2">
-                  {t('useSmartGroupSort')}
-                  <input
-                    class="toggle"
-                    type="checkbox"
-                    v-model={useSmartGroupSort.value}
-                  />
-                </div>
-              )}
               <div class="flex items-center gap-2">
                 {t('groupProxiesByProvider')}
                 <input

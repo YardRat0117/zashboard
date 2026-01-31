@@ -51,11 +51,11 @@
 </template>
 
 <script setup lang="ts">
-import { PROXY_CARD_SIZE, PROXY_SORT_TYPE } from '@/constant'
+import { PROXY_CARD_SIZE } from '@/constant'
 import { checkTruncation } from '@/helper/tooltip'
 import { scrollIntoCenter } from '@/helper/utils'
 import { getIPv6ByName, getTestUrl, proxyLatencyTest, proxyMap } from '@/store/proxies'
-import { IPv6test, proxyCardSize, proxySortType, truncateProxyName } from '@/store/settings'
+import { IPv6test, proxyCardSize, truncateProxyName } from '@/store/settings'
 import { smartWeightsMap } from '@/store/smart'
 import { twMerge } from 'tailwind-merge'
 import { computed, onMounted, ref } from 'vue'
@@ -102,19 +102,6 @@ const handlerLatencyTest = async () => {
     isLatencyTesting.value = false
   } catch {
     isLatencyTesting.value = false
-  }
-
-  if (
-    [PROXY_SORT_TYPE.LATENCY_ASC, PROXY_SORT_TYPE.LATENCY_DESC].includes(proxySortType.value) &&
-    cardRef.value
-  ) {
-    const classList = ['bg-info/20!', 'transition-colors', 'duration-1500']
-
-    scrollIntoCenter(cardRef.value)
-    latencyTipAnimationClass.value = classList
-    setTimeout(() => {
-      latencyTipAnimationClass.value = []
-    }, 1500)
   }
 }
 

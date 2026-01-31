@@ -9,7 +9,6 @@ import {
   PROXY_CARD_SIZE,
   PROXY_CHAIN_DIRECTION,
   PROXY_PREVIEW_TYPE,
-  PROXY_SORT_TYPE,
   SETTINGS_MENU_KEY,
   TABLE_SIZE,
   TABLE_WIDTH_MODE,
@@ -137,10 +136,6 @@ export const twoColumnProxyGroup = useStorage('config/two-columns', true)
 export const speedtestUrl = useStorage<string>('config/speedtest-url', TEST_URL)
 export const independentLatencyTest = useStorage('config/independent-latency-test', false)
 export const speedtestTimeout = useStorage<number>('config/speedtest-timeout', 5000)
-export const proxySortType = useStorage<PROXY_SORT_TYPE>(
-  'config/proxy-sort-type',
-  PROXY_SORT_TYPE.DEFAULT,
-)
 export const automaticDisconnection = useStorage('config/automatic-disconnection', true)
 export const truncateProxyName = useStorage('config/truncate-proxy-name', true)
 export const proxyPreviewType = useStorage('config/proxy-preview-type', PROXY_PREVIEW_TYPE.AUTO)

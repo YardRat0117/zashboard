@@ -46,14 +46,6 @@ export enum TABLE_WIDTH_MODE {
   MANUAL = 'manual',
 }
 
-export enum PROXY_SORT_TYPE {
-  DEFAULT = 'defaultsort',
-  NAME_ASC = 'nameasc',
-  NAME_DESC = 'namedesc',
-  LATENCY_ASC = 'latencyasc',
-  LATENCY_DESC = 'latencydesc',
-}
-
 export enum PROXY_PREVIEW_TYPE {
   AUTO = 'auto',
   DOTS = 'dots',
