@@ -14,7 +14,7 @@ export const ipForGlobal = ref<IPInfo>({
   ipWithPrivacy: [],
 })
 
-export const baiduLatency = ref('')
+export const googleLatency = ref('')
 export const githubLatency = ref('')
-export const youtubeLatency = ref('')
 export const cloudflareLatency = ref('')
+export const dockerLatency = ref('')

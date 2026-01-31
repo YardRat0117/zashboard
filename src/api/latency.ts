@@ -20,18 +20,18 @@ const getLatencyFromUrlAPI = (url: string) => {
   })
 }
 
-export const getCloudflareLatencyAPI = () => {
-  return getLatencyFromUrlAPI('https://www.cloudflare.com/favicon.ico')
+export const getGoogleLatencyAPI = () => {
+  return getLatencyFromUrlAPI('https://www.google.com/favicon.ico')
 }
 
-export const getYouTubeLatencyAPI = () => {
-  return getLatencyFromUrlAPI('https://yt3.ggpht.com/favicon.ico')
+export const getCloudflareLatencyAPI = () => {
+  return getLatencyFromUrlAPI('https://www.cloudflare.com/favicon.ico')
 }
 
 export const getGithubLatencyAPI = () => {
   return getLatencyFromUrlAPI('https://github.githubassets.com/favicon.ico')
 }
 
-export const getBaiduLatencyAPI = () => {
-  return getLatencyFromUrlAPI('https://apps.bdimg.com/favicon.ico')
+export const getDockerLatencyAPI = () => {
+  return getLatencyFromUrlAPI('https://www.docker.com/favicon.ico')
 }
