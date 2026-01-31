@@ -5,7 +5,6 @@ import {
   FONTS,
   GLOBAL,
   IP_INFO_API,
-  IS_APPLE_DEVICE,
   LANG,
   OVERVIEW_CARD,
   PROXY_CARD_SIZE,
@@ -55,23 +54,19 @@ export const isSidebarCollapsed = computed({
     isSidebarCollapsedConfig.value = value
   },
 })
-const fontConfig = useStorage<FONTS>('config/font', FONTS.MI_SANS)
+
+// Use system font by default
+const fontConfig = useStorage<FONTS>('config/font', FONTS.SYSTEM_UI)
 export const font = computed({
-  get: () => {
-    const mode = import.meta.env.MODE
-    if (Object.values(FONTS).includes(mode as FONTS)) {
-      return mode as FONTS
-    }
-    return fontConfig.value
-  },
+  get: () => fontConfig.value,
   set: (val) => {
     fontConfig.value = val
   },
 })
-export const emoji = useStorage<EMOJIS>(
-  'config/emoji',
-  IS_APPLE_DEVICE ? EMOJIS.TWEMOJI : EMOJIS.NOTO_COLOR_EMOJI,
-)
+
+// Use NOTO_COLOR_EMOJI by default
+export const emoji = useStorage<EMOJIS>('config/emoji', EMOJIS.NOTO_COLOR_EMOJI)
+
 export const customBackgroundURL = useStorage('config/custom-background-image', '')
 export const dashboardTransparent = useStorage('config/dashboard-transparent', 90)
 export const autoUpgrade = useStorage('config/auto-upgrade', false)

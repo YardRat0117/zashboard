@@ -19,15 +19,10 @@ export enum LANG {
 }
 
 export enum FONTS {
-  MI_SANS = 'MiSans',
-  SARASA_UI = 'SarasaUi',
-  PING_FANG = 'PingFang',
-  FIRA_SANS = 'FiraSans',
   SYSTEM_UI = 'SystemUI',
 }
 
 export enum EMOJIS {
-  TWEMOJI = 'twemoji',
   NOTO_COLOR_EMOJI = 'noto-color-emoji',
 }
 
