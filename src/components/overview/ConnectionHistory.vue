@@ -24,13 +24,9 @@
               v-model="aggregationType"
               class="select select-bordered select-sm w-32"
             >
-              <option :value="ConnectionHistoryType.SourceIP">
-                {{ $t('aggregateBySourceIP') }}
-              </option>
               <option :value="ConnectionHistoryType.Destination">
                 {{ $t('aggregateByDestination') }}
               </option>
-              <option :value="ConnectionHistoryType.Process">{{ $t('aggregateByProcess') }}</option>
               <option :value="ConnectionHistoryType.Outbound">
                 {{ $t('aggregateByOutbound') }}
               </option>
@@ -42,15 +38,15 @@
               v-model="autoCleanupInterval"
               class="select select-bordered select-sm w-28"
             >
-              <option :value="AutoCleanupInterval.Never">
-                {{ $t('autoCleanupIntervalNever') }}
-              </option>
               <option :value="AutoCleanupInterval.Week">{{ $t('autoCleanupIntervalWeek') }}</option>
               <option :value="AutoCleanupInterval.Month">
                 {{ $t('autoCleanupIntervalMonth') }}
               </option>
               <option :value="AutoCleanupInterval.Quarter">
                 {{ $t('autoCleanupIntervalQuarter') }}
+              </option>
+              <option :value="AutoCleanupInterval.Never">
+                {{ $t('autoCleanupIntervalNever') }}
               </option>
             </select>
           </div>
@@ -178,7 +174,6 @@
 <script setup lang="ts">
 import { ConnectionHistoryType, clearConnectionHistoryFromIndexedDB } from '@/helper/indexeddb'
 import { showNotification } from '@/helper/notification'
-import { getIPLabelFromMap } from '@/helper/sourceip'
 import { useTooltip } from '@/helper/tooltip'
 import { prettyBytesHelper } from '@/helper/utils'
 import {
@@ -229,7 +224,7 @@ interface ConnectionHistoryData {
 
 const aggregationType = useStorage<ConnectionHistoryType>(
   'cache/connection-history-aggregation-type',
-  ConnectionHistoryType.SourceIP,
+  ConnectionHistoryType.Destination,
 )
 const historicalData = computed(() => aggregatedDataMap.value[aggregationType.value])
 const aggregatedData = computed<ConnectionHistoryData[]>(() => {
@@ -253,12 +248,8 @@ const totalStats = computed(() => {
 const aggregateSourceCount = computed(() => aggregatedData.value.length)
 
 const aggregateSourceLabel = computed(() => {
-  if (aggregationType.value === ConnectionHistoryType.SourceIP) {
-    return t('sourceIP')
-  } else if (aggregationType.value === ConnectionHistoryType.Destination) {
+  if (aggregationType.value === ConnectionHistoryType.Destination) {
     return t('host')
-  } else if (aggregationType.value === ConnectionHistoryType.Process) {
-    return t('process')
   } else {
     return t('outbound')
   }
@@ -270,11 +261,7 @@ const columns = computed<ColumnDef<ConnectionHistoryData>[]>(() => {
     id: 'key',
     accessorFn: (row) => row.key,
     cell: ({ row }) => {
-      if (aggregationType.value === ConnectionHistoryType.SourceIP) {
-        return getIPLabelFromMap(row.original.key)
-      } else if (aggregationType.value === ConnectionHistoryType.Destination) {
-        return row.original.key
-      } else if (aggregationType.value === ConnectionHistoryType.Process) {
+      if (aggregationType.value === ConnectionHistoryType.Destination) {
         return row.original.key
       } else {
         return h(ProxyName, { name: row.original.key })

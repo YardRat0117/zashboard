@@ -1,4 +1,3 @@
-import { getProcessFromConnection } from '@/helper'
 import {
   ConnectionHistoryType,
   getConnectionHistoryFromIndexedDB,
@@ -16,25 +15,16 @@ const isInitializedPromise = ref(
   }),
 )
 const uuid = () => activeBackend.value?.uuid || ''
-const allHistoryTypes = [
-  ConnectionHistoryType.SourceIP,
-  ConnectionHistoryType.Destination,
-  ConnectionHistoryType.Process,
-  ConnectionHistoryType.Outbound,
-]
+const allHistoryTypes = [ConnectionHistoryType.Destination, ConnectionHistoryType.Outbound]
 
 export const aggregatedDataMap = ref<Record<ConnectionHistoryType, ConnectionHistoryData[]>>({
-  [ConnectionHistoryType.SourceIP]: [],
   [ConnectionHistoryType.Destination]: [],
-  [ConnectionHistoryType.Process]: [],
   [ConnectionHistoryType.Outbound]: [],
 })
 
 export const initAggregatedDataMap = () => {
   aggregatedDataMap.value = {
-    [ConnectionHistoryType.SourceIP]: [],
     [ConnectionHistoryType.Destination]: [],
-    [ConnectionHistoryType.Process]: [],
     [ConnectionHistoryType.Outbound]: [],
   }
   isInitializedPromise.value = new Promise(async (resolve) => {
@@ -62,9 +52,7 @@ export const aggregateConnections = (
   connections.forEach((connection) => {
     let key: string = ''
 
-    if (type === ConnectionHistoryType.SourceIP) {
-      key = connection.metadata.sourceIP
-    } else if (type === ConnectionHistoryType.Destination) {
+    if (type === ConnectionHistoryType.Destination) {
       const hostkey =
         connection.metadata.host ||
         connection.metadata.sniffHost ||
@@ -74,8 +62,6 @@ export const aggregateConnections = (
       } else {
         key = hostkey.split('.').slice(-2).join('.')
       }
-    } else if (type === ConnectionHistoryType.Process) {
-      key = getProcessFromConnection(connection)
     } else if (type === ConnectionHistoryType.Outbound) {
       key = connection.chains[0] || '-'
     }
