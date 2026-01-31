@@ -90,16 +90,6 @@ export type Rule = {
   }
 }
 
-export type RuleProvider = {
-  behavior: string
-  format: string
-  name: string
-  ruleCount: number
-  type: string
-  updatedAt: string
-  vehicleType: string
-}
-
 export type ConnectionRawMessage = {
   id: string
   download: number

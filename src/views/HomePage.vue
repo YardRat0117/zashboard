@@ -90,6 +90,7 @@ import { initConnections } from '@/store/connections'
 import { initLogs } from '@/store/logs'
 import { initSatistic } from '@/store/overview'
 import { fetchProxies, proxiesTabShow } from '@/store/proxies'
+import { fetchRules } from '@/store/rules'
 import { isSidebarCollapsed } from '@/store/settings'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
 import type { Backend } from '@/types'
@@ -118,6 +119,7 @@ watch(
     proxiesTabShow.value = PROXY_TAB_TYPE.PROXIES
     fetchConfigs()
     fetchProxies()
+    fetchRules()
     initConnections()
     initLogs()
     initSatistic()

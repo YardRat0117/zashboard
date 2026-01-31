@@ -4,16 +4,7 @@ import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid } from '@/store/setup'
-import type {
-  Backend,
-  Config,
-  DNSQuery,
-  NodeRank,
-  Proxy,
-  ProxyProvider,
-  Rule,
-  RuleProvider,
-} from '@/types'
+import type { Backend, Config, DNSQuery, NodeRank, Proxy, ProxyProvider, Rule } from '@/types'
 import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
@@ -162,10 +153,6 @@ export const toggleRuleDisabledAPI = (data: Record<number, boolean>) => {
 
 export const toggleRuleDisabledSingBoxAPI = (uuid: string) => {
   return axios.put(`/rules/${encodeURIComponent(uuid)}`)
-}
-
-export const fetchRuleProvidersAPI = () => {
-  return axios.get<{ providers: Record<string, RuleProvider> }>('/providers/rules')
 }
 
 export const updateRuleProviderAPI = (name: string) => {

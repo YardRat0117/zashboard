@@ -46,6 +46,11 @@ export enum TABLE_WIDTH_MODE {
   MANUAL = 'manual',
 }
 
+export enum RULE_TAB_TYPE {
+  RULES = 'rules',
+  PROVIDER = 'ruleProvider',
+}
+
 export enum PROXY_PREVIEW_TYPE {
   AUTO = 'auto',
   DOTS = 'dots',

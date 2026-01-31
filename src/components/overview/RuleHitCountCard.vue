@@ -30,7 +30,6 @@ import RuleHitCountChart from '@/components/overview/RuleHitCountChart.vue'
 import { rules } from '@/store/rules'
 import { computed } from 'vue'
 
-// 检查是否有规则含有 extra 字段
 const hasRulesWithExtra = computed(() => {
   return rules.value.some((rule) => rule.extra)
 })
