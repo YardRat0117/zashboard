@@ -2,19 +2,11 @@
 import { computed, onMounted, ref, type Ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { useKeyboard } from './composables/keyboard'
-import { EMOJIS, FONTS } from './constant'
 import { autoImportSettings, importSettingsFromUrl } from './helper/autoImportSettings'
 import { backgroundImage } from './helper/indexeddb'
 import { initNotification } from './helper/notification'
 import { getBackendFromUrl, isPreferredDark } from './helper/utils'
-import {
-  blurIntensity,
-  dashboardTransparent,
-  disablePullToRefresh,
-  emoji,
-  font,
-  theme,
-} from './store/settings'
+import { blurIntensity, dashboardTransparent, disablePullToRefresh, theme } from './store/settings'
 import { activeUuid, backendList } from './store/setup'
 import type { Backend } from './types'
 
@@ -23,19 +15,8 @@ const toast = ref<HTMLElement>()
 
 initNotification(toast as Ref<HTMLElement>)
 
-// 字体类名映射表
-const FONT_CLASS_MAP = {
-  [EMOJIS.NOTO_COLOR_EMOJI]: {
-    [FONTS.SYSTEM_UI]: 'font-SystemUI-NotoEmoji',
-  },
-} as const
-
-const fontClassName = computed(() => {
-  return (
-    FONT_CLASS_MAP[emoji.value]?.[font.value] ||
-    FONT_CLASS_MAP[EMOJIS.NOTO_COLOR_EMOJI][FONTS.SYSTEM_UI]
-  )
-})
+// Hard-encoded System Font
+const fontClassName = 'font-SystemUI-NotoEmoji'
 
 const setThemeColor = () => {
   const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()

@@ -1,7 +1,6 @@
 import {
   CONNECTIONS_TABLE_ACCESSOR_KEY,
   DETAILED_CARD_STYLE,
-  EMOJIS,
   FONTS,
   GLOBAL,
   IP_INFO_API,
@@ -57,14 +56,7 @@ export const isSidebarCollapsed = computed({
 
 // Use system font by default
 const fontConfig = useStorage<FONTS>('config/font', FONTS.SYSTEM_UI)
-export const font = computed({
-  get: () => fontConfig.value,
-  set: (val) => {
-    fontConfig.value = val
-  },
-})
-
-export const emoji = useStorage<EMOJIS>('config/emoji', EMOJIS.NOTO_COLOR_EMOJI)
+export const font = computed(() => fontConfig.value)
 
 export const customBackgroundURL = useStorage('config/custom-background-image', '')
 export const dashboardTransparent = useStorage('config/dashboard-transparent', 90)
