@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCalculateMaxProxies } from '@/composables/proxiesScroll'
-import { handlerProxySelect, proxyMap, proxyProviederList } from '@/store/proxies'
+import { handlerProxySelect, proxyMap, proxyProviderList } from '@/store/proxies'
 import { computed } from 'vue'
 import ProxyNodeCard from './ProxyNodeCard.vue'
 import ProxyNodeGrid from './ProxyNodeGrid.vue'
@@ -19,7 +19,7 @@ const groupedProxies = computed(() => {
     const proxyNode = proxyMap.value[proxy]
     const providerName =
       proxyNode['provider-name'] ||
-      (proxyProviederList.value.find((group) => group.proxies.find((node) => node.name === proxy))
+      (proxyProviderList.value.find((group) => group.proxies.find((node) => node.name === proxy))
         ?.name ??
         '')
 

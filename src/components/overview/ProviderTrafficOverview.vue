@@ -34,7 +34,9 @@
           ></progress>
         </div>
         <div class="text-base-content/60 flex items-center justify-between text-sm">
+          <!-- Fill here: total remaining capacity -->
           <div>{{ $t('remainingTraffic') }}: {{ totalRemainingStr }}</div>
+          <!-- Fill here: total used capacity / total avail capacity -->
           <div>{{ $t('usedTraffic') }}: {{ totalUsedStr }} / {{ totalTotalStr }}</div>
         </div>
       </div>
@@ -69,7 +71,7 @@
 
 <script setup lang="ts">
 import { prettyBytesHelper } from '@/helper/utils'
-import { proxyProviederList } from '@/store/proxies'
+import { proxyProviderList } from '@/store/proxies'
 import { toFinite } from 'lodash'
 import { computed } from 'vue'
 
@@ -85,7 +87,7 @@ interface ProviderTrafficInfo {
 }
 
 const providersWithTraffic = computed<ProviderTrafficInfo[]>(() => {
-  return proxyProviederList.value
+  return proxyProviderList.value
     .filter((provider) => {
       const info = provider.subscriptionInfo
       return info && info.Total && info.Total > 0

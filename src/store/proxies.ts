@@ -42,7 +42,7 @@ export const proxyGroupList = ref<string[]>([])
 export const proxyMap = ref<Record<string, Proxy>>({})
 export const IPv6Map = useStorage<Record<string, boolean>>('config/ipv6-map', {})
 export const hiddenGroupMap = useStorage<Record<string, boolean>>('config/hidden-group-map', {})
-export const proxyProviederList = ref<ProxyProvider[]>([])
+export const proxyProviderList = ref<ProxyProvider[]>([])
 
 const speedtestUrlWithDefault = computed(() => {
   return speedtestUrl.value || TEST_URL
@@ -60,7 +60,7 @@ export const getTestUrl = (groupName?: string) => {
   }
 
   const proxyNode =
-    proxyMap.value[groupName] || proxyProviederList.value.find((p) => p.name === groupName)
+    proxyMap.value[groupName] || proxyProviderList.value.find((p) => p.name === groupName)
 
   return proxyNode?.testUrl || speedtestUrlWithDefault.value
 }
@@ -154,7 +154,7 @@ export const fetchProxies = async () => {
     })
     .map((proxy) => proxy.name)
 
-  proxyProviederList.value = providers
+  proxyProviderList.value = providers
 
   const smartGroups: string[] = []
 

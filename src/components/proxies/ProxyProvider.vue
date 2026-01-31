@@ -60,7 +60,7 @@ import { proxyProviderHealthCheckAPI, updateProxyProviderAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
-import { fetchProxies, proxyProviederList } from '@/store/proxies'
+import { fetchProxies, proxyProviderList } from '@/store/proxies'
 import { ArrowPathIcon, BoltIcon } from '@heroicons/vue/24/outline'
 import dayjs from 'dayjs'
 import { toFinite } from 'lodash'
@@ -76,7 +76,7 @@ const props = defineProps<{
 }>()
 
 const proxyProvider = computed(
-  () => proxyProviederList.value.find((group) => group.name === props.name)!,
+  () => proxyProviderList.value.find((group) => group.name === props.name)!,
 )
 const allProxies = computed(() => proxyProvider.value.proxies.map((node) => node.name) ?? [])
 const { renderProxies, proxiesCount } = useRenderProxies(allProxies)

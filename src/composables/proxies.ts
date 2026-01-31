@@ -2,7 +2,7 @@ import { isSingBox } from '@/api'
 import { GLOBAL, PROXY_TAB_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { configs } from '@/store/config'
-import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
+import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviderList } from '@/store/proxies'
 import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/store/settings'
 import { isEmpty } from 'lodash'
 import { computed, ref } from 'vue'
@@ -21,7 +21,7 @@ const getRenderGroups = () => {
   }
 
   if (proxiesTabShow.value === PROXY_TAB_TYPE.PROVIDER) {
-    return proxyProviederList.value.map((group) => group.name)
+    return proxyProviderList.value.map((group) => group.name)
   }
 
   if (displayGlobalByMode.value) {

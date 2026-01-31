@@ -9,7 +9,7 @@ import {
   proxiesFilter,
   proxiesTabShow,
   proxyGroupList,
-  proxyProviederList,
+  proxyProviderList,
 } from '@/store/proxies'
 import {
   automaticDisconnection,
@@ -49,7 +49,7 @@ export default defineComponent({
       isUpgrading.value = true
       try {
         await Promise.all(
-          proxyProviederList.value.map((provider) => updateProxyProviderAPI(provider.name)),
+          proxyProviderList.value.map((provider) => updateProxyProviderAPI(provider.name)),
         )
         await fetchProxies()
         isUpgrading.value = false
@@ -60,7 +60,7 @@ export default defineComponent({
     }
 
     const hasProviders = computed(() => {
-      return proxyProviederList.value.length > 0
+      return proxyProviderList.value.length > 0
     })
 
     const handlerClickLatencyTestAll = async () => {
@@ -95,7 +95,7 @@ export default defineComponent({
           count:
             type === PROXY_TAB_TYPE.PROXIES
               ? proxyGroupList.value.length
-              : proxyProviederList.value.length,
+              : proxyProviderList.value.length,
         }
       })
     })
