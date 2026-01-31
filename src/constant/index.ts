@@ -4,7 +4,6 @@ import {
   CubeTransparentIcon,
   DocumentTextIcon,
   GlobeAltIcon,
-  SwatchIcon,
 } from '@heroicons/vue/24/outline'
 
 export const IS_APPLE_DEVICE = /Mac|iPod|iPhone|iPad/.test(navigator.platform)
@@ -67,11 +66,6 @@ export enum PROXY_PREVIEW_TYPE {
   BAR = 'bar',
 }
 
-export enum RULE_TAB_TYPE {
-  RULES = 'rules',
-  PROVIDER = 'ruleProvider',
-}
-
 export enum PROXY_TAB_TYPE {
   PROXIES = 'proxies',
   PROVIDER = 'proxyProvider',
@@ -117,7 +111,6 @@ export enum ROUTE_NAME {
   proxies = 'proxies',
   connections = 'connections',
   logs = 'logs',
-  rules = 'rules',
   settings = 'settings',
   setup = 'setup',
 }
@@ -126,7 +119,6 @@ export const ROUTE_ICON_MAP = {
   [ROUTE_NAME.overview]: CubeTransparentIcon,
   [ROUTE_NAME.proxies]: GlobeAltIcon,
   [ROUTE_NAME.connections]: ArrowsRightLeftIcon,
-  [ROUTE_NAME.rules]: SwatchIcon,
   [ROUTE_NAME.logs]: DocumentTextIcon,
   [ROUTE_NAME.settings]: Cog6ToothIcon,
   [ROUTE_NAME.setup]: CubeTransparentIcon,

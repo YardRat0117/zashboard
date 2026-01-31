@@ -64,7 +64,6 @@ export const font = computed({
   },
 })
 
-// Use NOTO_COLOR_EMOJI by default
 export const emoji = useStorage<EMOJIS>('config/emoji', EMOJIS.NOTO_COLOR_EMOJI)
 
 export const customBackgroundURL = useStorage('config/custom-background-image', '')

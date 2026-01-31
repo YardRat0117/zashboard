@@ -217,7 +217,6 @@ import { SETTINGS_MENU_KEY } from '@/constant'
 import { showNotification } from '@/helper/notification'
 import { configs, fetchConfigs, updateConfigs } from '@/store/config'
 import { fetchProxies, hasSmartGroup } from '@/store/proxies'
-import { fetchRules } from '@/store/rules'
 import {
   autoUpgradeCore,
   checkUpgradeCore,
@@ -282,7 +281,6 @@ const portList = [
 
 const reloadAll = () => {
   fetchConfigs()
-  fetchRules()
   fetchProxies()
 }
 

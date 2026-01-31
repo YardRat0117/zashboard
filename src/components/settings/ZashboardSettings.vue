@@ -63,24 +63,6 @@
         </select>
       </div>
       <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.emoji`]"
-        class="setting-item"
-      >
-        <div class="setting-item-label">Emoji</div>
-        <select
-          class="select select-sm w-48"
-          v-model="emoji"
-        >
-          <option
-            v-for="opt in Object.values(EMOJIS)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ opt }}
-          </option>
-        </select>
-      </div>
-      <div
         v-if="
           !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`]
         "
@@ -264,7 +246,7 @@
 import { upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
-import { EMOJIS, FONTS, SETTINGS_MENU_KEY } from '@/constant'
+import { FONTS, SETTINGS_MENU_KEY } from '@/constant'
 import { handlerUpgradeSuccess } from '@/helper'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
 import { exportSettings, isPWA } from '@/helper/utils'
@@ -276,7 +258,6 @@ import {
   darkTheme,
   dashboardTransparent,
   defaultTheme,
-  emoji,
   font,
   hiddenSettingsItems,
 } from '@/store/settings'

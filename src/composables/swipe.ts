@@ -1,8 +1,7 @@
-import { CONNECTION_TAB_TYPE, PROXY_TAB_TYPE, ROUTE_NAME, RULE_TAB_TYPE } from '@/constant'
+import { CONNECTION_TAB_TYPE, PROXY_TAB_TYPE, ROUTE_NAME } from '@/constant'
 import { renderRoutes } from '@/helper'
 import { connectionTabShow } from '@/store/connections'
 import { proxiesTabShow, proxyProviederList } from '@/store/proxies'
-import { ruleProviderList, rulesTabShow } from '@/store/rules'
 import { swipeInPages, swipeInTabs } from '@/store/settings'
 import { useSwipe } from '@vueuse/core'
 import { flatten } from 'lodash'
@@ -38,16 +37,6 @@ export const useSwipeRouter = () => {
                 () => {
                   router.push({ name: ROUTE_NAME.connections })
                   connectionTabShow.value = tab
-                },
-              ]
-            })
-          } else if (r === ROUTE_NAME.rules && ruleProviderList.value.length > 0) {
-            return Object.values(RULE_TAB_TYPE).map((tab) => {
-              return [
-                () => route.name === ROUTE_NAME.rules && rulesTabShow.value === tab,
-                () => {
-                  router.push({ name: ROUTE_NAME.rules })
-                  rulesTabShow.value = tab
                 },
               ]
             })
