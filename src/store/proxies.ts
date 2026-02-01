@@ -4,7 +4,6 @@ import {
   fetchProxiesAPI,
   fetchProxyGroupLatencyAPI,
   fetchProxyLatencyAPI,
-  fetchProxyProviderAPI,
   isSingBox,
   selectProxyAPI,
 } from '@/api'
@@ -27,7 +26,6 @@ import { activeConnections } from './connections'
 import {
   automaticDisconnection,
   groupTestUrls,
-  iconReflectList,
   independentLatencyTest,
   IPv6test,
   speedtestTimeout,
@@ -109,58 +107,19 @@ export const fetchProxies = async () => {
 
   fetchTime = nowTime
 
-  const [proxyRes, providerRes] = await Promise.all([fetchProxiesAPI(), fetchProxyProviderAPI()])
-  const proxyData = proxyRes.data
-  const providerData = providerRes.data
+  const proxyData = (await fetchProxiesAPI()).data
 
   if (fetchTime !== nowTime) {
     return
   }
 
-  const sortIndex = proxyData.proxies[GLOBAL].all ?? []
-  const allProviderProxies: Record<string, Proxy> = {}
-  const providers = Object.values(providerData.providers).filter(
-    (provider) => provider.name !== 'default' && provider.vehicleType !== 'Compatible',
-  )
+  proxyMap.value = proxyData.proxies
 
-  for (const provider of providers) {
-    for (const proxy of provider.proxies) {
-      allProviderProxies[proxy.name] = proxy
-    }
-  }
-
-  proxyMap.value = {
-    ...allProviderProxies,
-    ...proxyData.proxies,
-  }
   proxyGroupList.value = Object.values(proxyData.proxies)
     .filter((proxy) => proxy.all?.length && proxy.name !== GLOBAL)
-    .sort((prev, next) => {
-      const prevIndex = sortIndex.indexOf(prev.name)
-      const nextIndex = sortIndex.indexOf(next.name)
-
-      if (prevIndex === -1 && nextIndex === -1) {
-        return 0
-      }
-      if (prevIndex === -1) {
-        return 1
-      }
-      if (nextIndex === -1) {
-        return -1
-      }
-      // 都在 sortIndex 中，按索引排序
-      return prevIndex - nextIndex
-    })
     .map((proxy) => proxy.name)
 
-  proxyProviderList.value = providers
-
   Object.entries(proxyMap.value).forEach(([name, proxy]) => {
-    const iconReflect = iconReflectList.value.find((icon) => icon.name === name)
-
-    if (iconReflect) {
-      proxyMap.value[name].icon = iconReflect.icon
-    }
     if (IPv6test.value && getIPv6FromExtra(proxy)) {
       IPv6Map.value[name] = true
     }
