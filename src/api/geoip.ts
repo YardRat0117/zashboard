@@ -71,8 +71,6 @@ const getIPFromIPWhoisAPI = async (ip = '') => {
     borders: string
     flag: {
       img: string
-      emoji: string
-      emoji_unicode: string
     }
     connection: {
       asn: number
