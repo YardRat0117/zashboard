@@ -1,4 +1,4 @@
-import { blockConnectionByIdAPI, disconnectByIdAPI } from '@/api'
+import { disconnectByIdAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useConnections } from '@/composables/connections'
 import {
@@ -25,7 +25,6 @@ import {
   ArrowRightCircleIcon,
   ArrowUpCircleIcon,
   ArrowUpIcon,
-  NoSymbolIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { first, last } from 'lodash'
@@ -145,25 +144,6 @@ export default defineComponent<{
             </button>
           )
 
-          if (metadata.smartBlock === 'normal') {
-            const degradeButton = (
-              <button
-                class="btn btn-circle btn-xs"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  blockConnectionByIdAPI(conn.id)
-                }}
-              >
-                <NoSymbolIcon class="h-4 w-4" />
-              </button>
-            )
-            return (
-              <div class="flex gap-1">
-                {degradeButton}
-                {closeButton}
-              </div>
-            )
-          }
           return closeButton
         })(),
       }

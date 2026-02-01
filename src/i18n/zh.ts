@@ -203,13 +203,11 @@ const zh: LANG_MESSAGE = {
   sync: '同步',
   upgradeSuccess: '更新成功',
   numberOfChartsInSidebar: '侧边栏图表数量',
-  flushSmartWeights: '清空Smart权重',
   IPInfoAPI: 'IP信息API',
   IPInfoAPITip:
     '此API会用于IP检查中全球节点IP信息查询、连接详情中的IP地理信息查询、面板DNS查询中的IP地理信息查询。',
   general: '通用',
   groupProxiesByProvider: '节点根据提供商分组',
-  useSmartGroupSort: 'Smart组根据使用频率排序',
   RarelyUsed: '很少使用',
   OccasionalUsed: '偶尔使用',
   MostUsed: '经常使用',

@@ -123,7 +123,6 @@ export type ConnectionRawMessage = {
     specialRules: string
     type: string
     uid: number
-    smartBlock: string
   }
 }
 
@@ -164,11 +163,4 @@ export type SourceIPLabel = {
   label: string
   id: string
   scope?: string[]
-}
-
-// smart core
-export interface NodeRank {
-  Name: string
-  Rank: string
-  Weight: number
 }

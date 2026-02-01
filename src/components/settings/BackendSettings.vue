@@ -162,13 +162,6 @@
       >
         {{ $t('flushFakeIP') }}
       </button>
-      <button
-        v-if="hasSmartGroup"
-        class="btn btn-sm"
-        @click="flushSmartGroupWeightsAPI"
-      >
-        {{ $t('flushSmartWeights') }}
-      </button>
     </div>
     <div
       v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.dnsQuery`]"
@@ -183,7 +176,6 @@
 import {
   flushDNSCacheAPI,
   flushFakeIPAPI,
-  flushSmartGroupWeightsAPI,
   isCoreUpdateAvailable,
   isSingBox,
   reloadConfigsAPI,
@@ -196,7 +188,7 @@ import DnsQuery from '@/components/settings/DnsQuery.vue'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { showNotification } from '@/helper/notification'
 import { configs, fetchConfigs } from '@/store/config'
-import { fetchProxies, hasSmartGroup } from '@/store/proxies'
+import { fetchProxies } from '@/store/proxies'
 import {
   autoUpgradeCore,
   checkUpgradeCore,

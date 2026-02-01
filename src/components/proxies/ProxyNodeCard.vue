@@ -56,14 +56,11 @@ import { checkTruncation } from '@/helper/tooltip'
 import { scrollIntoCenter } from '@/helper/utils'
 import { getIPv6ByName, getTestUrl, proxyLatencyTest, proxyMap } from '@/store/proxies'
 import { IPv6test, proxyCardSize, truncateProxyName } from '@/store/settings'
-import { smartWeightsMap } from '@/store/smart'
 import { twMerge } from 'tailwind-merge'
 import { computed, onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import LatencyTag from './LatencyTag.vue'
 import ProxyIcon from './ProxyIcon.vue'
 
-const { t } = useI18n()
 const props = defineProps<{
   name: string
   active?: boolean
@@ -84,12 +81,10 @@ const typeFormatter = (type: string) => {
 const isSmallCard = computed(() => proxyCardSize.value === PROXY_CARD_SIZE.SMALL)
 const typeDescription = computed(() => {
   const type = typeFormatter(node.value.type)
-  const smartUsage = smartWeightsMap.value[props.groupName ?? '']?.[props.name]
-  const smartDesc = smartUsage ? t(smartUsage) : ''
   const isV6 = IPv6test.value && getIPv6ByName(node.value.name) ? 'IPv6' : ''
   const isUDP = node.value.udp ? (node.value.xudp ? 'xudp' : 'udp') : ''
 
-  return [type, isUDP, smartDesc, isV6].filter(Boolean).join(isSmallCard.value ? '/' : ' / ')
+  return [type, isUDP, isV6].filter(Boolean).join(isSmallCard.value ? '/' : ' / ')
 })
 
 const latencyTipAnimationClass = ref<string[]>([])

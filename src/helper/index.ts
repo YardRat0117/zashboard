@@ -32,7 +32,6 @@ export const isProxyGroup = (name: string) => {
     PROXY_TYPE.URLTest,
     PROXY_TYPE.LoadBalance,
     PROXY_TYPE.Selector,
-    PROXY_TYPE.Smart,
   ].includes(proxyNode.type.toLowerCase() as PROXY_TYPE)
 }
 

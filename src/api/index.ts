@@ -4,7 +4,7 @@ import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid } from '@/store/setup'
-import type { Backend, Config, DNSQuery, NodeRank, Proxy, ProxyProvider, Rule } from '@/types'
+import type { Backend, Config, DNSQuery, Proxy, ProxyProvider, Rule } from '@/types'
 import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
@@ -107,25 +107,6 @@ export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeou
   })
 }
 
-export const fetchSmartWeightsAPI = () => {
-  return axios.get<{
-    message: string
-    weights: Record<string, NodeRank[]>
-  }>(`/group/weights`)
-}
-
-// deprecated
-export const fetchSmartGroupWeightsAPI = (proxyName: string) => {
-  return axios.get<{
-    message: string
-    weights: NodeRank[]
-  }>(`/group/${encodeURIComponent(proxyName)}/weights`)
-}
-
-export const flushSmartGroupWeightsAPI = () => {
-  return axios.post(`/cache/smart/flush`)
-}
-
 export const fetchProxyProviderAPI = () => {
   return axios.get<{ providers: Record<string, ProxyProvider> }>('/providers/proxies')
 }
@@ -157,10 +138,6 @@ export const toggleRuleDisabledSingBoxAPI = (uuid: string) => {
 
 export const updateRuleProviderAPI = (name: string) => {
   return axios.put(`/providers/rules/${encodeURIComponent(name)}`)
-}
-
-export const blockConnectionByIdAPI = (id: string) => {
-  return axios.delete(`/connections/smart/${id}`)
 }
 
 export const disconnectByIdAPI = (id: string) => {
@@ -343,7 +320,7 @@ const check = async (url: string, versionNumber: string) => {
 }
 
 export const fetchBackendUpdateAvailableAPI = async () => {
-  const match = /(alpha-smart|alpha|beta|meta)-?(\w+)/.exec(version.value)
+  const match = /(alpha|beta|meta)-?(\w+)/.exec(version.value)
 
   if (!match) {
     const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
@@ -365,11 +342,6 @@ export const fetchBackendUpdateAvailableAPI = async () => {
   if (channel === 'alpha')
     return await check(
       'https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha',
-      versionNumber,
-    )
-  if (channel === 'alpha-smart')
-    return await check(
-      'https://api.github.com/repos/vernesong/mihomo/releases/tags/Prerelease-Alpha',
       versionNumber,
     )
 

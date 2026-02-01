@@ -205,13 +205,11 @@ const en = {
   sync: 'Sync',
   upgradeSuccess: 'Upgrade successful',
   numberOfChartsInSidebar: 'Number of charts in sidebar',
-  flushSmartWeights: 'Clear smart weights',
   IPInfoAPI: 'IP info API',
   IPInfoAPITip:
     "This API will be used for IP checks in global node IP information queries, IP geolocation queries in connection details, and IP geolocation queries in zashboard's DNS query feature.",
   general: 'General',
   groupProxiesByProvider: 'Group proxies by provider',
-  useSmartGroupSort: 'Smart group sort by usage frequency',
   RarelyUsed: 'Rarely used',
   OccasionalUsed: 'Occasionally used',
   MostUsed: 'Most used',
