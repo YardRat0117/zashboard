@@ -53,13 +53,10 @@
                 </select>
             </div>
         </div>
-        <div v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.sourceIPLabels`]" class="divider"></div>
-        <SourceIPLabels v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.connections}.sourceIPLabels`]" />
     </div>
 </template>
 
 <script setup lang="ts">
-import SourceIPLabels from '@/components/settings/SourceIPLabels.vue'
 import { PROXY_CHAIN_DIRECTION, SETTINGS_MENU_KEY, TABLE_SIZE, TABLE_WIDTH_MODE } from '@/constant'
 import {
     hiddenSettingsItems,

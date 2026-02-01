@@ -136,13 +136,6 @@
                 </div>
             </div>
         </template>
-        <template v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.iconSettings`]">
-            <div v-if="hasVisibleLatencyItems || hasVisibleProxyStyleItems" class="divider my-4"></div>
-            <div class="settings-title">
-                {{ $t('icon') }}
-            </div>
-            <IconSettings />
-        </template>
     </div>
 </template>
 
@@ -174,7 +167,6 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TextInput from '../common/TextInput.vue'
 import GroupTestUrlsSettings from './GroupTestUrlsSettings.vue'
-import IconSettings from './IconSettings.vue'
 
 const { showTip } = useTooltip()
 const { t } = useI18n()

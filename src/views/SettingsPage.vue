@@ -111,10 +111,9 @@ watch(
             if (!newItems.find((item) => item.key === activeMenuKey.value)) {
                 activeMenuKey.value = newItems[0].key
             }
-        } else {
-            // 如果所有设置项都被隐藏，保持当前值（虽然不会显示）
-            // 这种情况应该很少见，因为至少应该有一个设置项可见
         }
+        // 如果所有设置项都被隐藏，保持当前值（虽然不会显示）
+        // 这种情况应该很少见，因为至少应该有一个设置项可见
     },
     { immediate: true },
 )
