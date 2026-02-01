@@ -48,7 +48,7 @@
     </div>
     <div class="flex items-center gap-1">
       <ServerIcon class="h-4 w-4 shrink-0" />
-      {{ details?.organization }}
+      {{ details?.org }}
     </div>
   </div>
 </template>

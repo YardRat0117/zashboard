@@ -41,30 +41,6 @@
         />
         mins
       </div>
-      <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.IPInfoAPI`]"
-        class="setting-item"
-      >
-        <div class="setting-item-label">
-          {{ $t('IPInfoAPI') }}
-          <QuestionMarkCircleIcon
-            class="h-4 w-4 cursor-pointer"
-            @mouseenter="showTip($event, $t('IPInfoAPITip'))"
-          />
-        </div>
-        <select
-          class="select select-sm min-w-24"
-          v-model="IPInfoAPI"
-        >
-          <option
-            v-for="opt in Object.values(IP_INFO_API)"
-            :key="opt"
-            :value="opt"
-          >
-            {{ opt }}
-          </option>
-        </select>
-      </div>
 
       <div
         v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.scrollAnimationEffect`]"
@@ -144,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { IP_INFO_API, SETTINGS_MENU_KEY } from '@/constant'
+import { SETTINGS_MENU_KEY } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
   autoDisconnectIdleUDP,
@@ -152,7 +128,6 @@ import {
   disablePullToRefresh,
   displayAllFeatures,
   hiddenSettingsItems,
-  IPInfoAPI,
   scrollAnimationEffect,
   swipeInPages,
   swipeInTabs,

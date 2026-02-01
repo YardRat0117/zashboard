@@ -121,7 +121,7 @@ const en = {
   large: 'Large',
   autoIPCheckWhenStart: 'Auto IP check on start',
   autoConnectionCheckWhenStart: 'Auto connection check on start',
-  chinaIP: 'China IP',
+  localIP: 'Local IP',
   globalIP: 'Global IP',
   networkInfo: 'Network info',
   autoSwitchTheme: 'Auto switch theme',

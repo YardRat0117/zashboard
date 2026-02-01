@@ -1,7 +1,7 @@
 <template>
   <div class="bg-base-200/50 relative flex h-28 flex-col gap-1 rounded-lg p-2">
     <div class="grid grid-cols-[auto_auto_1fr] gap-x-2 gap-y-1">
-      <div class="text-left text-sm">ipip.net</div>
+      <div class="text-left text-sm">Local Proxy i18n stuff</div>
       <div class="text-right text-sm">:</div>
       <div class="text-sm">
         {{ showPrivacy ? ipForChina.ipWithPrivacy[0] : ipForChina.ip[0] }}
@@ -12,7 +12,7 @@
           ({{ showPrivacy ? ipForChina.ipWithPrivacy[1] : ipForChina.ip[1] }})
         </span>
       </div>
-      <div class="text-left text-sm">{{ IPInfoAPI }}</div>
+      <div class="text-left text-sm">Global Proxy i18n stuff</div>
       <div class="text-right text-sm">:</div>
       <div class="text-sm">
         {{ showPrivacy ? ipForGlobal.ipWithPrivacy[0] : ipForGlobal.ip[0] }}
@@ -51,12 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import { getIPFromIpipnetAPI, getIPInfo } from '@/api/geoip'
+import { getGlobalIPInfo, getLocalIPInfo } from '@/api/geoip'
 import { ipForChina, ipForGlobal } from '@/composables/overview'
 import { useTooltip } from '@/helper/tooltip'
-import { autoIPCheck, IPInfoAPI } from '@/store/settings'
+import { autoIPCheck } from '@/store/settings'
 import { BoltIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -83,11 +83,11 @@ const getIPs = () => {
   ipForGlobal.value = {
     ...QUERYING_IP_INFO,
   }
-  getIPInfo()
+  getGlobalIPInfo()
     .then((res) => {
       ipForGlobal.value = {
-        ipWithPrivacy: [`${res.country} ${res.organization}`, res.ip],
-        ip: [`${res.country} ${res.organization}`, '***.***.***.***'],
+        ipWithPrivacy: [`${res.country} ${res.region} ${res.city} ${res.org}`, res.ip],
+        ip: [`${res.country} ** ** ${res.org}`, '***.***.***.***'],
       }
     })
     .catch(() => {
@@ -95,11 +95,11 @@ const getIPs = () => {
         ...FAILED_IP_INFO,
       }
     })
-  getIPFromIpipnetAPI()
+  getLocalIPInfo()
     .then((res) => {
       ipForChina.value = {
-        ipWithPrivacy: [res.data.location.join(' '), res.data.ip],
-        ip: [`${res.data.location[0]} ** ** **`, '***.***.***.***'],
+        ipWithPrivacy: [`${res.country} ${res.region} ${res.city} ${res.org}`, res.ip],
+        ip: [`${res.country} ** **`, '***.***.***.***'],
       }
     })
     .catch(() => {
@@ -108,12 +108,6 @@ const getIPs = () => {
       }
     })
 }
-
-watch(IPInfoAPI, () => {
-  if ([ipForChina, ipForGlobal].some((item) => item.value.ip.length !== 0)) {
-    getIPs()
-  }
-})
 
 onMounted(() => {
   if (autoIPCheck.value && [ipForChina, ipForGlobal].some((item) => item.value.ip.length === 0)) {

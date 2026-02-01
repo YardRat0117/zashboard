@@ -172,43 +172,16 @@ export const DETAILED_CARD_STYLE = [
 ]
 
 export const ALL_THEME = [
-  'light',
   'dark',
-  'light-legacy',
   'dark-legacy',
-  'cupcake',
-  'bumblebee',
-  'emerald',
-  'corporate',
-  'synthwave',
-  'retro',
-  'cyberpunk',
-  'valentine',
-  'halloween',
-  'garden',
-  'forest',
-  'aqua',
-  'lofi',
-  'pastel',
-  'fantasy',
-  'wireframe',
-  'black',
-  'luxury',
-  'dracula',
-  'cmyk',
-  'autumn',
-  'business',
-  'acid',
-  'lemonade',
-  'night',
   'coffee',
-  'winter',
-  'dim',
-  'nord',
-  'sunset',
-  'caramellatte',
+  'synthwave',
   'abyss',
-  'silk',
+  'aqua',
+  'retro',
+  'lofi',
+  'caramellatte',
+  'valentine',
 ]
 
 export const DEFAULT_THEME = {
@@ -250,9 +223,9 @@ export const DEFAULT_THEME = {
 export type THEME = Record<string, string>
 
 export enum IP_INFO_API {
-  IPSB = 'ip.sb',
-  IPWHOIS = 'ipwho.is',
-  IPAPI = 'ipapi.is',
+  IPIPNET = 'ipipnet',
+  IPWHOIS = 'ipwhois',
+  IPAPI = 'ipapi',
 }
 
 export enum SETTINGS_MENU_KEY {
