@@ -2,8 +2,6 @@ import { ROUTE_NAME } from '@/constant'
 import { showNotification } from '@/helper/notification'
 import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
-// To be removed
-// import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid } from '@/store/setup'
 import type { Backend, Config, DNSQuery, Proxy, ProxyProvider, Rule } from '@/types'
 import axios, { AxiosError } from 'axios'
@@ -52,7 +50,6 @@ axios.interceptors.response.use(
 )
 
 export const version = ref()
-// export const isCoreUpdateAvailable = ref(false)
 export const fetchVersionAPI = () => {
   return axios.get<{ version: string }>('/version')
 }
@@ -64,13 +61,6 @@ watch(
     if (val) {
       const { data } = await fetchVersionAPI()
       version.value = data?.version || ''
-      // if (!checkUpgradeCore.value || activeBackend.value?.disableUpgradeCore)
-      //     return
-      // isCoreUpdateAvailable.value = await fetchBackendUpdateAvailableAPI()
-
-      // if (isCoreUpdateAvailable.value && autoUpgradeCore.value) {
-      //     upgradeCoreAPI('auto')
-      // }
     }
   },
   { immediate: true },
@@ -147,17 +137,6 @@ export const updateGeoDataAPI = () => {
   return axios.post('/configs/geo')
 }
 
-// To be removed
-// export const upgradeCoreAPI = (type: 'release' | 'alpha' | 'auto') => {
-//   const url = type === 'auto' ? '/upgrade' : `/upgrade?channel=${type}`
-
-//   return axios.post(url)
-// }
-
-// export const restartCoreAPI = () => {
-//   return axios.post('/restart')
-// }
-
 export const queryDNSAPI = (params: { name: string; type: string }) => {
   return axios.get<DNSQuery>('/dns/query', {
     params,
@@ -231,83 +210,3 @@ export const isBackendAvailable = async (backend: Backend, timeout: number = 100
     clearTimeout(timeoutId)
   }
 }
-
-// To be removed
-// const CACHE_DURATION = 1000 * 60 * 60
-
-// interface CacheEntry<T> {
-//     timestamp: number
-//     version: string
-//     data: T
-// }
-
-// async function fetchWithLocalCache<T>(url: string, version: string): Promise<T> {
-//     const cacheKey = 'cache/' + url
-//     const cacheRaw = localStorage.getItem(cacheKey)
-
-//     if (cacheRaw) {
-//         try {
-//             const cache: CacheEntry<T> = JSON.parse(cacheRaw)
-//             const now = Date.now()
-
-//             if (now - cache.timestamp < CACHE_DURATION && cache.version === version) {
-//                 return cache.data
-//             } else {
-//                 localStorage.removeItem(cacheKey)
-//             }
-//         } catch (e) {
-//             console.warn('Failed to parse cache for', url, e)
-//         }
-//     }
-
-//     const response = await fetch(url)
-//     if (!response.ok) {
-//         throw new Error(`Fetch failed: ${response.status} ${response.statusText}`)
-//     }
-
-//     const data: T = await response.json()
-//     const newCache: CacheEntry<T> = {
-//         timestamp: Date.now(),
-//         version,
-//         data,
-//     }
-
-//     localStorage.setItem(cacheKey, JSON.stringify(newCache))
-//     return data
-// }
-
-// const check = async (url: string, versionNumber: string) => {
-//   const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(url, versionNumber)
-//   const alreadyLatest = assets.some(({ name }) => name.includes(versionNumber))
-
-//   return !alreadyLatest
-// }
-
-// export const fetchBackendUpdateAvailableAPI = async () => {
-//   const match = /(alpha|beta|meta)-?(\w+)/.exec(version.value)
-
-//   if (!match) {
-//     const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
-//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
-//       version.value,
-//     )
-
-//     return Boolean(tag_name && !tag_name.endsWith(version.value))
-//   }
-
-//   const channel = match[1],
-//     versionNumber = match[2]
-
-//   if (channel === 'meta')
-//     return await check(
-//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
-//       versionNumber,
-//     )
-//   if (channel === 'alpha')
-//     return await check(
-//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha',
-//       versionNumber,
-//     )
-
-//   return false
-// }

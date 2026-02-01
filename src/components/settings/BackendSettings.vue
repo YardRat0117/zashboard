@@ -117,7 +117,6 @@
       class="divider"
     ></div>
     <DnsQuery v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.backend}.dnsQuery`]" />
-    <UpgradeCoreModal v-model="showUpgradeCoreModal" />
   </div>
 </template>
 
@@ -182,8 +181,6 @@ const reloadAll = () => {
   fetchConfigs()
   fetchProxies()
 }
-
-const showUpgradeCoreModal = ref(false)
 
 const isCoreRestarting = ref(false)
 const handlerClickRestartCore = async () => {
