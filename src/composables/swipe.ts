@@ -11,91 +11,97 @@ import { useRoute, useRouter } from 'vue-router'
 export const disableSwipe = ref(false)
 
 export const useSwipeRouter = () => {
-  const swiperRef = ref()
-  const route = useRoute()
-  const router = useRouter()
-  const { direction } = useSwipe(swiperRef, { threshold: 75 })
+    const swiperRef = ref()
+    const route = useRoute()
+    const router = useRouter()
+    const { direction } = useSwipe(swiperRef, {
+        threshold: 75,
+    })
 
-  const swipeList = computed(() => {
-    return flatten(
-      renderRoutes.value.map((r) => {
-        if (swipeInTabs.value) {
-          if (r === ROUTE_NAME.proxies && proxyProviderList.value.length > 0) {
-            return Object.values(PROXY_TAB_TYPE).map((tab) => {
-              return [
-                () => route.name === ROUTE_NAME.proxies && proxiesTabShow.value === tab,
-                () => {
-                  router.push({ name: ROUTE_NAME.proxies })
-                  proxiesTabShow.value = tab
-                },
-              ]
-            })
-          } else if (r === ROUTE_NAME.connections) {
-            return Object.values(CONNECTION_TAB_TYPE).map((tab) => {
-              return [
-                () => route.name === ROUTE_NAME.connections && connectionTabShow.value === tab,
-                () => {
-                  router.push({ name: ROUTE_NAME.connections })
-                  connectionTabShow.value = tab
-                },
-              ]
-            })
-          }
+    const swipeList = computed(() => {
+        return flatten(
+            renderRoutes.value.map((r) => {
+                if (swipeInTabs.value) {
+                    if (r === ROUTE_NAME.proxies && proxyProviderList.value.length > 0) {
+                        return Object.values(PROXY_TAB_TYPE).map((tab) => {
+                            return [
+                                () => route.name === ROUTE_NAME.proxies && proxiesTabShow.value === tab,
+                                () => {
+                                    router.push({
+                                        name: ROUTE_NAME.proxies,
+                                    })
+                                    proxiesTabShow.value = tab
+                                },
+                            ]
+                        })
+                    } else if (r === ROUTE_NAME.connections) {
+                        return Object.values(CONNECTION_TAB_TYPE).map((tab) => {
+                            return [
+                                () => route.name === ROUTE_NAME.connections && connectionTabShow.value === tab,
+                                () => {
+                                    router.push({
+                                        name: ROUTE_NAME.connections,
+                                    })
+                                    connectionTabShow.value = tab
+                                },
+                            ]
+                        })
+                    }
+                }
+
+                return [[() => route.name === r, () => router.push({ name: r })]]
+            }),
+        )
+    })
+
+    const getNextIndexInSwipeList = () => {
+        return swipeList.value.findIndex((s) => s[0]())
+    }
+
+    const getNextRouteName = () => {
+        const routeName = route.name as ROUTE_NAME
+
+        if (routeName === ROUTE_NAME.setup) {
+            return router.push({ name: ROUTE_NAME.proxies })
         }
 
-        return [[() => route.name === r, () => router.push({ name: r })]]
-      }),
-    )
-  })
+        return swipeList.value[(getNextIndexInSwipeList() + 1) % swipeList.value.length]?.[1]?.()
+    }
+    const getPrevRouteName = () => {
+        const routeName = route.name as ROUTE_NAME
 
-  const getNextIndexInSwipeList = () => {
-    return swipeList.value.findIndex((s) => s[0]())
-  }
+        if (routeName === ROUTE_NAME.setup) {
+            return router.push({ name: ROUTE_NAME.proxies })
+        }
 
-  const getNextRouteName = () => {
-    const routeName = route.name as ROUTE_NAME
-
-    if (routeName === ROUTE_NAME.setup) {
-      return router.push({ name: ROUTE_NAME.proxies })
+        return swipeList.value[
+            (getNextIndexInSwipeList() - 1 + swipeList.value.length) % swipeList.value.length
+        ]?.[1]?.()
     }
 
-    return swipeList.value[(getNextIndexInSwipeList() + 1) % swipeList.value.length]?.[1]?.()
-  }
-  const getPrevRouteName = () => {
-    const routeName = route.name as ROUTE_NAME
-
-    if (routeName === ROUTE_NAME.setup) {
-      return router.push({ name: ROUTE_NAME.proxies })
+    const isInputActive = () => {
+        const activeEl = document.activeElement
+        return activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')
     }
 
-    return swipeList.value[
-      (getNextIndexInSwipeList() - 1 + swipeList.value.length) % swipeList.value.length
-    ]?.[1]?.()
-  }
+    watch(direction, () => {
+        if (!swipeInPages.value) return
 
-  const isInputActive = () => {
-    const activeEl = document.activeElement
-    return activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')
-  }
+        if (
+            document.querySelector('dialog:modal') ||
+            isInputActive() ||
+            window.getSelection()?.toString()?.length ||
+            disableSwipe.value
+        )
+            return
+        if (direction.value === 'right') {
+            getPrevRouteName()
+        } else if (direction.value === 'left') {
+            getNextRouteName()
+        }
+    })
 
-  watch(direction, () => {
-    if (!swipeInPages.value) return
-
-    if (
-      document.querySelector('dialog:modal') ||
-      isInputActive() ||
-      window.getSelection()?.toString()?.length ||
-      disableSwipe.value
-    )
-      return
-    if (direction.value === 'right') {
-      getPrevRouteName()
-    } else if (direction.value === 'left') {
-      getNextRouteName()
+    return {
+        swiperRef,
     }
-  })
-
-  return {
-    swiperRef,
-  }
 }

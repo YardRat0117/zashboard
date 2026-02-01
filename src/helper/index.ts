@@ -11,166 +11,156 @@ import { computed } from 'vue'
 import { prettyBytesHelper } from './utils'
 
 export const isProxyGroup = (name: string) => {
-  const proxyNode = proxyMap.value[name]
+    const proxyNode = proxyMap.value[name]
 
-  if (!proxyNode) {
-    return false
-  }
+    if (!proxyNode) {
+        return false
+    }
 
-  if (proxyNode.all?.length) {
-    return true
-  }
+    if (proxyNode.all?.length) {
+        return true
+    }
 
-  return [
-    PROXY_TYPE.Dns,
-    PROXY_TYPE.Compatible,
-    PROXY_TYPE.Direct,
-    PROXY_TYPE.Reject,
-    PROXY_TYPE.RejectDrop,
-    PROXY_TYPE.Pass,
-    PROXY_TYPE.Fallback,
-    PROXY_TYPE.URLTest,
-    PROXY_TYPE.LoadBalance,
-    PROXY_TYPE.Selector,
-  ].includes(proxyNode.type.toLowerCase() as PROXY_TYPE)
+    return [
+        PROXY_TYPE.Dns,
+        PROXY_TYPE.Compatible,
+        PROXY_TYPE.Direct,
+        PROXY_TYPE.Reject,
+        PROXY_TYPE.RejectDrop,
+        PROXY_TYPE.Pass,
+        PROXY_TYPE.Fallback,
+        PROXY_TYPE.URLTest,
+        PROXY_TYPE.LoadBalance,
+        PROXY_TYPE.Selector,
+    ].includes(proxyNode.type.toLowerCase() as PROXY_TYPE)
 }
 
 export const getHostFromConnection = (connection: Connection) => {
-  const port = connection.metadata.destinationPort
-  const host =
-    connection.metadata.host || connection.metadata.sniffHost || connection.metadata.destinationIP
+    const port = connection.metadata.destinationPort
+    const host = connection.metadata.host || connection.metadata.sniffHost || connection.metadata.destinationIP
 
-  if (host.includes(':')) {
-    return `[${host}]:${port}`
-  }
-  return `${host}:${port}`
+    if (host.includes(':')) {
+        return `[${host}]:${port}`
+    }
+    return `${host}:${port}`
 }
 
 export const getProcessFromConnection = (connection: Connection) => {
-  return (
-    connection.metadata.process ||
-    connection.metadata.processPath.replace(/^.*[/\\](.*)$/, '$1') ||
-    '-'
-  )
+    return connection.metadata.process || connection.metadata.processPath.replace(/^.*[/\\](.*)$/, '$1') || '-'
 }
 
 export const getDestinationFromConnection = (connection: Connection) => {
-  const finalProxyType = proxyMap.value[head(connection.chains) || '']?.type.toLowerCase()
+    const finalProxyType = proxyMap.value[head(connection.chains) || '']?.type.toLowerCase()
 
-  if (finalProxyType === PROXY_TYPE.Direct && connection.metadata.remoteDestination) {
-    return connection.metadata.remoteDestination
-  }
+    if (finalProxyType === PROXY_TYPE.Direct && connection.metadata.remoteDestination) {
+        return connection.metadata.remoteDestination
+    }
 
-  return connection.metadata.destinationIP || connection.metadata.host
+    return connection.metadata.destinationIP || connection.metadata.host
 }
 
 export const getDestinationTypeFromConnection = (connection: Connection) => {
-  const destination = getDestinationFromConnection(connection)
+    const destination = getDestinationFromConnection(connection)
 
-  if (ipaddr.IPv4.isIPv4(destination)) {
-    return 'IPv4'
-  } else if (ipaddr.IPv6.isIPv6(destination)) {
-    return 'IPv6'
-  } else {
-    return 'FQDN'
-  }
+    if (ipaddr.IPv4.isIPv4(destination)) {
+        return 'IPv4'
+    } else if (ipaddr.IPv6.isIPv6(destination)) {
+        return 'IPv6'
+    } else {
+        return 'FQDN'
+    }
 }
 
 export const getChainsStringFromConnection = (connection: Connection) => {
-  const chains = [...connection.chains]
+    const chains = [...connection.chains]
 
-  if (proxyChainDirection.value === PROXY_CHAIN_DIRECTION.NORMAL) {
-    chains.reverse()
-  }
+    if (proxyChainDirection.value === PROXY_CHAIN_DIRECTION.NORMAL) {
+        chains.reverse()
+    }
 
-  return chains.join('')
+    return chains.join('')
 }
 
 export const getNetworkTypeFromConnection = (connection: Connection) => {
-  return `${connection.metadata.type} | ${connection.metadata.network}`
+    return `${connection.metadata.type} | ${connection.metadata.network}`
 }
 
 export const getInboundUserFromConnection = (connection: Connection) => {
-  return (
-    connection.metadata.inboundUser ||
-    connection.metadata.inboundName ||
-    connection.metadata.inboundPort ||
-    '-'
-  )
+    return connection.metadata.inboundUser || connection.metadata.inboundName || connection.metadata.inboundPort || '-'
 }
 
 export const getToolTipForParams = (
-  params: ToolTipParams,
-  config: {
-    suffix: string
-    binary: boolean
-  },
+    params: ToolTipParams,
+    config: {
+        suffix: string
+        binary: boolean
+    },
 ) => {
-  const { suffix = '', binary = false } = config
+    const { suffix = '', binary = false } = config
 
-  // fake data
-  if (params.data.name < timeSaved + 1) {
-    return ``
-  }
-  return `
+    // fake data
+    if (params.data.name < timeSaved + 1) {
+        return ``
+    }
+    return `
     <div class="flex items-center my-2 gap-1">
       <div class="w-4 h-4 rounded-full" style="background-color: ${params.color}"></div>
       ${params.seriesName}
       (${dayjs(params.data.name).format('HH:mm:ss')}): ${prettyBytesHelper(params.data.value, {
-        binary: binary,
+          binary: binary,
       })}${suffix}
     </div>`
 }
 
 export const getColorForLatency = (latency: number) => {
-  if (latency === NOT_CONNECTED) {
-    return ''
-  } else if (latency < lowLatency.value) {
-    return 'text-green-500'
-  } else if (latency < mediumLatency.value) {
-    return 'text-yellow-500'
-  } else {
-    return 'text-red-500'
-  }
+    if (latency === NOT_CONNECTED) {
+        return ''
+    } else if (latency < lowLatency.value) {
+        return 'text-green-500'
+    } else if (latency < mediumLatency.value) {
+        return 'text-yellow-500'
+    } else {
+        return 'text-red-500'
+    }
 }
 
 export const renderRoutes = computed(() => {
-  return Object.values(ROUTE_NAME).filter((r) => {
-    return r !== ROUTE_NAME.setup
-  })
+    return Object.values(ROUTE_NAME).filter((r) => {
+        return r !== ROUTE_NAME.setup
+    })
 })
 
 export const applyCustomThemes = () => {
-  document.querySelectorAll('.custom-theme').forEach((style) => {
-    style.remove()
-  })
-  customThemes.value.forEach((theme) => {
-    const style = document.createElement('style')
-    const styleString = Object.entries(theme)
-      .filter(([key]) => !['prefersdark', 'default', 'name', 'type', 'id'].includes(key))
-      .map(([key, value]) => `${key}:${value}`)
-      .join(';')
+    document.querySelectorAll('.custom-theme').forEach((style) => {
+        style.remove()
+    })
+    customThemes.value.forEach((theme) => {
+        const style = document.createElement('style')
+        const styleString = Object.entries(theme)
+            .filter(([key]) => !['prefersdark', 'default', 'name', 'type', 'id'].includes(key))
+            .map(([key, value]) => `${key}:${value}`)
+            .join(';')
 
-    style.innerHTML = `[data-theme="${theme.name}"] {
+        style.innerHTML = `[data-theme="${theme.name}"] {
       ${styleString} 
     }`
 
-    style.className = `custom-theme ${theme.name}`
-    document.head.appendChild(style)
-  })
+        style.className = `custom-theme ${theme.name}`
+        document.head.appendChild(style)
+    })
 }
 
 export const isHiddenGroup = (group: string) => {
-  if (Reflect.has(hiddenGroupMap.value, group)) {
-    return hiddenGroupMap.value[group]
-  }
+    if (Reflect.has(hiddenGroupMap.value, group)) {
+        return hiddenGroupMap.value[group]
+    }
 
-  return proxyMap.value[group]?.hidden
+    return proxyMap.value[group]?.hidden
 }
 
 export const handlerUpgradeSuccess = () => {
-  showNotification({
-    content: 'upgradeSuccess',
-    type: 'alert-success',
-  })
+    showNotification({
+        content: 'upgradeSuccess',
+        type: 'alert-success',
+    })
 }

@@ -5,25 +5,17 @@ import ProxyNodeCard from './ProxyNodeCard.vue'
 import ProxyNodeGrid from './ProxyNodeGrid.vue'
 
 const props = defineProps<{
-  name: string
-  now?: string
-  renderProxies: string[]
+    name: string
+    now?: string
+    renderProxies: string[]
 }>()
 
-const { maxProxies } = useCalculateMaxProxies(
-  props.renderProxies.length,
-  props.renderProxies.indexOf(props.now ?? ''),
-)
+const { maxProxies } = useCalculateMaxProxies(props.renderProxies.length, props.renderProxies.indexOf(props.now ?? ''))
 const proxies = computed(() => props.renderProxies.slice(0, maxProxies.value))
 </script>
 
 <template>
-  <ProxyNodeGrid>
-    <ProxyNodeCard
-      v-for="node in proxies"
-      :key="node"
-      :name="node"
-      :group-name="name"
-    />
-  </ProxyNodeGrid>
+    <ProxyNodeGrid>
+        <ProxyNodeCard v-for="node in proxies" :key="node" :name="node" :group-name="name" />
+    </ProxyNodeGrid>
 </template>

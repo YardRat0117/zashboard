@@ -6,5 +6,5 @@ import { ref } from 'vue'
 export const rules = ref<Rule[]>([])
 
 export const fetchRules = async () => {
-  rules.value = (await fetchRulesAPI()).data.rules
+    rules.value = (await fetchRulesAPI()).data.rules
 }

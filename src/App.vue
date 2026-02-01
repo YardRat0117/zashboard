@@ -19,101 +19,98 @@ initNotification(toast as Ref<HTMLElement>)
 const fontClassName = 'font-SystemUI-NotoEmoji'
 
 const setThemeColor = () => {
-  const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()
-  const metaThemeColor = document.querySelector('meta[name="theme-color"]')
-  if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', themeColor)
-  }
+    const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+    if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', themeColor)
+    }
 }
 
 watch(isPreferredDark, setThemeColor)
 
 watch(
-  disablePullToRefresh,
-  () => {
-    const body = document.body
-    if (disablePullToRefresh.value) {
-      body.style.overscrollBehavior = 'none'
-      body.style.overflow = 'hidden'
-    } else {
-      body.style.overscrollBehavior = ''
-      body.style.overflow = ''
-    }
-  },
-  {
-    immediate: true,
-  },
+    disablePullToRefresh,
+    () => {
+        const body = document.body
+        if (disablePullToRefresh.value) {
+            body.style.overscrollBehavior = 'none'
+            body.style.overflow = 'hidden'
+        } else {
+            body.style.overscrollBehavior = ''
+            body.style.overflow = ''
+        }
+    },
+    {
+        immediate: true,
+    },
 )
 
 const isSameBackend = (b1: Omit<Backend, 'uuid'>, b2: Omit<Backend, 'uuid'>) => {
-  return (
-    b1.host === b2.host &&
-    b1.port === b2.port &&
-    b1.password === b2.password &&
-    b1.protocol === b2.protocol &&
-    b1.secondaryPath === b2.secondaryPath
-  )
+    return (
+        b1.host === b2.host &&
+        b1.port === b2.port &&
+        b1.password === b2.password &&
+        b1.protocol === b2.protocol &&
+        b1.secondaryPath === b2.secondaryPath
+    )
 }
 
 const autoSwitchToURLBackendIfExists = () => {
-  const backend = getBackendFromUrl()
+    const backend = getBackendFromUrl()
 
-  if (backend) {
-    for (const b of backendList.value) {
-      if (isSameBackend(b, backend)) {
-        activeUuid.value = b.uuid
-        return
-      }
+    if (backend) {
+        for (const b of backendList.value) {
+            if (isSameBackend(b, backend)) {
+                activeUuid.value = b.uuid
+                return
+            }
+        }
     }
-  }
 }
 
 autoSwitchToURLBackendIfExists()
 
 onMounted(() => {
-  if (autoImportSettings.value) {
-    importSettingsFromUrl()
-  }
-  watch(
-    theme,
-    () => {
-      document.body.setAttribute('data-theme', theme.value)
-      setThemeColor()
-    },
-    {
-      immediate: true,
-    },
-  )
+    if (autoImportSettings.value) {
+        importSettingsFromUrl()
+    }
+    watch(
+        theme,
+        () => {
+            document.body.setAttribute('data-theme', theme.value)
+            setThemeColor()
+        },
+        {
+            immediate: true,
+        },
+    )
 })
 
 const blurClass = computed(() => {
-  if (!backgroundImage.value || blurIntensity.value === 0) {
-    return ''
-  }
+    if (!backgroundImage.value || blurIntensity.value === 0) {
+        return ''
+    }
 
-  return `blur-intensity-${blurIntensity.value}`
+    return `blur-intensity-${blurIntensity.value}`
 })
 
 useKeyboard()
 </script>
 
 <template>
-  <div
-    ref="app"
-    id="app-content"
-    :class="[
-      'bg-base-100 flex h-dvh w-screen overflow-hidden',
-      fontClassName,
-      backgroundImage &&
-        `custom-background-${dashboardTransparent} custom-background bg-cover bg-center`,
-      blurClass,
-    ]"
-    :style="backgroundImage"
-  >
-    <RouterView />
     <div
-      ref="toast"
-      class="toast-sm toast toast-end toast-top z-9999 max-w-80 text-sm md:max-w-96 md:translate-y-8"
-    />
-  </div>
+        ref="app"
+        id="app-content"
+        :class="[
+            'bg-base-100 flex h-dvh w-screen overflow-hidden',
+            fontClassName,
+            backgroundImage && `custom-background-${dashboardTransparent} custom-background bg-cover bg-center`,
+            blurClass,
+        ]"
+        :style="backgroundImage">
+        <RouterView />
+        <div
+            ref="toast"
+            class="toast-sm toast toast-end toast-top z-9999 max-w-80 text-sm md:max-w-96 md:translate-y-8" />
+    </div>
 </template>

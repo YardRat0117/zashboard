@@ -1,15 +1,12 @@
 <template>
-  <VirtualScroller
-    :data="renderConnections"
-    :size="size"
-  >
-    <template v-slot:before>
-      <ConnectionCtrl />
-    </template>
-    <template v-slot="{ item }: { item: Connection }">
-      <ConnectionCard :conn="item" />
-    </template>
-  </VirtualScroller>
+    <VirtualScroller :data="renderConnections" :size="size">
+        <template v-slot:before>
+            <ConnectionCtrl />
+        </template>
+        <template v-slot="{ item }: { item: Connection }">
+            <ConnectionCard :conn="item" />
+        </template>
+    </VirtualScroller>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +18,6 @@ import VirtualScroller from '../common/VirtualScroller.vue'
 import ConnectionCtrl from '../sidebar/ConnectionCtrl.tsx'
 import ConnectionCard from './ConnectionCard'
 const size = computed(() => {
-  return connectionCardLines.value.length * 28 + 4
+    return connectionCardLines.value.length * 28 + 4
 })
 </script>

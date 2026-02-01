@@ -1,17 +1,17 @@
 import { ref } from 'vue'
 
 type IPInfo = {
-  ip: string[]
-  ipWithPrivacy: string[]
+    ip: string[]
+    ipWithPrivacy: string[]
 }
 
 export const ipForLocal = ref<IPInfo>({
-  ip: [],
-  ipWithPrivacy: [],
+    ip: [],
+    ipWithPrivacy: [],
 })
 export const ipForGlobal = ref<IPInfo>({
-  ip: [],
-  ipWithPrivacy: [],
+    ip: [],
+    ipWithPrivacy: [],
 })
 
 export const googleLatency = ref('')

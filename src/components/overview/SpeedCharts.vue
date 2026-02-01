@@ -1,11 +1,10 @@
 <template>
-  <BasicCharts
-    ref="chartRef"
-    :data="chartsData"
-    :label-formatter="labelFormatter"
-    :tool-tip-formatter="tooltipFormatter"
-    :min="60 * 1000"
-  />
+    <BasicCharts
+        ref="chartRef"
+        :data="chartsData"
+        :label-formatter="labelFormatter"
+        :tool-tip-formatter="tooltipFormatter"
+        :min="60 * 1000" />
 </template>
 
 <script setup lang="ts">
@@ -19,32 +18,32 @@ import BasicCharts from './BasicCharts.vue'
 const chartRef = ref()
 const { t } = useI18n()
 const chartsData = computed(() => {
-  return [
-    {
-      name: t('ulSpeed'),
-      data: uploadSpeedHistory.value,
-    },
-    {
-      name: t('dlSpeed'),
-      data: downloadSpeedHistory.value,
-    },
-  ]
+    return [
+        {
+            name: t('ulSpeed'),
+            data: uploadSpeedHistory.value,
+        },
+        {
+            name: t('dlSpeed'),
+            data: downloadSpeedHistory.value,
+        },
+    ]
 })
 
 const labelFormatter = (value: number) => {
-  return `${prettyBytesHelper(value, {
-    maximumFractionDigits: 0,
-    binary: false,
-  })}/s`
+    return `${prettyBytesHelper(value, {
+        maximumFractionDigits: 0,
+        binary: false,
+    })}/s`
 }
 const tooltipFormatter = (value: ToolTipParams[]) => {
-  return value
-    .map((item) => {
-      return getToolTipForParams(item, {
-        binary: false,
-        suffix: '/s',
-      })
-    })
-    .join('')
+    return value
+        .map((item) => {
+            return getToolTipForParams(item, {
+                binary: false,
+                suffix: '/s',
+            })
+        })
+        .join('')
 }
 </script>

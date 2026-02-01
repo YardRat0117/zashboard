@@ -1,18 +1,18 @@
 import {
-  CONNECTIONS_TABLE_ACCESSOR_KEY,
-  DETAILED_CARD_STYLE,
-  FONTS,
-  GLOBAL,
-  LANG,
-  OVERVIEW_CARD,
-  PROXY_CARD_SIZE,
-  PROXY_CHAIN_DIRECTION,
-  PROXY_PREVIEW_TYPE,
-  SETTINGS_MENU_KEY,
-  TABLE_SIZE,
-  TABLE_WIDTH_MODE,
-  TEST_URL,
-  type THEME,
+    CONNECTIONS_TABLE_ACCESSOR_KEY,
+    DETAILED_CARD_STYLE,
+    FONTS,
+    GLOBAL,
+    LANG,
+    OVERVIEW_CARD,
+    PROXY_CARD_SIZE,
+    PROXY_CHAIN_DIRECTION,
+    PROXY_PREVIEW_TYPE,
+    SETTINGS_MENU_KEY,
+    TABLE_SIZE,
+    TABLE_WIDTH_MODE,
+    TEST_URL,
+    type THEME,
 } from '@/constant'
 import { getMinCardWidth, isMiddleScreen } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
@@ -25,23 +25,21 @@ export const theme = useStorage<string>('config/theme', 'dark')
 export const customThemes = useStorage<THEME[]>('config/custom-themes', [])
 
 export const language = useStorage<LANG>(
-  'config/language',
-  Object.values(LANG).includes(navigator.language as LANG)
-    ? (navigator.language as LANG)
-    : LANG.EN_US,
+    'config/language',
+    Object.values(LANG).includes(navigator.language as LANG) ? (navigator.language as LANG) : LANG.EN_US,
 )
 export const isSidebarCollapsedConfig = useStorage('config/is-sidebar-collapsed', true)
 export const isSidebarCollapsed = computed({
-  get: () => {
-    if (isMiddleScreen.value) {
-      return true
-    }
+    get: () => {
+        if (isMiddleScreen.value) {
+            return true
+        }
 
-    return isSidebarCollapsedConfig.value
-  },
-  set: (value) => {
-    isSidebarCollapsedConfig.value = value
-  },
+        return isSidebarCollapsedConfig.value
+    },
+    set: (value) => {
+        isSidebarCollapsedConfig.value = value
+    },
 })
 
 // Use system font by default
@@ -66,44 +64,41 @@ export const autoDisconnectIdleUDPTime = useStorage('config/auto-disconnect-idle
 export const splitOverviewPage = useStorage('config/split-overview-page', false)
 export const autoIPCheck = useStorage('config/auto-ip-check', true)
 export const autoConnectionCheck = useStorage('config/auto-connection-check', true)
-export const showStatisticsWhenSidebarCollapsed = useStorage(
-  'config/show-statistics-when-sidebar-collapsed',
-  true,
-)
-export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
-  'config/number-of-charts-in-sidebar',
-  2,
-)
-const defaultOverviewCardOrder: { card: OVERVIEW_CARD; visible: boolean }[] = [
-  {
-    card: OVERVIEW_CARD.ChartsCard,
-    visible: true,
-  },
-  {
-    card: OVERVIEW_CARD.NetworkCard,
-    visible: true,
-  },
-  {
-    card: OVERVIEW_CARD.ProviderTrafficOverview,
-    visible: true,
-  },
-  {
-    card: OVERVIEW_CARD.TopologyCharts,
-    visible: true,
-  },
-  {
-    card: OVERVIEW_CARD.ConnectionHistory,
-    visible: true,
-  },
-  {
-    card: OVERVIEW_CARD.RuleHitCountCard,
-    visible: true,
-  },
+export const showStatisticsWhenSidebarCollapsed = useStorage('config/show-statistics-when-sidebar-collapsed', true)
+export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>('config/number-of-charts-in-sidebar', 2)
+const defaultOverviewCardOrder: {
+    card: OVERVIEW_CARD
+    visible: boolean
+}[] = [
+    {
+        card: OVERVIEW_CARD.ChartsCard,
+        visible: true,
+    },
+    {
+        card: OVERVIEW_CARD.NetworkCard,
+        visible: true,
+    },
+    {
+        card: OVERVIEW_CARD.ProviderTrafficOverview,
+        visible: true,
+    },
+    {
+        card: OVERVIEW_CARD.TopologyCharts,
+        visible: true,
+    },
+    {
+        card: OVERVIEW_CARD.ConnectionHistory,
+        visible: true,
+    },
+    {
+        card: OVERVIEW_CARD.RuleHitCountCard,
+        visible: true,
+    },
 ]
 
 export const overviewCardOrder = useStorage<{ card: OVERVIEW_CARD; visible: boolean }[]>(
-  'config/overview-card-order',
-  defaultOverviewCardOrder,
+    'config/overview-card-order',
+    defaultOverviewCardOrder,
 )
 
 // 确保所有卡片都在配置中，缺失的卡片添加到末尾
@@ -112,11 +107,11 @@ const existingCardTypes = new Set(overviewCardOrder.value.map((item) => item.car
 const missingCards = allCardTypes.filter((card) => !existingCardTypes.has(card))
 
 if (missingCards.length > 0) {
-  const newCards = missingCards.map((card) => ({
-    card,
-    visible: true,
-  }))
-  overviewCardOrder.value = [...overviewCardOrder.value, ...newCards]
+    const newCards = missingCards.map((card) => ({
+        card,
+        visible: true,
+    }))
+    overviewCardOrder.value = [...overviewCardOrder.value, ...newCards]
 }
 
 // proxies
@@ -133,14 +128,8 @@ export const hideUnavailableProxies = useStorage('config/hide-unavailable-proxie
 export const lowLatency = useStorage('config/low-latency', 400)
 export const mediumLatency = useStorage('config/medium-latency', 800)
 export const IPv6test = useStorage('config/ipv6-test', false)
-export const proxyCardSize = useStorage<PROXY_CARD_SIZE>(
-  'config/proxy-card-size',
-  PROXY_CARD_SIZE.LARGE,
-)
-export const minProxyCardWidth = useStorage<number>(
-  'config/min-proxy-card-width',
-  getMinCardWidth(proxyCardSize.value),
-)
+export const proxyCardSize = useStorage<PROXY_CARD_SIZE>('config/proxy-card-size', PROXY_CARD_SIZE.LARGE)
+export const minProxyCardWidth = useStorage<number>('config/min-proxy-card-width', getMinCardWidth(proxyCardSize.value))
 export const manageHiddenGroup = useStorage('config/manage-hidden-group-mode', false)
 
 export const displayGlobalByMode = useStorage('config/display-global-by-mode', false)
@@ -149,33 +138,28 @@ export const customGlobalNode = useStorage('config/custom-global-node-name', GLO
 export const proxyGroupIconSize = useStorage('config/proxy-group-icon-size', 24)
 export const proxyGroupIconMargin = useStorage('config/proxy-group-icon-margin', 6)
 export const iconReflectList = useStorage<
-  {
-    icon: string
-    name: string
-    uuid: string
-  }[]
+    {
+        icon: string
+        name: string
+        uuid: string
+    }[]
 >('config/icon-reflect-list', [])
 export const groupProxiesByProvider = useStorage('config/group-proxies-by-provider', false)
 export const groupTestUrls = useStorage<
-  {
-    name: string
-    url: string
-    uuid: string
-  }[]
+    {
+        name: string
+        url: string
+        uuid: string
+    }[]
 >('config/group-test-urls', [])
 
 // connections
 export const useConnectionCard = useStorage('config/use-connecticon-card', window.innerWidth < 640)
-export const proxyChainDirection = useStorage(
-  'config/proxy-chain-direction',
-  PROXY_CHAIN_DIRECTION.NORMAL,
-)
+export const proxyChainDirection = useStorage('config/proxy-chain-direction', PROXY_CHAIN_DIRECTION.NORMAL)
 export const showFullProxyChain = useStorage('config/show-full-proxy-chain', true)
 export const tableSize = useStorage<TABLE_SIZE>('config/connecticon-table-size', TABLE_SIZE.SMALL)
 export const tableWidthMode = useStorage('config/table-width-mode', TABLE_WIDTH_MODE.AUTO)
-export const connectionTableColumns = useStorage<CONNECTIONS_TABLE_ACCESSOR_KEY[]>(
-  'config/connection-table-columns',
-  [
+export const connectionTableColumns = useStorage<CONNECTIONS_TABLE_ACCESSOR_KEY[]>('config/connection-table-columns', [
     CONNECTIONS_TABLE_ACCESSOR_KEY.Close,
     CONNECTIONS_TABLE_ACCESSOR_KEY.Host,
     CONNECTIONS_TABLE_ACCESSOR_KEY.Type,
@@ -186,11 +170,10 @@ export const connectionTableColumns = useStorage<CONNECTIONS_TABLE_ACCESSOR_KEY[
     CONNECTIONS_TABLE_ACCESSOR_KEY.Download,
     CONNECTIONS_TABLE_ACCESSOR_KEY.Upload,
     CONNECTIONS_TABLE_ACCESSOR_KEY.ConnectTime,
-  ],
-)
+])
 export const connectionCardLines = useStorage<CONNECTIONS_TABLE_ACCESSOR_KEY[][]>(
-  'config/connection-card-lines',
-  DETAILED_CARD_STYLE,
+    'config/connection-card-lines',
+    DETAILED_CARD_STYLE,
 )
 
 export const sourceIPLabelList = useStorage<SourceIPLabel[]>('config/source-ip-label-list', [])
@@ -207,18 +190,15 @@ export const logSearchHistory = useStorage<string[]>('config/log-search-history'
 // settings visibility
 // 使用扁平结构，key 格式为 "大设置项.小设置项" 或 "大设置项"（仅大设置项）
 // 默认所有项都可见，只有隐藏的项才会记录在此对象中
-export const hiddenSettingsItems = useStorage<Record<string, boolean>>(
-  'config/hidden-settings-items',
-  {},
-)
+export const hiddenSettingsItems = useStorage<Record<string, boolean>>('config/hidden-settings-items', {})
 
 // settings menu order
 // 存储设置菜单项的顺序
 export const settingsMenuOrder = useStorage<SETTINGS_MENU_KEY[]>('config/settings-menu-order', [
-  SETTINGS_MENU_KEY.panel,
-  SETTINGS_MENU_KEY.general,
-  SETTINGS_MENU_KEY.overview,
-  SETTINGS_MENU_KEY.backend,
-  SETTINGS_MENU_KEY.proxies,
-  SETTINGS_MENU_KEY.connections,
+    SETTINGS_MENU_KEY.panel,
+    SETTINGS_MENU_KEY.general,
+    SETTINGS_MENU_KEY.overview,
+    SETTINGS_MENU_KEY.backend,
+    SETTINGS_MENU_KEY.proxies,
+    SETTINGS_MENU_KEY.connections,
 ])

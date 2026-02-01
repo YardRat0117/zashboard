@@ -3,29 +3,24 @@ import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
 import {
-  allProxiesLatencyTest,
-  proxiesFilter,
-  proxiesTabShow,
-  proxyGroupList,
-  proxyProviderList,
+    allProxiesLatencyTest,
+    proxiesFilter,
+    proxiesTabShow,
+    proxyGroupList,
+    proxyProviderList,
 } from '@/store/proxies'
 import {
-  automaticDisconnection,
-  collapseGroupMap,
-  displayFinalOutbound,
-  groupProxiesByProvider,
-  hideUnavailableProxies,
-  manageHiddenGroup,
-  minProxyCardWidth,
-  proxyCardSize,
-  twoColumnProxyGroup,
+    automaticDisconnection,
+    collapseGroupMap,
+    displayFinalOutbound,
+    groupProxiesByProvider,
+    hideUnavailableProxies,
+    manageHiddenGroup,
+    minProxyCardWidth,
+    proxyCardSize,
+    twoColumnProxyGroup,
 } from '@/store/settings'
-import {
-  BoltIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  WrenchScrewdriverIcon,
-} from '@heroicons/vue/24/outline'
+import { BoltIcon, ChevronDownIcon, ChevronUpIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -33,223 +28,179 @@ import DialogWrapper from '../common/DialogWrapper.vue'
 import TextInput from '../common/TextInput.vue'
 
 export default defineComponent({
-  name: 'ProxiesCtrl',
-  setup() {
-    const { t } = useI18n()
-    const router = useRouter()
-    const isAllLatencyTesting = ref(false)
-    const settingsModel = ref(false)
-    const { isLargeCtrlsBar } = useCtrlsBar()
+    name: 'ProxiesCtrl',
+    setup() {
+        const { t } = useI18n()
+        const router = useRouter()
+        const isAllLatencyTesting = ref(false)
+        const settingsModel = ref(false)
+        const { isLargeCtrlsBar } = useCtrlsBar()
 
-    const hasProviders = computed(() => {
-      return proxyProviderList.value.length > 0
-    })
+        const hasProviders = computed(() => {
+            return proxyProviderList.value.length > 0
+        })
 
-    const handlerClickLatencyTestAll = async () => {
-      if (isAllLatencyTesting.value) return
-      isAllLatencyTesting.value = true
-      try {
-        await allProxiesLatencyTest()
-        isAllLatencyTesting.value = false
-      } catch {
-        isAllLatencyTesting.value = false
-      }
-    }
-
-    const hasNotCollapsed = computed(() => {
-      return renderGroups.value.some((name) => collapseGroupMap.value[name])
-    })
-
-    const handlerClickToggleCollapse = () => {
-      collapseGroupMap.value = Object.fromEntries(
-        renderGroups.value.map((name) => [name, !hasNotCollapsed.value]),
-      )
-    }
-
-    const handlerResetProxyCardWidth = () => {
-      minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
-    }
-
-    const tabsWithNumbers = computed(() => {
-      return Object.values(PROXY_TAB_TYPE).map((type) => {
-        return {
-          type,
-          count:
-            type === PROXY_TAB_TYPE.PROXIES
-              ? proxyGroupList.value.length
-              : proxyProviderList.value.length,
+        const handlerClickLatencyTestAll = async () => {
+            if (isAllLatencyTesting.value) return
+            isAllLatencyTesting.value = true
+            try {
+                await allProxiesLatencyTest()
+                isAllLatencyTesting.value = false
+            } catch {
+                isAllLatencyTesting.value = false
+            }
         }
-      })
-    })
-    return () => {
-      const tabs = (
-        <div
-          role="tablist"
-          class="tabs-box tabs tabs-xs"
-        >
-          {tabsWithNumbers.value.map(({ type, count }) => {
-            return (
-              <a
-                role="tab"
-                key={type}
-                class={['tab', proxiesTabShow.value === type && 'tab-active']}
-                onClick={() => (proxiesTabShow.value = type)}
-              >
-                {t(type)} ({count})
-              </a>
+
+        const hasNotCollapsed = computed(() => {
+            return renderGroups.value.some((name) => collapseGroupMap.value[name])
+        })
+
+        const handlerClickToggleCollapse = () => {
+            collapseGroupMap.value = Object.fromEntries(
+                renderGroups.value.map((name) => [name, !hasNotCollapsed.value]),
             )
-          })}
-        </div>
-      )
+        }
 
-      const latencyTestAll = (
-        <button
-          class="btn btn-circle btn-sm"
-          onClick={handlerClickLatencyTestAll}
-        >
-          {isAllLatencyTesting.value ? (
-            <span class="loading loading-spinner loading-sm"></span>
-          ) : (
-            <BoltIcon class="h-4 w-4" />
-          )}
-        </button>
-      )
+        const handlerResetProxyCardWidth = () => {
+            minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
+        }
 
-      const toggleCollapseAll = (
-        <button
-          class={[
-            'btn btn-circle btn-sm',
-            twoColumnProxyGroup.value &&
-              proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES &&
-              'max-sm:hidden',
-          ]}
-          onClick={handlerClickToggleCollapse}
-        >
-          {hasNotCollapsed.value ? (
-            <ChevronUpIcon class="h-4 w-4" />
-          ) : (
-            <ChevronDownIcon class="h-4 w-4" />
-          )}
-        </button>
-      )
-
-      const searchInput = (
-        <TextInput
-          class={['w-32 flex-1', isLargeCtrlsBar.value && 'max-w-80']}
-          v-model={proxiesFilter.value}
-          placeholder={`${t('search')} | ${t('searchMultiple')}`}
-          clearable={true}
-        />
-      )
-
-      const settingsModal = (
-        <>
-          <button
-            class="btn btn-circle btn-sm"
-            onClick={() => (settingsModel.value = true)}
-          >
-            <WrenchScrewdriverIcon class="h-4 w-4" />
-          </button>
-          <DialogWrapper
-            v-model={settingsModel.value}
-            title={t('proxySettings')}
-          >
-            <div class="flex flex-col gap-4 p-2 text-sm">
-              <div class="flex items-center gap-2">
-                {t('groupProxiesByProvider')}
-                <input
-                  type="checkbox"
-                  class="toggle"
-                  v-model={groupProxiesByProvider.value}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('unavailableProxy')}
-                <input
-                  type="checkbox"
-                  class="toggle"
-                  v-model={hideUnavailableProxies.value}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('manageHiddenGroup')}
-                <input
-                  class="toggle"
-                  type="checkbox"
-                  v-model={manageHiddenGroup.value}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('automaticDisconnection')}
-                <input
-                  class="toggle"
-                  type="checkbox"
-                  v-model={automaticDisconnection.value}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('displayFinalOutbound')}
-                <input
-                  class="toggle"
-                  type="checkbox"
-                  v-model={displayFinalOutbound.value}
-                />
-              </div>
-              <div class="flex items-center gap-2">
-                {t('minProxyCardWidth')}
-                <div class="join">
-                  <input
-                    class="input input-sm join-item w-20"
-                    type="number"
-                    v-model={minProxyCardWidth.value}
-                  />
-                  <button
-                    class="btn join-item btn-sm"
-                    onClick={handlerResetProxyCardWidth}
-                  >
-                    {t('reset')}
-                  </button>
+        const tabsWithNumbers = computed(() => {
+            return Object.values(PROXY_TAB_TYPE).map((type) => {
+                return {
+                    type,
+                    count:
+                        type === PROXY_TAB_TYPE.PROXIES ? proxyGroupList.value.length : proxyProviderList.value.length,
+                }
+            })
+        })
+        return () => {
+            const tabs = (
+                <div role="tablist" class="tabs-box tabs tabs-xs">
+                    {tabsWithNumbers.value.map(({ type, count }) => {
+                        return (
+                            <a
+                                role="tab"
+                                key={type}
+                                class={['tab', proxiesTabShow.value === type && 'tab-active']}
+                                onClick={() => (proxiesTabShow.value = type)}>
+                                {t(type)} ({count})
+                            </a>
+                        )
+                    })}
                 </div>
-              </div>
-              <div class="divider m-0"></div>
-              <button
-                class="btn btn-block"
-                onClick={() => {
-                  settingsModel.value = false
-                  router.push({
-                    name: ROUTE_NAME.settings,
-                    query: { scrollTo: SETTINGS_MENU_KEY.proxies },
-                  })
-                }}
-              >
-                {t('moreSettings')}
-              </button>
-            </div>
-          </DialogWrapper>
-        </>
-      )
+            )
 
-      const content = !isLargeCtrlsBar.value ? (
-        <div class="flex flex-col gap-2 p-2">
-          {hasProviders.value && <div class="flex gap-2">{tabs}</div>}
-          <div class="flex w-full gap-2">
-            {searchInput}
-            {settingsModal}
-            {toggleCollapseAll}
-            {latencyTestAll}
-          </div>
-        </div>
-      ) : (
-        <div class="flex gap-2 p-2">
-          {hasProviders.value && tabs}
-          <div class="flex flex-1">{searchInput}</div>
-          {settingsModal}
-          {toggleCollapseAll}
-          {latencyTestAll}
-        </div>
-      )
+            const latencyTestAll = (
+                <button class="btn btn-circle btn-sm" onClick={handlerClickLatencyTestAll}>
+                    {isAllLatencyTesting.value ? (
+                        <span class="loading loading-spinner loading-sm"></span>
+                    ) : (
+                        <BoltIcon class="h-4 w-4" />
+                    )}
+                </button>
+            )
 
-      return <div class="ctrls-bar">{content}</div>
-    }
-  },
+            const toggleCollapseAll = (
+                <button
+                    class={[
+                        'btn btn-circle btn-sm',
+                        twoColumnProxyGroup.value && proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES && 'max-sm:hidden',
+                    ]}
+                    onClick={handlerClickToggleCollapse}>
+                    {hasNotCollapsed.value ? <ChevronUpIcon class="h-4 w-4" /> : <ChevronDownIcon class="h-4 w-4" />}
+                </button>
+            )
+
+            const searchInput = (
+                <TextInput
+                    class={['w-32 flex-1', isLargeCtrlsBar.value && 'max-w-80']}
+                    v-model={proxiesFilter.value}
+                    placeholder={`${t('search')} | ${t('searchMultiple')}`}
+                    clearable={true}
+                />
+            )
+
+            const settingsModal = (
+                <>
+                    <button class="btn btn-circle btn-sm" onClick={() => (settingsModel.value = true)}>
+                        <WrenchScrewdriverIcon class="h-4 w-4" />
+                    </button>
+                    <DialogWrapper v-model={settingsModel.value} title={t('proxySettings')}>
+                        <div class="flex flex-col gap-4 p-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                {t('groupProxiesByProvider')}
+                                <input type="checkbox" class="toggle" v-model={groupProxiesByProvider.value} />
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {t('unavailableProxy')}
+                                <input type="checkbox" class="toggle" v-model={hideUnavailableProxies.value} />
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {t('manageHiddenGroup')}
+                                <input class="toggle" type="checkbox" v-model={manageHiddenGroup.value} />
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {t('automaticDisconnection')}
+                                <input class="toggle" type="checkbox" v-model={automaticDisconnection.value} />
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {t('displayFinalOutbound')}
+                                <input class="toggle" type="checkbox" v-model={displayFinalOutbound.value} />
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {t('minProxyCardWidth')}
+                                <div class="join">
+                                    <input
+                                        class="input input-sm join-item w-20"
+                                        type="number"
+                                        v-model={minProxyCardWidth.value}
+                                    />
+                                    <button class="btn join-item btn-sm" onClick={handlerResetProxyCardWidth}>
+                                        {t('reset')}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="divider m-0"></div>
+                            <button
+                                class="btn btn-block"
+                                onClick={() => {
+                                    settingsModel.value = false
+                                    router.push({
+                                        name: ROUTE_NAME.settings,
+                                        query: {
+                                            scrollTo: SETTINGS_MENU_KEY.proxies,
+                                        },
+                                    })
+                                }}>
+                                {t('moreSettings')}
+                            </button>
+                        </div>
+                    </DialogWrapper>
+                </>
+            )
+
+            const content = !isLargeCtrlsBar.value ? (
+                <div class="flex flex-col gap-2 p-2">
+                    {hasProviders.value && <div class="flex gap-2">{tabs}</div>}
+                    <div class="flex w-full gap-2">
+                        {searchInput}
+                        {settingsModal}
+                        {toggleCollapseAll}
+                        {latencyTestAll}
+                    </div>
+                </div>
+            ) : (
+                <div class="flex gap-2 p-2">
+                    {hasProviders.value && tabs}
+                    <div class="flex flex-1">{searchInput}</div>
+                    {settingsModal}
+                    {toggleCollapseAll}
+                    {latencyTestAll}
+                </div>
+            )
+
+            return <div class="ctrls-bar">{content}</div>
+        }
+    },
 })

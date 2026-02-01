@@ -5,10 +5,10 @@ import en from './en'
 import zh from './zh'
 
 export const i18n = createI18n({
-  legacy: false,
-  locale: language.value,
-  messages: {
-    [LANG.EN_US]: en,
-    [LANG.ZH_CN]: zh,
-  },
+    legacy: false,
+    locale: language.value,
+    messages: {
+        [LANG.EN_US]: en,
+        [LANG.ZH_CN]: zh,
+    },
 })

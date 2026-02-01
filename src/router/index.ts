@@ -17,56 +17,56 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // Sub-router table for UI panels.
 // The SetupPage is excluded since backend is available now.
 const panelRouter = [
-  {
-    path: 'overview',
-    name: ROUTE_NAME.overview,
-    component: OverviewPage,
-  },
-  {
-    path: 'proxies',
-    name: ROUTE_NAME.proxies,
-    component: ProxiesPage,
-  },
-  {
-    path: 'connections',
-    name: ROUTE_NAME.connections,
-    component: ConnectionsPage,
-  },
-  {
-    path: 'logs',
-    name: ROUTE_NAME.logs,
-    component: LogsPage,
-  },
-  {
-    path: 'settings',
-    name: ROUTE_NAME.settings,
-    component: SettingsPage,
-  },
+    {
+        path: 'overview',
+        name: ROUTE_NAME.overview,
+        component: OverviewPage,
+    },
+    {
+        path: 'proxies',
+        name: ROUTE_NAME.proxies,
+        component: ProxiesPage,
+    },
+    {
+        path: 'connections',
+        name: ROUTE_NAME.connections,
+        component: ConnectionsPage,
+    },
+    {
+        path: 'logs',
+        name: ROUTE_NAME.logs,
+        component: LogsPage,
+    },
+    {
+        path: 'settings',
+        name: ROUTE_NAME.settings,
+        component: SettingsPage,
+    },
 ]
 
 // General router.
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes: [
-    // Normal routing
-    {
-      path: '/',
-      redirect: ROUTE_NAME.overview,
-      component: HomePage,
-      children: panelRouter,
-    },
-    // If backend unavailable, route to the SetupPage
-    {
-      path: '/setup',
-      name: ROUTE_NAME.setup,
-      component: SetupPage,
-    },
-    // Route to overview by default
-    {
-      path: '/:catchAll(.*)',
-      redirect: ROUTE_NAME.overview,
-    },
-  ],
+    history: createWebHashHistory(import.meta.env.BASE_URL),
+    routes: [
+        // Normal routing
+        {
+            path: '/',
+            redirect: ROUTE_NAME.overview,
+            component: HomePage,
+            children: panelRouter,
+        },
+        // If backend unavailable, route to the SetupPage
+        {
+            path: '/setup',
+            name: ROUTE_NAME.setup,
+            component: SetupPage,
+        },
+        // Route to overview by default
+        {
+            path: '/:catchAll(.*)',
+            redirect: ROUTE_NAME.overview,
+        },
+    ],
 })
 
 // IDK what this is for.
@@ -88,21 +88,21 @@ const router = createRouter({
 // })
 
 router.afterEach((to) => {
-  setTitleByName(to.name)
+    setTitleByName(to.name)
 })
 
 const title = useTitle('zashboard')
 const setTitleByName = (name: string | symbol | undefined) => {
-  if (typeof name === 'string' && activeBackend.value) {
-    // Must be hard-encoded, or it repeats
-    title.value = `zashboard | ${i18n.global.t(name)}`
-  }
+    if (typeof name === 'string' && activeBackend.value) {
+        // Must be hard-encoded, or it repeats
+        title.value = `zashboard | ${i18n.global.t(name)}`
+    }
 }
 
 watch(language, () => {
-  setTimeout(() => {
-    setTitleByName(router.currentRoute.value.name)
-  })
+    setTimeout(() => {
+        setTitleByName(router.currentRoute.value.name)
+    })
 })
 
 export default router

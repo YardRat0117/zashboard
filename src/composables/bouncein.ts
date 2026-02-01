@@ -7,29 +7,29 @@ const className = 'bounce-in'
 const initClassName = ['scale-85', 'opacity-0']
 
 export function useBounceOnVisible(el: Ref<HTMLElement> = useCurrentElement<HTMLElement>()) {
-  if (!isMiddleScreen.value || !scrollAnimationEffect.value) return
+    if (!isMiddleScreen.value || !scrollAnimationEffect.value) return
 
-  const visible = useElementVisibility(el)
+    const visible = useElementVisibility(el)
 
-  onMounted(() => {
-    if (!el.value) return
-
-    el.value.classList.add(...initClassName)
-
-    watch(
-      visible,
-      (value) => {
+    onMounted(() => {
         if (!el.value) return
 
-        if (value) {
-          el.value.classList.add(className)
-          el.value.classList.remove(...initClassName)
-        } else {
-          el.value.classList.remove(className)
-          el.value.classList.add(...initClassName)
-        }
-      },
-      { immediate: true },
-    )
-  })
+        el.value.classList.add(...initClassName)
+
+        watch(
+            visible,
+            (value) => {
+                if (!el.value) return
+
+                if (value) {
+                    el.value.classList.add(className)
+                    el.value.classList.remove(...initClassName)
+                } else {
+                    el.value.classList.remove(className)
+                    el.value.classList.add(...initClassName)
+                }
+            },
+            { immediate: true },
+        )
+    })
 }

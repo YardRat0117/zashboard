@@ -3,14 +3,14 @@ declare const __COMMIT_ID__: string
 
 declare module 'vue-virtual-scroller'
 declare interface Navigator {
-  standalone?: boolean
+    standalone?: boolean
 }
 
 type ToolTipParams = {
-  data: {
-    value: number
-    name: number
-  }
-  seriesName: string
-  color: string
+    data: {
+        value: number
+        name: number
+    }
+    seriesName: string
+    color: string
 }

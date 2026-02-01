@@ -1,77 +1,56 @@
 <template>
-  <div
-    class="bg-base-200/50 home-page flex size-full"
-    :class="isSidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'"
-  >
-    <SideBar v-if="!isMiddleScreen" />
-    <RouterView v-slot="{ Component, route }">
-      <div
-        class="relative flex-1 overflow-hidden"
-        ref="swiperRef"
-      >
-        <div class="absolute flex h-full w-full flex-col overflow-y-auto">
-          <Transition
-            :name="(route.meta.transition as string) || 'fade'"
-            v-if="isMiddleScreen"
-          >
-            <Component :is="Component" />
-          </Transition>
-          <Component
-            v-else
-            :is="Component"
-          />
-        </div>
+    <div
+        class="bg-base-200/50 home-page flex size-full"
+        :class="isSidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
+        <SideBar v-if="!isMiddleScreen" />
+        <RouterView v-slot="{ Component, route }">
+            <div class="relative flex-1 overflow-hidden" ref="swiperRef">
+                <div class="absolute flex h-full w-full flex-col overflow-y-auto">
+                    <Transition :name="(route.meta.transition as string) || 'fade'" v-if="isMiddleScreen">
+                        <Component :is="Component" />
+                    </Transition>
+                    <Component v-else :is="Component" />
+                </div>
 
-        <template v-if="isMiddleScreen">
-          <div
-            class="bg-base-100/20 dock dock-xs z-10 h-14 w-auto shadow-sm backdrop-blur-sm"
-            :style="{
-              padding: '0',
-              bottom: 'calc(var(--spacing) * 2 + env(safe-area-inset-bottom))',
-            }"
-            ref="dockRef"
-          >
-            <button
-              v-for="r in renderRoutes"
-              :key="r"
-              @click="router.push({ name: r })"
-              class="h-14 flex-col items-center justify-center pt-2"
-              :class="r === route.name && 'dock-active'"
-            >
-              <component
-                :is="ROUTE_ICON_MAP[r]"
-                class="h-5 w-5 flex-shrink-0"
-              />
-              <span class="dock-label">
-                {{ $t(r) }}
-              </span>
-            </button>
-          </div>
-          <div class="dock-shadow"></div>
-        </template>
-      </div>
-    </RouterView>
+                <template v-if="isMiddleScreen">
+                    <div
+                        class="bg-base-100/20 dock dock-xs z-10 h-14 w-auto shadow-sm backdrop-blur-sm"
+                        :style="{
+                            padding: '0',
+                            bottom: 'calc(var(--spacing) * 2 + env(safe-area-inset-bottom))',
+                        }"
+                        ref="dockRef">
+                        <button
+                            v-for="r in renderRoutes"
+                            :key="r"
+                            @click="router.push({ name: r })"
+                            class="h-14 flex-col items-center justify-center pt-2"
+                            :class="r === route.name && 'dock-active'">
+                            <component :is="ROUTE_ICON_MAP[r]" class="h-5 w-5 flex-shrink-0" />
+                            <span class="dock-label">
+                                {{ $t(r) }}
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dock-shadow"></div>
+                </template>
+            </div>
+        </RouterView>
 
-    <DialogWrapper v-model="autoSwitchBackendDialog">
-      <div class="mb-2">
-        {{ $t('currentBackendUnavailable') }}
-      </div>
-      <div class="flex justify-end gap-2">
-        <button
-          class="btn btn-sm"
-          @click="autoSwitchBackendDialog = false"
-        >
-          {{ $t('cancel') }}
-        </button>
-        <button
-          class="btn btn-primary btn-sm"
-          @click="autoSwitchBackend"
-        >
-          {{ $t('confirm') }}
-        </button>
-      </div>
-    </DialogWrapper>
-  </div>
+        <DialogWrapper v-model="autoSwitchBackendDialog">
+            <div class="mb-2">
+                {{ $t('currentBackendUnavailable') }}
+            </div>
+            <div class="flex justify-end gap-2">
+                <button class="btn btn-sm" @click="autoSwitchBackendDialog = false">
+                    {{ $t('cancel') }}
+                </button>
+                <button class="btn btn-primary btn-sm" @click="autoSwitchBackend">
+                    {{ $t('confirm') }}
+                </button>
+            </div>
+        </DialogWrapper>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -104,96 +83,92 @@ const dockRef = ref<HTMLDivElement>()
 const { top: dockRefTop } = useElementBounding(dockRef)
 
 watch(
-  dockRefTop,
-  () => {
-    dockTop.value = window.innerHeight - dockRefTop.value
-  },
-  { immediate: true },
+    dockRefTop,
+    () => {
+        dockTop.value = window.innerHeight - dockRefTop.value
+    },
+    { immediate: true },
 )
 
 watch(
-  activeUuid,
-  () => {
-    if (!activeUuid.value) return
-    proxiesTabShow.value = PROXY_TAB_TYPE.PROXIES
-    fetchConfigs()
-    fetchProxies()
-    fetchRules()
-    initConnections()
-    initLogs()
-    initSatistic()
-  },
-  {
-    immediate: true,
-  },
+    activeUuid,
+    () => {
+        if (!activeUuid.value) return
+        proxiesTabShow.value = PROXY_TAB_TYPE.PROXIES
+        fetchConfigs()
+        fetchProxies()
+        fetchRules()
+        initConnections()
+        initLogs()
+        initSatistic()
+    },
+    {
+        immediate: true,
+    },
 )
 
 const autoSwitchBackendDialog = ref(false)
 
 const autoSwitchBackend = async () => {
-  const otherEnds = backendList.value.filter((end) => end.uuid !== activeUuid.value)
+    const otherEnds = backendList.value.filter((end) => end.uuid !== activeUuid.value)
 
-  autoSwitchBackendDialog.value = false
-  const avaliable = await Promise.race<Backend>(
-    otherEnds.map((end) => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject()
-        }, 10000)
-        isBackendAvailable(end).then((res) => {
-          if (res) {
-            resolve(end)
-          }
+    autoSwitchBackendDialog.value = false
+    const avaliable = await Promise.race<Backend>(
+        otherEnds.map((end) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject()
+                }, 10000)
+                isBackendAvailable(end).then((res) => {
+                    if (res) {
+                        resolve(end)
+                    }
+                })
+            })
+        }),
+    )
+
+    if (avaliable) {
+        activeUuid.value = avaliable.uuid
+        showNotification({
+            content: 'backendSwitchTo',
+            params: {
+                backend: getLabelFromBackend(avaliable),
+            },
         })
-      })
-    }),
-  )
-
-  if (avaliable) {
-    activeUuid.value = avaliable.uuid
-    showNotification({
-      content: 'backendSwitchTo',
-      params: {
-        backend: getLabelFromBackend(avaliable),
-      },
-    })
-  }
+    }
 }
 
 const documentVisible = useDocumentVisibility()
 
 watch(
-  documentVisible,
-  async () => {
-    if (
-      !activeBackend.value ||
-      backendList.value.length < 2 ||
-      documentVisible.value !== 'visible'
-    ) {
-      return
-    }
-    try {
-      const activeBackendUuid = activeBackend.value.uuid
-      const isAvailable = await isBackendAvailable(activeBackend.value)
+    documentVisible,
+    async () => {
+        if (!activeBackend.value || backendList.value.length < 2 || documentVisible.value !== 'visible') {
+            return
+        }
+        try {
+            const activeBackendUuid = activeBackend.value.uuid
+            const isAvailable = await isBackendAvailable(activeBackend.value)
 
-      if (activeBackendUuid !== activeUuid.value) {
-        return
-      }
+            if (activeBackendUuid !== activeUuid.value) {
+                return
+            }
 
-      if (!isAvailable) {
-        autoSwitchBackendDialog.value = true
-      }
-    } catch {
-      autoSwitchBackendDialog.value = true
-    }
-  },
-  {
-    immediate: true,
-  },
+            if (!isAvailable) {
+                autoSwitchBackendDialog.value = true
+            }
+        } catch {
+            autoSwitchBackendDialog.value = true
+        }
+    },
+    {
+        immediate: true,
+    },
 )
 
 watch(documentVisible, () => {
-  if (documentVisible.value !== 'visible') return
-  fetchProxies()
+    if (documentVisible.value !== 'visible') return
+    fetchProxies()
 })
 </script>
