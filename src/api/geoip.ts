@@ -18,7 +18,7 @@ export const getLocalIPInfo = async () => {
     }
   }
 
-  const [country, region, city, org] = result.data.location
+  const [country, region, city, _, org] = result.data.location
 
   return {
     ip: result.data.ip,

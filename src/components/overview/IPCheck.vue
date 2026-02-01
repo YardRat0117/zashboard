@@ -99,7 +99,7 @@ const getIPs = () => {
     .then((res) => {
       ipForLocal.value = {
         ipWithPrivacy: [`${res.country} ${res.region} ${res.city} ${res.org}`, res.ip],
-        ip: [`${res.country} ** **`, '***.***.***.***'],
+        ip: [`${res.country} ** ** **`, '***.***.***.***'],
       }
     })
     .catch(() => {
