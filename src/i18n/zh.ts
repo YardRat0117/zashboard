@@ -292,6 +292,8 @@ const zh: LANG_MESSAGE = {
   ruleLastHit: '最后命中: {time}',
   ruleMissCount: '未命中: {count} 次',
   ruleLastMiss: '最后未命中: {time}',
+  localIPLookup: '本地 IP 信息',
+  globalIPLookup: '代理 IP 信息',
 }
 
 export default zh

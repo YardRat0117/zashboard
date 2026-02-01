@@ -296,6 +296,8 @@ const en = {
   ruleLastHit: 'Last hit: {time}',
   ruleMissCount: 'Miss: {count} times',
   ruleLastMiss: 'Last miss: {time}',
+  localIPLookup: 'Local IP',
+  globalIPLookup: 'Global IP',
 }
 
 export type LANG_MESSAGE = typeof en

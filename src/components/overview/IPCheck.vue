@@ -1,18 +1,18 @@
 <template>
   <div class="bg-base-200/50 relative flex h-28 flex-col gap-1 rounded-lg p-2">
     <div class="grid grid-cols-[auto_auto_1fr] gap-x-2 gap-y-1">
-      <div class="text-left text-sm">Local Proxy i18n stuff</div>
+      <div class="text-left text-sm">{{ $t('localIPLookup') }}</div>
       <div class="text-right text-sm">:</div>
       <div class="text-sm">
-        {{ showPrivacy ? ipForChina.ipWithPrivacy[0] : ipForChina.ip[0] }}
+        {{ showPrivacy ? ipForLocal.ipWithPrivacy[0] : ipForLocal.ip[0] }}
         <span
           class="text-xs"
-          v-if="ipForChina.ip[1]"
+          v-if="ipForLocal.ip[1]"
         >
-          ({{ showPrivacy ? ipForChina.ipWithPrivacy[1] : ipForChina.ip[1] }})
+          ({{ showPrivacy ? ipForLocal.ipWithPrivacy[1] : ipForLocal.ip[1] }})
         </span>
       </div>
-      <div class="text-left text-sm">Global Proxy i18n stuff</div>
+      <div class="text-left text-sm">{{ $t('globalIPLookup') }}</div>
       <div class="text-right text-sm">:</div>
       <div class="text-sm">
         {{ showPrivacy ? ipForGlobal.ipWithPrivacy[0] : ipForGlobal.ip[0] }}
@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { getGlobalIPInfo, getLocalIPInfo } from '@/api/geoip'
-import { ipForChina, ipForGlobal } from '@/composables/overview'
+import { ipForGlobal, ipForLocal } from '@/composables/overview'
 import { useTooltip } from '@/helper/tooltip'
 import { autoIPCheck } from '@/store/settings'
 import { BoltIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
@@ -77,7 +77,7 @@ const FAILED_IP_INFO = {
 }
 
 const getIPs = () => {
-  ipForChina.value = {
+  ipForLocal.value = {
     ...QUERYING_IP_INFO,
   }
   ipForGlobal.value = {
@@ -97,20 +97,20 @@ const getIPs = () => {
     })
   getLocalIPInfo()
     .then((res) => {
-      ipForChina.value = {
+      ipForLocal.value = {
         ipWithPrivacy: [`${res.country} ${res.region} ${res.city} ${res.org}`, res.ip],
         ip: [`${res.country} ** **`, '***.***.***.***'],
       }
     })
     .catch(() => {
-      ipForChina.value = {
+      ipForLocal.value = {
         ...FAILED_IP_INFO,
       }
     })
 }
 
 onMounted(() => {
-  if (autoIPCheck.value && [ipForChina, ipForGlobal].some((item) => item.value.ip.length === 0)) {
+  if (autoIPCheck.value && [ipForLocal, ipForGlobal].some((item) => item.value.ip.length === 0)) {
     getIPs()
   }
 })

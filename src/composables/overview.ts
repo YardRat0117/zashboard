@@ -5,7 +5,7 @@ type IPInfo = {
   ipWithPrivacy: string[]
 }
 
-export const ipForChina = ref<IPInfo>({
+export const ipForLocal = ref<IPInfo>({
   ip: [],
   ipWithPrivacy: [],
 })
