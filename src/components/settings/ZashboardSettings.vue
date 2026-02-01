@@ -42,9 +42,18 @@
         <div class="setting-item-label">
           {{ $t('fonts') }}
         </div>
-        <div class="select select-sm w-48">
-          {{ font }}
-        </div>
+        <select
+          class="select select-sm w-48"
+          v-model="font"
+        >
+          <option
+            v-for="opt in fontOptions"
+            :key="opt"
+            :value="opt"
+          >
+            {{ opt }}
+          </option>
+        </select>
       </div>
       <div
         v-if="
@@ -154,24 +163,11 @@
     </div>
     <div
       v-if="
-        !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`] ||
         !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`] ||
         !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]
       "
       class="mt-4 grid max-w-3xl grid-cols-2 gap-2 gap-y-3 md:grid-cols-4"
     >
-      <button
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`]"
-        :class="twMerge('btn btn-primary btn-sm', isUIUpgrading ? 'animate-pulse' : '')"
-        @click="handlerClickUpgradeUI"
-      >
-        {{ $t('upgradeUI') }}
-      </button>
-      <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`]"
-        class="sm:hidden"
-      ></div>
-
       <button
         v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`]"
         class="btn btn-sm"
@@ -189,8 +185,7 @@
 <script setup lang="ts">
 import { zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
-import { SETTINGS_MENU_KEY } from '@/constant'
-import { handlerUpgradeSuccess } from '@/helper'
+import { FONTS, SETTINGS_MENU_KEY } from '@/constant'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
 import { exportSettings, isPWA } from '@/helper/utils'
 import {
@@ -207,7 +202,6 @@ import {
   ArrowUpTrayIcon,
   PlusIcon,
 } from '@heroicons/vue/24/outline'
-import { twMerge } from 'tailwind-merge'
 import { computed, ref, watch } from 'vue'
 import ImportSettings from '../common/ImportSettings.vue'
 import TextInput from '../common/TextInput.vue'
@@ -221,7 +215,6 @@ const hasVisibleItems = computed(() => {
   return (
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.language`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`] ||
-    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.emoji`] ||
     !hiddenSettingsItems.value[
       `${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`
     ] ||
@@ -270,20 +263,15 @@ const handlerFileChange = (e: Event) => {
   reader.readAsDataURL(file)
 }
 
-const isUIUpgrading = ref(false)
-const handlerClickUpgradeUI = async () => {
-  if (isUIUpgrading.value) return
-  isUIUpgrading.value = true
-  try {
-    isUIUpgrading.value = false
-    handlerUpgradeSuccess()
-    setTimeout(() => {
-      window.location.reload()
-    }, 1000)
-  } catch {
-    isUIUpgrading.value = false
+const fontOptions = computed(() => {
+  const mode = import.meta.env.MODE
+
+  if (Object.values(FONTS).includes(mode as FONTS)) {
+    return [mode]
   }
-}
+
+  return Object.values(FONTS)
+})
 
 const refreshPages = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()

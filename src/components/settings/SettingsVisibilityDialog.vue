@@ -117,10 +117,6 @@ const allCategories: Category[] = [
         label: 'fonts',
       },
       {
-        key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.emoji`,
-        label: 'emoji',
-      },
-      {
         key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`,
         label: 'customBackgroundURL',
       },
@@ -320,7 +316,7 @@ const applyMinimalPreset = () => {
 
   // 隐藏不常用/高级设置项
   for (const key of allKeys) {
-    if (key.includes('emoji') || key.includes('language')) {
+    if (key.includes('language')) {
       minimalHiddenKeys.push(key)
     }
     // UDP 相关设置

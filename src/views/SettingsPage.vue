@@ -38,6 +38,7 @@ import GeneralSettings from '@/components/settings/GeneralSettings.vue'
 import OverviewSettings from '@/components/settings/OverviewSettings.vue'
 import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
 import SettingsMenu from '@/components/settings/SettingsMenu.vue'
+import ZashboardSettings from '@/components/settings/ZashboardSettings.vue'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { hiddenSettingsItems, settingsMenuOrder } from '@/store/settings'
@@ -63,15 +64,23 @@ type MenuItem = {
 const { padding } = usePaddingForViews()
 const route = useRoute()
 
-const menuComponentRef = ref<InstanceType<typeof SettingsMenu> | null>(null)
 const scrollContainerRef = ref<HTMLDivElement>()
 const menuItems = computed<MenuItem[]>(() => {
   const itemsMap = new Map<SETTINGS_MENU_KEY, MenuItem>([
     [
+      SETTINGS_MENU_KEY.panel,
+      {
+        key: SETTINGS_MENU_KEY.panel,
+        label: 'zashboardSettings',
+        icon: HomeIcon,
+        component: ZashboardSettings,
+      },
+    ],
+    [
       SETTINGS_MENU_KEY.general,
       {
         key: SETTINGS_MENU_KEY.general,
-        label: 'zashboardSettings',
+        label: 'generalSettings',
         icon: HomeIcon,
         component: GeneralSettings,
       },
@@ -113,6 +122,8 @@ const menuItems = computed<MenuItem[]>(() => {
       },
     ],
   ])
+
+  console.log(settingsMenuOrder.value)
 
   // 根据 settingsMenuOrder 排序，并过滤隐藏的项
   return settingsMenuOrder.value

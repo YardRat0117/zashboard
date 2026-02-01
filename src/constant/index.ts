@@ -256,6 +256,7 @@ export enum IP_INFO_API {
 }
 
 export enum SETTINGS_MENU_KEY {
+  panel = 'zashboardSettings',
   general = 'generalSettings',
   backend = 'backendSettings',
   proxies = 'proxySettings',

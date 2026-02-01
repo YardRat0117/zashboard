@@ -1,10 +1,4 @@
 <template>
-  <ZashboardSettings />
-  <div
-    v-if="hasVisibleGeneralItems"
-    class="divider my-4"
-  />
-  <!-- dashboard -->
   <div
     v-if="hasVisibleGeneralItems"
     class="p-4 text-sm"
@@ -165,7 +159,6 @@ import {
 } from '@/store/settings'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
-import ZashboardSettings from './ZashboardSettings.vue'
 
 const { showTip } = useTooltip()
 
