@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCalculateMaxProxies } from '@/composables/proxiesScroll'
-import { handlerProxySelect, proxyMap, proxyProviderList } from '@/store/proxies'
+import { proxyMap, proxyProviderList } from '@/store/proxies'
 import { computed } from 'vue'
 import ProxyNodeCard from './ProxyNodeCard.vue'
 import ProxyNodeGrid from './ProxyNodeGrid.vue'
@@ -91,8 +91,6 @@ const truncatedProxies = computed(() => {
           :key="node"
           :name="node"
           :group-name="name"
-          :active="node === now"
-          @click.stop="handlerProxySelect(name, node)"
         />
       </ProxyNodeGrid>
     </div>

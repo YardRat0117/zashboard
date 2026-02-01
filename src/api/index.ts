@@ -2,13 +2,14 @@ import { ROUTE_NAME } from '@/constant'
 import { showNotification } from '@/helper/notification'
 import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
-import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
+// To be removed
+// import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid } from '@/store/setup'
 import type { Backend, Config, DNSQuery, Proxy, ProxyProvider, Rule } from '@/types'
 import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 axios.interceptors.request.use((config) => {
   config.baseURL = getUrlFromBackend(activeBackend.value!)
@@ -51,11 +52,10 @@ axios.interceptors.response.use(
 )
 
 export const version = ref()
-export const isCoreUpdateAvailable = ref(false)
+// export const isCoreUpdateAvailable = ref(false)
 export const fetchVersionAPI = () => {
   return axios.get<{ version: string }>('/version')
 }
-export const isSingBox = computed(() => version.value?.includes('sing-box'))
 export const zashboardVersion = ref(__APP_VERSION__)
 
 watch(
@@ -63,15 +63,14 @@ watch(
   async (val) => {
     if (val) {
       const { data } = await fetchVersionAPI()
-
       version.value = data?.version || ''
-      if (isSingBox.value || !checkUpgradeCore.value || activeBackend.value?.disableUpgradeCore)
-        return
-      isCoreUpdateAvailable.value = await fetchBackendUpdateAvailableAPI()
+      // if (!checkUpgradeCore.value || activeBackend.value?.disableUpgradeCore)
+      //     return
+      // isCoreUpdateAvailable.value = await fetchBackendUpdateAvailableAPI()
 
-      if (isCoreUpdateAvailable.value && autoUpgradeCore.value) {
-        upgradeCoreAPI('auto')
-      }
+      // if (isCoreUpdateAvailable.value && autoUpgradeCore.value) {
+      //     upgradeCoreAPI('auto')
+      // }
     }
   },
   { immediate: true },
@@ -79,14 +78,6 @@ watch(
 
 export const fetchProxiesAPI = () => {
   return axios.get<{ proxies: Record<string, Proxy> }>('/proxies')
-}
-
-export const selectProxyAPI = (proxyGroup: string, name: string) => {
-  return axios.put(`/proxies/${encodeURIComponent(proxyGroup)}`, { name })
-}
-
-export const deleteFixedProxyAPI = (proxyGroup: string) => {
-  return axios.delete(`/proxies/${encodeURIComponent(proxyGroup)}`)
 }
 
 export const fetchProxyLatencyAPI = (proxyName: string, url: string, timeout: number) => {
@@ -111,10 +102,6 @@ export const fetchProxyProviderAPI = () => {
   return axios.get<{ providers: Record<string, ProxyProvider> }>('/providers/proxies')
 }
 
-export const updateProxyProviderAPI = (name: string) => {
-  return axios.put(`/providers/proxies/${encodeURIComponent(name)}`)
-}
-
 export const proxyProviderHealthCheckAPI = (name: string) => {
   return axios.get<Record<string, number>>(
     `/providers/proxies/${encodeURIComponent(name)}/healthcheck`,
@@ -128,22 +115,14 @@ export const fetchRulesAPI = () => {
   return axios.get<{ rules: Rule[] }>('/rules')
 }
 
-export const toggleRuleDisabledAPI = (data: Record<number, boolean>) => {
-  return axios.patch(`/rules/disable`, data)
-}
-
-export const toggleRuleDisabledSingBoxAPI = (uuid: string) => {
-  return axios.put(`/rules/${encodeURIComponent(uuid)}`)
-}
-
 export const updateRuleProviderAPI = (name: string) => {
   return axios.put(`/providers/rules/${encodeURIComponent(name)}`)
 }
 
+// Reserved since they're connection-specific
 export const disconnectByIdAPI = (id: string) => {
   return axios.delete(`/connections/${id}`)
 }
-
 export const disconnectAllAPI = () => {
   return axios.delete('/connections')
 }
@@ -152,39 +131,32 @@ export const getConfigsAPI = () => {
   return axios.get<Config>('/configs')
 }
 
-export const patchConfigsAPI = (configs: Record<string, string | boolean | object | number>) => {
-  return axios.patch('/configs', configs)
-}
-
+// Reserved since they're cache-specific
 export const flushFakeIPAPI = () => {
   return axios.post('/cache/fakeip/flush')
 }
-
 export const flushDNSCacheAPI = () => {
   return axios.post('/cache/dns/flush')
 }
-
 export const reloadConfigsAPI = () => {
   return axios.put('/configs?reload=true', { path: '', payload: '' })
 }
 
-export const upgradeUIAPI = () => {
-  return axios.post('/upgrade/ui')
-}
-
+// Reserved since it's geo-data specific
 export const updateGeoDataAPI = () => {
   return axios.post('/configs/geo')
 }
 
-export const upgradeCoreAPI = (type: 'release' | 'alpha' | 'auto') => {
-  const url = type === 'auto' ? '/upgrade' : `/upgrade?channel=${type}`
+// To be removed
+// export const upgradeCoreAPI = (type: 'release' | 'alpha' | 'auto') => {
+//   const url = type === 'auto' ? '/upgrade' : `/upgrade?channel=${type}`
 
-  return axios.post(url)
-}
+//   return axios.post(url)
+// }
 
-export const restartCoreAPI = () => {
-  return axios.post('/restart')
-}
+// export const restartCoreAPI = () => {
+//   return axios.post('/restart')
+// }
 
 export const queryDNSAPI = (params: { name: string; type: string }) => {
   return axios.get<DNSQuery>('/dns/query', {
@@ -260,90 +232,82 @@ export const isBackendAvailable = async (backend: Backend, timeout: number = 100
   }
 }
 
-const CACHE_DURATION = 1000 * 60 * 60
+// To be removed
+// const CACHE_DURATION = 1000 * 60 * 60
 
-interface CacheEntry<T> {
-  timestamp: number
-  version: string
-  data: T
-}
+// interface CacheEntry<T> {
+//     timestamp: number
+//     version: string
+//     data: T
+// }
 
-async function fetchWithLocalCache<T>(url: string, version: string): Promise<T> {
-  const cacheKey = 'cache/' + url
-  const cacheRaw = localStorage.getItem(cacheKey)
+// async function fetchWithLocalCache<T>(url: string, version: string): Promise<T> {
+//     const cacheKey = 'cache/' + url
+//     const cacheRaw = localStorage.getItem(cacheKey)
 
-  if (cacheRaw) {
-    try {
-      const cache: CacheEntry<T> = JSON.parse(cacheRaw)
-      const now = Date.now()
+//     if (cacheRaw) {
+//         try {
+//             const cache: CacheEntry<T> = JSON.parse(cacheRaw)
+//             const now = Date.now()
 
-      if (now - cache.timestamp < CACHE_DURATION && cache.version === version) {
-        return cache.data
-      } else {
-        localStorage.removeItem(cacheKey)
-      }
-    } catch (e) {
-      console.warn('Failed to parse cache for', url, e)
-    }
-  }
+//             if (now - cache.timestamp < CACHE_DURATION && cache.version === version) {
+//                 return cache.data
+//             } else {
+//                 localStorage.removeItem(cacheKey)
+//             }
+//         } catch (e) {
+//             console.warn('Failed to parse cache for', url, e)
+//         }
+//     }
 
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error(`Fetch failed: ${response.status} ${response.statusText}`)
-  }
+//     const response = await fetch(url)
+//     if (!response.ok) {
+//         throw new Error(`Fetch failed: ${response.status} ${response.statusText}`)
+//     }
 
-  const data: T = await response.json()
-  const newCache: CacheEntry<T> = {
-    timestamp: Date.now(),
-    version,
-    data,
-  }
+//     const data: T = await response.json()
+//     const newCache: CacheEntry<T> = {
+//         timestamp: Date.now(),
+//         version,
+//         data,
+//     }
 
-  localStorage.setItem(cacheKey, JSON.stringify(newCache))
-  return data
-}
+//     localStorage.setItem(cacheKey, JSON.stringify(newCache))
+//     return data
+// }
 
-export const fetchIsUIUpdateAvailable = async () => {
-  const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
-    'https://api.github.com/repos/Zephyruso/zashboard/releases/latest',
-    zashboardVersion.value,
-  )
+// const check = async (url: string, versionNumber: string) => {
+//   const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(url, versionNumber)
+//   const alreadyLatest = assets.some(({ name }) => name.includes(versionNumber))
 
-  return Boolean(tag_name && tag_name !== `v${zashboardVersion.value}`)
-}
+//   return !alreadyLatest
+// }
 
-const check = async (url: string, versionNumber: string) => {
-  const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(url, versionNumber)
-  const alreadyLatest = assets.some(({ name }) => name.includes(versionNumber))
+// export const fetchBackendUpdateAvailableAPI = async () => {
+//   const match = /(alpha|beta|meta)-?(\w+)/.exec(version.value)
 
-  return !alreadyLatest
-}
+//   if (!match) {
+//     const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
+//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
+//       version.value,
+//     )
 
-export const fetchBackendUpdateAvailableAPI = async () => {
-  const match = /(alpha|beta|meta)-?(\w+)/.exec(version.value)
+//     return Boolean(tag_name && !tag_name.endsWith(version.value))
+//   }
 
-  if (!match) {
-    const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
-      'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
-      version.value,
-    )
+//   const channel = match[1],
+//     versionNumber = match[2]
 
-    return Boolean(tag_name && !tag_name.endsWith(version.value))
-  }
+//   if (channel === 'meta')
+//     return await check(
+//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
+//       versionNumber,
+//     )
+//   if (channel === 'alpha')
+//     return await check(
+//       'https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha',
+//       versionNumber,
+//     )
 
-  const channel = match[1],
-    versionNumber = match[2]
-
-  if (channel === 'meta')
-    return await check(
-      'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
-      versionNumber,
-    )
-  if (channel === 'alpha')
-    return await check(
-      'https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha',
-      versionNumber,
-    )
-
-  return false
-}
+//   return false
+// }

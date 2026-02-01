@@ -1,4 +1,3 @@
-import { isSingBox } from '@/api'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { LOG_LEVEL } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
@@ -56,9 +55,6 @@ export default defineComponent({
     watch(logFilter, insertLogSearchHistory)
 
     const logLevels = computed(() => {
-      if (isSingBox.value) {
-        return Object.values(LOG_LEVEL)
-      }
       return [LOG_LEVEL.Debug, LOG_LEVEL.Info, LOG_LEVEL.Warning, LOG_LEVEL.Error, LOG_LEVEL.Silent]
     })
 
@@ -66,32 +62,16 @@ export default defineComponent({
       const types: string[] = []
       const levels: string[] = []
 
-      if (isSingBox.value) {
-        for (const log of logs.value) {
-          const startIndex = log.payload.startsWith('[') ? log.payload.indexOf(']') + 2 : 0
-          const endIndex = log.payload.indexOf(':', startIndex)
-          const type = log.payload.slice(startIndex, endIndex + 1)
+      for (const log of logs.value) {
+        const index = log.payload.indexOf(' ')
+        const type = index === -1 ? log.payload : log.payload.slice(0, index)
 
-          if (!types.includes(type)) {
-            types.push(type)
-          }
-
-          if (!levels.includes(log.type)) {
-            levels.push(log.type)
-          }
+        if (!types.includes(type)) {
+          types.push(type)
         }
-      } else {
-        for (const log of logs.value) {
-          const index = log.payload.indexOf(' ')
-          const type = index === -1 ? log.payload : log.payload.slice(0, index)
 
-          if (!types.includes(type)) {
-            types.push(type)
-          }
-
-          if (!levels.includes(log.type)) {
-            levels.push(log.type)
-          }
+        if (!levels.includes(log.type)) {
+          levels.push(log.type)
         }
       }
 

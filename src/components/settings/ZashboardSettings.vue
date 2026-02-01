@@ -6,13 +6,6 @@
   >
     <div class="settings-title">
       <div class="indicator">
-        <span
-          v-if="isUIUpdateAvailable"
-          class="indicator-item top-1 -right-1 flex"
-        >
-          <span class="bg-secondary absolute h-2 w-2 animate-ping rounded-full"></span>
-          <span class="bg-secondary h-2 w-2 rounded-full"></span>
-        </span>
         <a
           href="https://github.com/Zephyruso/zashboard"
           target="_blank"
@@ -243,9 +236,8 @@
 </template>
 
 <script setup lang="ts">
-import { upgradeUIAPI, zashboardVersion } from '@/api'
+import { zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
-import { useSettings } from '@/composables/settings'
 import { FONTS, SETTINGS_MENU_KEY } from '@/constant'
 import { handlerUpgradeSuccess } from '@/helper'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
@@ -341,14 +333,11 @@ const fontOptions = computed(() => {
   return Object.values(FONTS)
 })
 
-const { isUIUpdateAvailable } = useSettings()
-
 const isUIUpgrading = ref(false)
 const handlerClickUpgradeUI = async () => {
   if (isUIUpgrading.value) return
   isUIUpgrading.value = true
   try {
-    await upgradeUIAPI()
     isUIUpgrading.value = false
     handlerUpgradeSuccess()
     setTimeout(() => {

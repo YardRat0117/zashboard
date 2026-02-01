@@ -51,7 +51,6 @@
         :nodes="renderProxies"
         :now="proxyGroup.now"
         :groupName="proxyGroup.name"
-        @nodeclick="handlerProxySelect(name, $event)"
       />
     </template>
     <template v-slot:content>
@@ -71,12 +70,7 @@ import { useRenderProxies } from '@/composables/renderProxies'
 import { isHiddenGroup } from '@/helper'
 import { prettyBytesHelper } from '@/helper/utils'
 import { activeConnections } from '@/store/connections'
-import {
-  handlerProxySelect,
-  hiddenGroupMap,
-  proxyGroupLatencyTest,
-  proxyMap,
-} from '@/store/proxies'
+import { hiddenGroupMap, proxyGroupLatencyTest, proxyMap } from '@/store/proxies'
 import {
   groupProxiesByProvider,
   manageHiddenGroup,

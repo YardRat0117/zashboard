@@ -1,11 +1,9 @@
-import { updateProxyProviderAPI } from '@/api'
 import { renderGroups } from '@/composables/proxies'
 import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
 import {
   allProxiesLatencyTest,
-  fetchProxies,
   proxiesFilter,
   proxiesTabShow,
   proxyGroupList,
@@ -23,7 +21,6 @@ import {
   twoColumnProxyGroup,
 } from '@/store/settings'
 import {
-  ArrowPathIcon,
   BoltIcon,
   ChevronDownIcon,
   ChevronUpIcon,
@@ -40,24 +37,9 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const router = useRouter()
-    const isUpgrading = ref(false)
     const isAllLatencyTesting = ref(false)
     const settingsModel = ref(false)
     const { isLargeCtrlsBar } = useCtrlsBar()
-    const handlerClickUpdateAllProviders = async () => {
-      if (isUpgrading.value) return
-      isUpgrading.value = true
-      try {
-        await Promise.all(
-          proxyProviderList.value.map((provider) => updateProxyProviderAPI(provider.name)),
-        )
-        await fetchProxies()
-        isUpgrading.value = false
-      } catch {
-        await fetchProxies()
-        isUpgrading.value = false
-      }
-    }
 
     const hasProviders = computed(() => {
       return proxyProviderList.value.length > 0
@@ -118,14 +100,6 @@ export default defineComponent({
             )
           })}
         </div>
-      )
-      const upgradeAllIcon = proxiesTabShow.value === PROXY_TAB_TYPE.PROVIDER && (
-        <button
-          class="btn btn-circle btn-sm"
-          onClick={handlerClickUpdateAllProviders}
-        >
-          <ArrowPathIcon class={['h-4 w-4', isUpgrading.value && 'animate-spin']} />
-        </button>
       )
 
       const latencyTestAll = (
@@ -257,12 +231,7 @@ export default defineComponent({
 
       const content = !isLargeCtrlsBar.value ? (
         <div class="flex flex-col gap-2 p-2">
-          {hasProviders.value && (
-            <div class="flex gap-2">
-              {tabs}
-              {upgradeAllIcon}
-            </div>
-          )}
+          {hasProviders.value && <div class="flex gap-2">{tabs}</div>}
           <div class="flex w-full gap-2">
             {searchInput}
             {settingsModal}
@@ -274,7 +243,6 @@ export default defineComponent({
         <div class="flex gap-2 p-2">
           {hasProviders.value && tabs}
           <div class="flex flex-1">{searchInput}</div>
-          {upgradeAllIcon}
           {settingsModal}
           {toggleCollapseAll}
           {latencyTestAll}

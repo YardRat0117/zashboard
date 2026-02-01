@@ -1,12 +1,4 @@
-import {
-  deleteFixedProxyAPI,
-  disconnectByIdAPI,
-  fetchProxiesAPI,
-  fetchProxyGroupLatencyAPI,
-  fetchProxyLatencyAPI,
-  isSingBox,
-  selectProxyAPI,
-} from '@/api'
+import { fetchProxiesAPI, fetchProxyGroupLatencyAPI, fetchProxyLatencyAPI } from '@/api'
 import {
   GLOBAL,
   IPV6_TEST_URL,
@@ -22,9 +14,7 @@ import { useStorage } from '@vueuse/core'
 import { last } from 'lodash'
 import pLimit from 'p-limit'
 import { computed, ref } from 'vue'
-import { activeConnections } from './connections'
 import {
-  automaticDisconnection,
   groupTestUrls,
   independentLatencyTest,
   IPv6test,
@@ -69,7 +59,7 @@ export const getLatencyByName = (proxyName: string, groupName?: string) => {
 }
 
 export const getHistoryByName = (proxyName: string, groupName?: string) => {
-  if (independentLatencyTest.value && !isSingBox.value) {
+  if (independentLatencyTest.value) {
     const proxyNode = proxyMap.value[proxyName]
     const url = getTestUrl(groupName)
 
@@ -126,25 +116,25 @@ export const fetchProxies = async () => {
   })
 }
 
-export const handlerProxySelect = async (proxyGroupName: string, proxyName: string) => {
-  const proxyGroup = proxyMap.value[proxyGroupName]
+// export const handlerProxySelect = async (proxyGroupName: string, proxyName: string) => {
+//   const proxyGroup = proxyMap.value[proxyGroupName]
 
-  if (proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance) return
-  if (proxyGroup.now === proxyName) {
-    await fetchProxies()
-    if (proxyGroup.now === proxyName) return
-  }
+//   if (proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance) return
+//   if (proxyGroup.now === proxyName) {
+//     await fetchProxies()
+//     if (proxyGroup.now === proxyName) return
+//   }
 
-  await selectProxyAPI(proxyGroupName, proxyName)
-  proxyMap.value[proxyGroupName].now = proxyName
+//   await selectProxyAPI(proxyGroupName, proxyName)
+//   proxyMap.value[proxyGroupName].now = proxyName
 
-  if (automaticDisconnection.value) {
-    activeConnections.value
-      .filter((c) => c.chains.includes(proxyGroupName))
-      .forEach((c) => disconnectByIdAPI(c.id))
-  }
-  fetchProxies()
-}
+//   if (automaticDisconnection.value) {
+//     activeConnections.value
+//       .filter((c) => c.chains.includes(proxyGroupName))
+//       .forEach((c) => disconnectByIdAPI(c.id))
+//   }
+//   fetchProxies()
+// }
 
 const latencyTestForSingle = async (proxyName: string, url: string, timeout: number) => {
   const now = getNowProxyNodeName(proxyName)
@@ -261,9 +251,6 @@ export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
       proxyNode.type.toLowerCase() as PROXY_TYPE,
     )
   ) {
-    if (proxyNode.fixed) {
-      deleteFixedProxyAPI(proxyGroupName)
-    }
     return testLatencyOneByOneWithTip(proxyGroupName, all, url)
   }
 

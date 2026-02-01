@@ -129,7 +129,7 @@
         />
       </div>
       <div
-        v-if="isSingBox && !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`]"
+        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`]"
         class="setting-item"
       >
         <div class="setting-item-label">
@@ -150,7 +150,6 @@
 </template>
 
 <script setup lang="ts">
-import { isSingBox } from '@/api'
 import { IP_INFO_API, SETTINGS_MENU_KEY } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
@@ -182,8 +181,7 @@ const hasVisibleGeneralItems = computed(() => {
     (swipeInPages.value &&
       !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.swipeInTabs`]) ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.disablePullToRefresh`] ||
-    (isSingBox.value &&
-      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`])
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.displayAllFeatures`]
   )
 })
 </script>

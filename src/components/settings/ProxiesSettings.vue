@@ -152,7 +152,6 @@
         <div
           v-if="
             displayGlobalByMode &&
-            isSingBox &&
             !hiddenSettingsItems[`${SETTINGS_MENU_KEY.proxies}.customGlobalNode`]
           "
           class="setting-item"
@@ -257,7 +256,6 @@
 </template>
 
 <script setup lang="ts">
-import { isSingBox } from '@/api'
 import { PROXY_CARD_SIZE, PROXY_PREVIEW_TYPE, SETTINGS_MENU_KEY } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import { getMinCardWidth } from '@/helper/utils'
@@ -318,7 +316,6 @@ const hasVisibleProxyStyleItems = computed(() => {
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.proxies}.truncateProxyName`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.proxies}.displayGlobalByMode`] ||
     (displayGlobalByMode.value &&
-      isSingBox.value &&
       !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.proxies}.customGlobalNode`]) ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.proxies}.proxyCardSize`] ||

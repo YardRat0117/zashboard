@@ -1,4 +1,3 @@
-import { isSingBox } from '@/api'
 import { GLOBAL, PROXY_TAB_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { configs } from '@/store/config'
@@ -26,9 +25,7 @@ const getRenderGroups = () => {
 
   if (displayGlobalByMode.value) {
     if (configs.value?.mode.toUpperCase() === GLOBAL) {
-      return [
-        isSingBox.value && proxyMap.value[customGlobalNode.value] ? customGlobalNode.value : GLOBAL,
-      ]
+      return [proxyMap.value[customGlobalNode.value] ? customGlobalNode.value : GLOBAL]
     }
 
     return filterGroups(proxyGroupList.value)

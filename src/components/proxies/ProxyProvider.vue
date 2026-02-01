@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { proxyProviderHealthCheckAPI, updateProxyProviderAPI } from '@/api'
+import { proxyProviderHealthCheckAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
@@ -133,7 +133,6 @@ const updateProviderClickHandler = async () => {
 
   isUpdating.value = true
   try {
-    await updateProxyProviderAPI(props.name)
     await fetchProxies()
     isUpdating.value = false
   } catch {
