@@ -1,12 +1,10 @@
 <template>
     <div class="relative flex h-full flex-col overflow-y-auto" ref="scrollContainerRef" @scroll.passive="handleScroll">
-        <!-- 左侧菜单 -->
         <SettingsMenu
             ref="menuComponentRef"
             :menu-items="menuItems"
             :active-menu-key="activeMenuKey"
             @menu-click="handleMenuClick" />
-        <!-- 右侧内容区域 -->
         <div class="grid grid-cols-1 gap-2 p-2" :style="padding">
             <div class="flex flex-col gap-4">
                 <div
@@ -25,7 +23,6 @@
 <script setup lang="ts">
 import BackendSettings from '@/components/settings/BackendSettings.vue'
 import ConnectionsSettings from '@/components/settings/ConnectionsSettings.vue'
-import GeneralSettings from '@/components/settings/GeneralSettings.vue'
 import OverviewSettings from '@/components/settings/OverviewSettings.vue'
 import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
 import SettingsMenu from '@/components/settings/SettingsMenu.vue'
@@ -59,15 +56,6 @@ const menuItems = computed<MenuItem[]>(() => {
                 label: 'zashboardSettings',
                 icon: HomeIcon,
                 component: ZashboardSettings,
-            },
-        ],
-        [
-            SETTINGS_MENU_KEY.general,
-            {
-                key: SETTINGS_MENU_KEY.general,
-                label: 'generalSettings',
-                icon: HomeIcon,
-                component: GeneralSettings,
             },
         ],
         [
@@ -108,14 +96,12 @@ const menuItems = computed<MenuItem[]>(() => {
         ],
     ])
 
-    console.log(settingsMenuOrder.value)
-
     // 根据 settingsMenuOrder 排序，并过滤隐藏的项
     return settingsMenuOrder.value
         .map((key) => itemsMap.get(key))
         .filter((item): item is MenuItem => item !== undefined && !hiddenSettingsItems.value[item.key])
 })
-const activeMenuKey = ref<SETTINGS_MENU_KEY>(menuItems.value[0]?.key || SETTINGS_MENU_KEY.general)
+const activeMenuKey = ref<SETTINGS_MENU_KEY>(menuItems.value[0]?.key || SETTINGS_MENU_KEY.panel)
 
 // 当 menuItems 变化时，如果当前激活的项被隐藏，则切换到第一个可见项
 watch(

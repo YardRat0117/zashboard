@@ -248,7 +248,6 @@ const en = {
     connectionCount: 'Connection count',
     zashboardSettings: 'Dashboard Settings',
     backendSettings: 'Backend Settings',
-    generalSettings: 'General Settings',
     overviewCard: 'Overview Card',
     overviewSettings: 'Overview Settings',
     overviewCardSettings: 'Card Settings',

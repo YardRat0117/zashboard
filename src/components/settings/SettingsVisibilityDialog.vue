@@ -88,87 +88,87 @@ type Category = {
 
 const allCategories: Category[] = [
     {
-        key: SETTINGS_MENU_KEY.general,
+        key: SETTINGS_MENU_KEY.panel,
         label: 'zashboardSettings',
         items: [
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.language`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.language`,
                 label: 'language',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.fonts`,
                 label: 'fonts',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.customBackgroundURL`,
                 label: 'customBackgroundURL',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.transparent`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.transparent`,
                 label: 'transparent',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.blurIntensity`,
                 label: 'blurIntensity',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.defaultTheme`,
                 label: 'defaultTheme',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.darkTheme`,
                 label: 'darkTheme',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoSwitchTheme`,
                 label: 'autoSwitchTheme',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoUpgrade`,
                 label: 'autoUpgrade',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.upgradeUI`,
                 label: 'upgradeUI',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.exportSettings`,
                 label: 'exportSettings',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`,
+                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.importSettings`,
                 label: 'importSettings',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDP`,
+                key: `${SETTINGS_MENU_KEY.panel}.autoDisconnectIdleUDP`,
                 label: 'autoDisconnectIdleUDP',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.autoDisconnectIdleUDPTime`,
+                key: `${SETTINGS_MENU_KEY.panel}.autoDisconnectIdleUDPTime`,
                 label: 'autoDisconnectIdleUDPTime',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.IPInfoAPI`,
+                key: `${SETTINGS_MENU_KEY.panel}.IPInfoAPI`,
                 label: 'IPInfoAPI',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.scrollAnimationEffect`,
+                key: `${SETTINGS_MENU_KEY.panel}.scrollAnimationEffect`,
                 label: 'scrollAnimationEffect',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.swipeInPages`,
+                key: `${SETTINGS_MENU_KEY.panel}.swipeInPages`,
                 label: 'swipeInPages',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.swipeInTabs`,
+                key: `${SETTINGS_MENU_KEY.panel}.swipeInTabs`,
                 label: 'swipeInTabs',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.disablePullToRefresh`,
+                key: `${SETTINGS_MENU_KEY.panel}.disablePullToRefresh`,
                 label: 'disablePullToRefresh',
             },
             {
-                key: `${SETTINGS_MENU_KEY.general}.displayAllFeatures`,
+                key: `${SETTINGS_MENU_KEY.panel}.displayAllFeatures`,
                 label: 'displayAllFeatures',
             },
         ],

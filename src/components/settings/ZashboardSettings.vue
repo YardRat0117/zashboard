@@ -19,10 +19,8 @@
             </button>
         </div>
         <div class="settings-grid">
-            <LanguageSelect v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.language`]" />
-            <div
-                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`]"
-                class="setting-item">
+            <LanguageSelect v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.language`]" />
+            <div v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.fonts`]" class="setting-item">
                 <div class="setting-item-label">
                     {{ $t('fonts') }}
                 </div>
@@ -33,7 +31,7 @@
                 </select>
             </div>
             <div
-                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`]"
+                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.customBackgroundURL`]"
                 class="setting-item">
                 <div class="setting-item-label">
                     {{ $t('customBackgroundURL') }}
@@ -60,7 +58,7 @@
                 v-if="
                     customBackgroundURL &&
                     displayBgProperty &&
-                    !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.transparent`]
+                    !hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.transparent`]
                 ">
                 <div class="setting-item">
                     <div class="setting-item-label">
@@ -81,7 +79,7 @@
                 v-if="
                     customBackgroundURL &&
                     displayBgProperty &&
-                    !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`]
+                    !hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.blurIntensity`]
                 ">
                 <div class="setting-item">
                     <div class="setting-item-label">
@@ -99,7 +97,7 @@
                 </div>
             </template>
             <div
-                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`]"
+                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.defaultTheme`]"
                 class="setting-item">
                 <div class="setting-item-label">
                     {{ $t('theme') }}
@@ -115,18 +113,18 @@
         </div>
         <div
             v-if="
-                !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`] ||
-                !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]
+                !hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.exportSettings`] ||
+                !hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.importSettings`]
             "
             class="mt-4 grid max-w-3xl grid-cols-2 gap-2 gap-y-3 md:grid-cols-4">
             <button
-                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`]"
+                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.exportSettings`]"
                 class="btn btn-sm"
                 @click="exportSettings">
                 {{ $t('exportSettings') }}
             </button>
             <ImportSettings
-                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]" />
+                v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.importSettings`]" />
         </div>
     </div>
 </template>
@@ -157,22 +155,22 @@ const customThemeModal = ref(false)
 // 检查是否有可见的子项
 const hasVisibleItems = computed(() => {
     return (
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.language`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.fonts`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.customBackgroundURL`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.language`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.fonts`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.customBackgroundURL`] ||
         (customBackgroundURL.value &&
             displayBgProperty.value &&
-            !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.transparent`]) ||
+            !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.transparent`]) ||
         (customBackgroundURL.value &&
             displayBgProperty.value &&
-            !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`]) ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.exportSettings`] ||
-        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.importSettings`]
+            !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.blurIntensity`]) ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.defaultTheme`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.darkTheme`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoSwitchTheme`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoUpgrade`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.upgradeUI`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.exportSettings`] ||
+        !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.importSettings`]
     )
 })
 const displayBgProperty = ref(false)

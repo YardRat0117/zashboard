@@ -247,7 +247,6 @@ const zh: LANG_MESSAGE = {
     connectionCount: '连接数',
     zashboardSettings: '面板设置',
     backendSettings: '后端设置',
-    generalSettings: '常规设置',
     overviewCard: '概览卡片',
     overviewSettings: '概览设置',
     overviewCardSettings: '卡片设置',
