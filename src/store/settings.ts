@@ -15,21 +15,13 @@ import {
   TEST_URL,
   type THEME,
 } from '@/constant'
-import { getMinCardWidth, isMiddleScreen, isPreferredDark } from '@/helper/utils'
+import { getMinCardWidth, isMiddleScreen } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
 
 // global
-export const defaultTheme = useStorage<string>('config/default-theme', 'light')
-export const darkTheme = useStorage<string>('config/dark-theme', 'dark')
-export const autoTheme = useStorage<boolean>('config/auto-theme', true)
-export const theme = computed(() => {
-  if (autoTheme.value && isPreferredDark.value) {
-    return darkTheme.value
-  }
-  return defaultTheme.value
-})
+export const theme = useStorage<string>('config/theme', 'dark')
 
 export const customThemes = useStorage<THEME[]>('config/custom-themes', [])
 

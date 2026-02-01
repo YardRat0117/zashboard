@@ -130,7 +130,7 @@
 <script setup lang="ts">
 import { ALL_THEME, DEFAULT_THEME, type THEME } from '@/constant'
 import { applyCustomThemes } from '@/helper'
-import { customThemes, darkTheme, defaultTheme } from '@/store/settings'
+import { customThemes, theme } from '@/store/settings'
 import { v4 as uuid } from 'uuid'
 import { computed, nextTick, reactive, ref } from 'vue'
 import DialogWrapper from '../common/DialogWrapper.vue'
@@ -181,13 +181,11 @@ const handlerCustomThemeSave = async () => {
     } as THEME,
   ]
 
-  defaultTheme.value = ''
-  darkTheme.value = ''
+  theme.value = ''
 
   await nextTick()
 
-  defaultTheme.value = customTheme.name
-  darkTheme.value = customTheme.name
+  theme.value = customTheme.name
   applyCustomThemes()
 }
 

@@ -42,18 +42,9 @@
         <div class="setting-item-label">
           {{ $t('fonts') }}
         </div>
-        <select
-          class="select select-sm w-48"
-          v-model="font"
-        >
-          <option
-            v-for="opt in fontOptions"
-            :key="opt"
-            :value="opt"
-          >
-            {{ opt }}
-          </option>
-        </select>
+        <div class="select select-sm w-48">
+          {{ font }}
+        </div>
       </div>
       <div
         v-if="
@@ -144,12 +135,12 @@
         class="setting-item"
       >
         <div class="setting-item-label">
-          {{ $t('defaultTheme') }}
+          {{ $t('theme') }}
         </div>
         <div class="join">
           <ThemeSelector
             class="w-38!"
-            v-model:value="defaultTheme"
+            v-model:value="theme"
           />
           <button
             class="btn btn-sm join-item"
@@ -159,46 +150,6 @@
           </button>
         </div>
         <CustomTheme v-model:value="customThemeModal" />
-      </div>
-      <div
-        v-if="
-          autoTheme &&
-          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`]
-        "
-        class="setting-item"
-      >
-        <div class="setting-item-label">
-          {{ $t('darkTheme') }}
-        </div>
-        <ThemeSelector v-model:value="darkTheme" />
-      </div>
-      <div
-        v-if="
-          !hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`]
-        "
-        class="setting-item"
-      >
-        <div class="setting-item-label">
-          {{ $t('autoSwitchTheme') }}
-        </div>
-        <input
-          type="checkbox"
-          v-model="autoTheme"
-          class="toggle"
-        />
-      </div>
-      <div
-        v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`]"
-        class="setting-item"
-      >
-        <div class="setting-item-label">
-          {{ $t('autoUpgrade') }}
-        </div>
-        <input
-          class="toggle"
-          type="checkbox"
-          v-model="autoUpgrade"
-        />
       </div>
     </div>
     <div
@@ -238,20 +189,17 @@
 <script setup lang="ts">
 import { zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
-import { FONTS, SETTINGS_MENU_KEY } from '@/constant'
+import { SETTINGS_MENU_KEY } from '@/constant'
 import { handlerUpgradeSuccess } from '@/helper'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
 import { exportSettings, isPWA } from '@/helper/utils'
 import {
-  autoTheme,
-  autoUpgrade,
   blurIntensity,
   customBackgroundURL,
-  darkTheme,
   dashboardTransparent,
-  defaultTheme,
   font,
   hiddenSettingsItems,
+  theme,
 } from '@/store/settings'
 import {
   AdjustmentsHorizontalIcon,
@@ -284,8 +232,7 @@ const hasVisibleItems = computed(() => {
       displayBgProperty.value &&
       !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.blurIntensity`]) ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.defaultTheme`] ||
-    (autoTheme.value &&
-      !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`]) ||
+    !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.darkTheme`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoSwitchTheme`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.autoUpgrade`] ||
     !hiddenSettingsItems.value[`${SETTINGS_MENU_KEY.general}.zashboardSettings.upgradeUI`] ||
@@ -322,16 +269,6 @@ const handlerFileChange = (e: Event) => {
   }
   reader.readAsDataURL(file)
 }
-
-const fontOptions = computed(() => {
-  const mode = import.meta.env.MODE
-
-  if (Object.values(FONTS).includes(mode as FONTS)) {
-    return [mode]
-  }
-
-  return Object.values(FONTS)
-})
 
 const isUIUpgrading = ref(false)
 const handlerClickUpgradeUI = async () => {
