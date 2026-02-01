@@ -112,60 +112,12 @@ const allCategories: Category[] = [
                 label: 'blurIntensity',
             },
             {
-                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.defaultTheme`,
-                label: 'defaultTheme',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.darkTheme`,
-                label: 'darkTheme',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoSwitchTheme`,
-                label: 'autoSwitchTheme',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.autoUpgrade`,
-                label: 'autoUpgrade',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.upgradeUI`,
-                label: 'upgradeUI',
-            },
-            {
                 key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.exportSettings`,
                 label: 'exportSettings',
             },
             {
                 key: `${SETTINGS_MENU_KEY.panel}.zashboardSettings.importSettings`,
                 label: 'importSettings',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.autoDisconnectIdleUDP`,
-                label: 'autoDisconnectIdleUDP',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.autoDisconnectIdleUDPTime`,
-                label: 'autoDisconnectIdleUDPTime',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.IPInfoAPI`,
-                label: 'IPInfoAPI',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.scrollAnimationEffect`,
-                label: 'scrollAnimationEffect',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.swipeInPages`,
-                label: 'swipeInPages',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.swipeInTabs`,
-                label: 'swipeInTabs',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.panel}.disablePullToRefresh`,
-                label: 'disablePullToRefresh',
             },
             {
                 key: `${SETTINGS_MENU_KEY.panel}.displayAllFeatures`,
@@ -177,18 +129,6 @@ const allCategories: Category[] = [
         key: SETTINGS_MENU_KEY.overview,
         label: 'overviewSettings',
         items: [
-            {
-                key: `${SETTINGS_MENU_KEY.overview}.overviewCard`,
-                label: 'chartsCard',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.overview}.networkCard`,
-                label: 'networkCard',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.overview}.splitOverviewPage`,
-                label: 'splitOverviewPage',
-            },
             {
                 key: `${SETTINGS_MENU_KEY.overview}.autoIPCheckWhenStart`,
                 label: 'autoIPCheckWhenStart',
@@ -214,26 +154,6 @@ const allCategories: Category[] = [
             {
                 key: `${SETTINGS_MENU_KEY.backend}.backendSwitch`,
                 label: 'backend',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.backend}.ports`,
-                label: 'ports',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.backend}.tunMode`,
-                label: 'tunMode',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.backend}.allowLan`,
-                label: 'allowLan',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.backend}.checkUpgrade`,
-                label: 'checkUpgrade',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.backend}.autoUpgrade`,
-                label: 'autoUpgrade',
             },
             {
                 key: `${SETTINGS_MENU_KEY.backend}.actions`,
@@ -274,10 +194,6 @@ const allCategories: Category[] = [
                 label: 'independentLatencyTest',
             },
             {
-                key: `${SETTINGS_MENU_KEY.proxies}.groupTestUrls`,
-                label: 'groupTestUrls',
-            },
-            {
                 key: `${SETTINGS_MENU_KEY.proxies}.twoColumnProxyGroup`,
                 label: 'twoColumnProxyGroup',
             },
@@ -290,28 +206,12 @@ const allCategories: Category[] = [
                 label: 'displayGlobalByMode',
             },
             {
-                key: `${SETTINGS_MENU_KEY.proxies}.customGlobalNode`,
-                label: 'customGlobalNode',
-            },
-            {
                 key: `${SETTINGS_MENU_KEY.proxies}.proxyPreviewType`,
                 label: 'proxyPreviewType',
             },
             {
                 key: `${SETTINGS_MENU_KEY.proxies}.proxyCardSize`,
                 label: 'proxyCardSize',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.proxies}.proxyGroupIconSize`,
-                label: 'proxyGroupIconSize',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.proxies}.proxyGroupIconMargin`,
-                label: 'proxyGroupIconMargin',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.proxies}.iconSettings`,
-                label: 'icon',
             },
         ],
     },
@@ -334,10 +234,6 @@ const allCategories: Category[] = [
             {
                 key: `${SETTINGS_MENU_KEY.connections}.tableSize`,
                 label: 'tableSize',
-            },
-            {
-                key: `${SETTINGS_MENU_KEY.connections}.sourceIPLabels`,
-                label: 'sourceIPLabels',
             },
         ],
     },
@@ -384,10 +280,6 @@ const applyMinimalPreset = () => {
     // 隐藏不常用/高级设置项
     for (const key of allKeys) {
         if (key.includes('language')) {
-            minimalHiddenKeys.push(key)
-        }
-        // UDP 相关设置
-        else if (key.includes('autoDisconnectIdleUDP') || key.includes('autoDisconnectIdleUDPTime')) {
             minimalHiddenKeys.push(key)
         }
         // 滚动动画效果、滑动切换相关
