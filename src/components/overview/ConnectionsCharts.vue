@@ -23,10 +23,10 @@ const chartsData = computed(() => {
     ]
 })
 
-const labelFormatter = (value: number) => {
+const labelFormatter = (value: number): string => {
     return `       ${value}`
 }
-const tooltipFormatter = (value: ToolTipParams[]) => {
+const tooltipFormatter = (value: ToolTipParams[]): string => {
     return value
         .map((item) => {
             // fake data

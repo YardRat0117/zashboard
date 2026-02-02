@@ -79,11 +79,11 @@ const newGroupTestUrl = reactive({
     url: '',
 })
 
-const groupTestUrlsTip = (e: Event) => {
+const groupTestUrlsTip = (e: Event): void => {
     return showTip(e, t('groupTestUrlsTip'))
 }
 
-const addGroupTestUrl = () => {
+const addGroupTestUrl = (): void => {
     if (!newGroupTestUrl.name || !newGroupTestUrl.url) return
     dialogVisible.value = true
     groupTestUrls.value.push({
@@ -94,7 +94,7 @@ const addGroupTestUrl = () => {
     newGroupTestUrl.url = ''
 }
 
-const removeGroupTestUrl = (uuid: string) => {
+const removeGroupTestUrl = (uuid: string): void => {
     groupTestUrls.value = groupTestUrls.value.filter((item) => item.uuid !== uuid)
 }
 </script>

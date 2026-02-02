@@ -56,7 +56,7 @@ const props = defineProps<{
 const cardRef = ref()
 const node = computed(() => proxyMap.value[props.name])
 const isLatencyTesting = ref(false)
-const typeFormatter = (type: string) => {
+const typeFormatter = (type: string): string => {
     type = type.toLowerCase()
     type = type.replace('shadowsocks', 'ss')
     type = type.replace('hysteria', 'hy')
@@ -74,7 +74,7 @@ const typeDescription = computed(() => {
 })
 
 const latencyTipAnimationClass = ref<string[]>([])
-const handlerLatencyTest = async () => {
+const handlerLatencyTest = async (): Promise<void> => {
     if (isLatencyTesting.value) return
 
     isLatencyTesting.value = true

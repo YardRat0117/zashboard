@@ -41,7 +41,7 @@ const isFixed = computed(() => {
     return proxyGroup.value.fixed === proxyGroup.value.now
 })
 
-const tipForFixed = (e: Event) => {
+const tipForFixed = (e: Event): void => {
     if (!isFixed.value) {
         return
     }

@@ -97,7 +97,7 @@ const colorSet = {
 
 let fontFamily = ''
 
-const updateColorSet = () => {
+const updateColorSet = (): void => {
     const colorStyle = getComputedStyle(colorRef.value)
 
     colorSet.baseContent = colorStyle.getPropertyValue('--color-base-content').trim()
@@ -106,7 +106,7 @@ const updateColorSet = () => {
     colorSet.base70 = colorStyle.backgroundColor
 }
 
-const updateFontFamily = () => {
+const updateFontFamily = (): void => {
     const baseColorStyle = getComputedStyle(colorRef.value)
     fontFamily = baseColorStyle.fontFamily
 }
@@ -123,7 +123,7 @@ const sankeyData = computed(() => {
     const nodeTypeMap = new Map<string, string>()
     let nodeIndex = 0
 
-    const addNode = (name: string, layer: number, type: string) => {
+    const addNode = (name: string, layer: number, type: string): number => {
         if (!nodeMap.has(name)) {
             nodeMap.set(name, nodeIndex++)
             layerMap.set(name, layer)
@@ -254,7 +254,7 @@ const options = computed(() => ({
                 value: number
                 originalValue?: number
             }
-        }) => {
+        }): string => {
             if (params.dataType === 'node') {
                 return `${params.data.name}<br/>${t('nodeType')}: ${params.data.nodeType || t('unknown')}`
             } else if (params.dataType === 'edge') {
@@ -290,7 +290,7 @@ const options = computed(() => ({
             label: {
                 color: colorSet.baseContent,
                 fontSize: isMiddleScreen.value ? 10 : 12,
-                formatter: (params: { name: string }) => {
+                formatter: (params: { name: string }): string => {
                     const name = params.name
                     const length = isFullScreen.value ? 45 : isMiddleScreen.value ? 20 : 30
                     return name.length > length ? name.substring(0, length) + '...' : name
@@ -302,7 +302,7 @@ const options = computed(() => ({
             animation: true,
             animationDuration: 1000,
             animationEasing: 'cubicOut',
-            animationDelay: (idx: number) => idx * 50,
+            animationDelay: (idx: number): number => idx * 50,
         },
     ],
 }))

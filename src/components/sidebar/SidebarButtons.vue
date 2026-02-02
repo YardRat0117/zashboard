@@ -33,13 +33,13 @@ const props = defineProps<{
     vertical?: boolean
 }>()
 
-const wrapperClass = computed(() => {
+const wrapperClass = computed((): string => {
     return props.vertical
         ? 'flex flex-col items-center justify-center gap-2'
         : 'flex flex-row-reverse items-center justify-center gap-2'
 })
 
-const handlerMouseenterBackendSelector = (e: MouseEvent) => {
+const handlerMouseenterBackendSelector = (e: MouseEvent): void => {
     showTip(e, getLabelFromBackend(activeBackend.value!), {
         placement: 'right',
     })

@@ -41,7 +41,7 @@ watch(showCollapse, (value) => {
 
 const showContent = ref(showCollapse.value)
 
-const handlerTransitionEnd = () => {
+const handlerTransitionEnd = (): void => {
     if (!showCollapse.value) {
         showContent.value = false
     }

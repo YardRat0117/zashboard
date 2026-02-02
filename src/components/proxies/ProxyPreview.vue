@@ -60,7 +60,7 @@ const widthEnough = computed(() => {
     return width.value > 20 * props.nodes.length
 })
 
-const makeTippy = (e: Event, node: { name: string; latency: number }) => {
+const makeTippy = (e: Event, node: { name: string; latency: number }): void => {
     const tag = document.createElement('div')
     const name = document.createElement('div')
 
@@ -94,7 +94,7 @@ const nodesLatency = computed(() =>
         }
     }),
 )
-const getBgColor = (latency: number) => {
+const getBgColor = (latency: number): string => {
     if (latency === NOT_CONNECTED) {
         return 'bg-base-content/60'
     } else if (latency < lowLatency.value) {

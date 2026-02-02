@@ -73,7 +73,7 @@ const activeStyle = computed(() => {
 
 useCtrlsBar()
 
-const updateActiveMenuLeft = async () => {
+const updateActiveMenuLeft = async (): Promise<void> => {
     await nextTick()
     const itemRef = menuItemRefs.value.find((el) => el.dataset.key === props.activeMenuKey)
     if (itemRef) {
@@ -81,7 +81,7 @@ const updateActiveMenuLeft = async () => {
     }
 }
 
-const updateActiveMenuWidth = async () => {
+const updateActiveMenuWidth = async (): Promise<void> => {
     await nextTick()
     const itemRef = menuItemRefs.value.find((el) => el.dataset.key === props.activeMenuKey)
     if (itemRef) {
@@ -110,7 +110,7 @@ const { isSwiping } = useSwipe(menuRef, {
     },
 })
 
-const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
+const handleMenuClick = (key: SETTINGS_MENU_KEY): void => {
     if (isSwiping.value) return
     emit('menu-click', key)
 }

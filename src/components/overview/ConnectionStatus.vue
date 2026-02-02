@@ -39,7 +39,7 @@ import { autoConnectionCheck } from '@/store/settings'
 import { BoltIcon } from '@heroicons/vue/24/outline'
 import { onMounted } from 'vue'
 
-const getLatency = async () => {
+const getLatency = async (): Promise<void> => {
     getGoogleLatencyAPI().then((res) => {
         googleLatency.value = res.toFixed(0)
     })

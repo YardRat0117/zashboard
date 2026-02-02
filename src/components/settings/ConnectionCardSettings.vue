@@ -66,7 +66,7 @@ import Draggable from 'vuedraggable'
 
 const restOfColumns = ref<CONNECTIONS_TABLE_ACCESSOR_KEY[]>([])
 
-const setRestOfColumns = () => {
+const setRestOfColumns = (): void => {
     restOfColumns.value = Object.values(CONNECTIONS_TABLE_ACCESSOR_KEY).filter(
         (key) => !connectionCardLines.value.flat().includes(key),
     )
@@ -74,12 +74,12 @@ const setRestOfColumns = () => {
 
 setRestOfColumns()
 
-const addLine = () => {
+const addLine = (): void => {
     connectionCardLines.value = [...connectionCardLines.value, restOfColumns.value[0] ? [restOfColumns.value[0]] : []]
     setRestOfColumns()
 }
 
-const removeLine = (index: number) => {
+const removeLine = (index: number): void => {
     connectionCardLines.value.splice(index, 1)
     setRestOfColumns()
 }

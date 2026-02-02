@@ -8,7 +8,7 @@ import type { AxiosResponse } from 'axios'
 import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch, type Ref } from 'vue'
 
 axios.interceptors.request.use((config) => {
     config.baseURL = getUrlFromBackend(activeBackend.value!)
@@ -120,25 +120,25 @@ export const updateRuleProviderAPI = (name: string): Promise<AxiosResponse<unkno
 }
 
 // Reserved since they're connection-specific
-export const disconnectByIdAPI = (id: string) => {
+export const disconnectByIdAPI = (id: string): Promise<AxiosResponse<unknown>> => {
     return axios.delete(`/connections/${id}`)
 }
-export const disconnectAllAPI = () => {
+export const disconnectAllAPI = (): Promise<AxiosResponse<unknown>> => {
     return axios.delete('/connections')
 }
 
-export const getConfigsAPI = () => {
+export const getConfigsAPI = (): Promise<AxiosResponse<Config>> => {
     return axios.get<Config>('/configs')
 }
 
 // Reserved since they're cache-specific
-export const flushFakeIPAPI = () => {
+export const flushFakeIPAPI = (): Promise<AxiosResponse<unknown>> => {
     return axios.post('/cache/fakeip/flush')
 }
-export const flushDNSCacheAPI = () => {
+export const flushDNSCacheAPI = (): Promise<AxiosResponse<unknown>> => {
     return axios.post('/cache/dns/flush')
 }
-export const reloadConfigsAPI = () => {
+export const reloadConfigsAPI = (): Promise<AxiosResponse<unknown>> => {
     return axios.put('/configs?reload=true', {
         path: '',
         payload: '',
@@ -146,17 +146,20 @@ export const reloadConfigsAPI = () => {
 }
 
 // Reserved since it's geo-data specific
-export const updateGeoDataAPI = () => {
+export const updateGeoDataAPI = (): Promise<AxiosResponse<unknown>> => {
     return axios.post('/configs/geo')
 }
 
-export const queryDNSAPI = (params: { name: string; type: string }) => {
+export const queryDNSAPI = (params: { name: string; type: string }): Promise<AxiosResponse<DNSQuery>> => {
     return axios.get<DNSQuery>('/dns/query', {
         params,
     })
 }
 
-const createWebSocket = <T>(url: string, searchParams?: Record<string, string>) => {
+const createWebSocket = <T>(
+    url: string,
+    searchParams?: Record<string, string>,
+): { data: Ref<T | undefined>; close: () => void } => {
     const backend = activeBackend.value!
     const resurl = new URL(`${getUrlFromBackend(backend).replace('http', 'ws')}/${url}`)
 
@@ -171,11 +174,11 @@ const createWebSocket = <T>(url: string, searchParams?: Record<string, string>) 
     const data = ref<T>()
     const websocket = new ReconnectingWebSocket(resurl.toString())
 
-    const close = () => {
+    const close = (): void => {
         websocket.close()
     }
 
-    const messageHandler = ({ data: message }: { data: string }) => {
+    const messageHandler = ({ data: message }: { data: string }): void => {
         data.value = JSON.parse(message)
     }
 
@@ -187,23 +190,25 @@ const createWebSocket = <T>(url: string, searchParams?: Record<string, string>) 
     }
 }
 
-export const fetchConnectionsAPI = <T>() => {
+export const fetchConnectionsAPI = <T>(): { data: Ref<T | undefined>; close: () => void } => {
     return createWebSocket<T>('connections')
 }
 
-export const fetchLogsAPI = <T>(params: Record<string, string> = {}) => {
+export const fetchLogsAPI = <T>(
+    params: Record<string, string> = {},
+): { data: Ref<T | undefined>; close: () => void } => {
     return createWebSocket<T>('logs', params)
 }
 
-export const fetchMemoryAPI = <T>() => {
+export const fetchMemoryAPI = <T>(): { data: Ref<T | undefined>; close: () => void } => {
     return createWebSocket<T>('memory')
 }
 
-export const fetchTrafficAPI = <T>() => {
+export const fetchTrafficAPI = <T>(): { data: Ref<T | undefined>; close: () => void } => {
     return createWebSocket<T>('traffic')
 }
 
-export const isBackendAvailable = async (backend: Backend, timeout: number = 10000) => {
+export const isBackendAvailable = async (backend: Backend, timeout: number = 10000): Promise<boolean> => {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), timeout)
 

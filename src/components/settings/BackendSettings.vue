@@ -72,13 +72,13 @@ const hasVisibleItems = computed(() => {
     )
 })
 
-const reloadAll = () => {
+const reloadAll = (): void => {
     fetchConfigs()
     fetchProxies()
 }
 
 const isConfigReloading = ref(false)
-const handlerClickReloadConfigs = async () => {
+const handlerClickReloadConfigs = async (): Promise<void> => {
     if (isConfigReloading.value) return
     isConfigReloading.value = true
     try {
@@ -95,7 +95,7 @@ const handlerClickReloadConfigs = async () => {
 }
 
 const isGeoUpdating = ref(false)
-const handlerClickUpdateGeo = async () => {
+const handlerClickUpdateGeo = async (): Promise<void> => {
     if (isGeoUpdating.value) return
     isGeoUpdating.value = true
     try {
@@ -111,7 +111,7 @@ const handlerClickUpdateGeo = async () => {
     }
 }
 
-const handleFlushDNSCache = async () => {
+const handleFlushDNSCache = async (): Promise<void> => {
     await flushDNSCacheAPI()
     showNotification({
         content: 'flushDNSCacheSuccess',
@@ -119,7 +119,7 @@ const handleFlushDNSCache = async () => {
     })
 }
 
-const handleFlushFakeIP = async () => {
+const handleFlushFakeIP = async (): Promise<void> => {
     await flushFakeIPAPI()
     showNotification({
         content: 'flushFakeIPSuccess',

@@ -56,8 +56,8 @@ const props = withDefaults(
 const virutalOptions = computed(() => {
     return {
         count: props.data.length,
-        getScrollElement: () => parentRef.value,
-        estimateSize: () => props.size,
+        getScrollElement: (): HTMLElement | null => parentRef.value,
+        estimateSize: (): number => props.size,
         overscan: props.overscan,
         paddingStart: paddingTop.value,
     }
@@ -67,10 +67,10 @@ const rowVirtualizer = useVirtualizer(virutalOptions)
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-const marginBottom = (index: number) => {
+const marginBottom = (index: number): string => {
     return index === props.data.length - 1 ? `${paddingBottom.value}px` : '4px'
 }
-const measureElement = (el: Element | null) => {
+const measureElement = (el: Element | null): void => {
     if (!el) {
         return
     }

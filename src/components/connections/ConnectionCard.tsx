@@ -24,7 +24,7 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { first, last } from 'lodash'
-import type { PropType } from 'vue'
+import type { PropType, RendererElement, RendererNode, VNode } from 'vue'
 import { defineComponent } from 'vue'
 import type { JSX } from 'vue/jsx-runtime'
 import ProxyName from '../proxies/ProxyName.vue'
@@ -45,7 +45,7 @@ export default defineComponent<{
 
         useBounceOnVisible()
 
-        return () => {
+        return (): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const conn = props.conn
             const metadata = conn.metadata
             const componentMap: Record<CONNECTIONS_TABLE_ACCESSOR_KEY, JSX.Element> = {
@@ -133,7 +133,7 @@ export default defineComponent<{
                 [CONNECTIONS_TABLE_ACCESSOR_KEY.InboundUser]: (
                     <div class="gap-1 whitespace-nowrap">{getInboundUserFromConnection(conn)}</div>
                 ),
-                [CONNECTIONS_TABLE_ACCESSOR_KEY.Close]: (() => {
+                [CONNECTIONS_TABLE_ACCESSOR_KEY.Close]: ((): JSX.Element => {
                     const closeButton = (
                         <button
                             class="btn btn-circle btn-xs"

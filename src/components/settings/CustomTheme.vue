@@ -119,7 +119,7 @@ const dark = computed({
     },
 })
 
-const handlerCustomThemeSave = async () => {
+const handlerCustomThemeSave = async (): Promise<void> => {
     customThemes.value = [
         {
             ...customTheme,
@@ -135,7 +135,7 @@ const handlerCustomThemeSave = async () => {
     applyCustomThemes()
 }
 
-const resetCustomTheme = () => {
+const resetCustomTheme = (): void => {
     const themeElement = document.createElement('div')
 
     themeElement.dataset.theme = applyFrom.value

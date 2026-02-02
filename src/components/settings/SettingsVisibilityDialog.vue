@@ -268,12 +268,12 @@ const getAllSettingKeys = (): string[] => {
 }
 
 // 应用"全部显示"预设
-const applyShowAllPreset = () => {
+const applyShowAllPreset = (): void => {
     hiddenSettingsItems.value = {}
 }
 
 // 应用"精简显示"预设
-const applyMinimalPreset = () => {
+const applyMinimalPreset = (): void => {
     const allKeys = getAllSettingKeys()
     const minimalHiddenKeys: string[] = [SETTINGS_MENU_KEY.proxies, SETTINGS_MENU_KEY.connections]
 

@@ -2,9 +2,12 @@ import { PROXY_CARD_SIZE } from '@/constant'
 import { findScrollableParent } from '@/helper/utils'
 import { minProxyCardWidth, proxyCardSize } from '@/store/settings'
 import { useCurrentElement, useElementSize, useInfiniteScroll } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 
-export const useCalculateMaxProxies = (totalProxies: number, activeIndex: number) => {
+export const useCalculateMaxProxies = (
+    totalProxies: number,
+    activeIndex: number,
+): { maxProxies: Ref<number, number> } => {
     const el = useCurrentElement()
     const { width } = useElementSize(el)
     const initMaxProxies = computed(() => {

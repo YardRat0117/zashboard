@@ -24,7 +24,7 @@ import {
     WrenchScrewdriverIcon,
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, type RendererElement, type RendererNode, type VNode } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import DialogWrapper from '../common/DialogWrapper.vue'
@@ -34,7 +34,7 @@ import TableSettings from '../settings/TableSettings.vue'
 import ConnectionTabs from './ConnectionTabs.vue'
 import SourceIPFilter from './SourceIPFilter.vue'
 
-const handlerClickCloseAll = () => {
+const handlerClickCloseAll = (): void => {
     if (renderConnections.value.length === connections.value.length) {
         disconnectAllAPI()
     } else {
@@ -58,7 +58,7 @@ export default defineComponent({
         const { showTip, updateTip } = useTooltip()
         const { isLargeCtrlsBar } = useCtrlsBar(useConnectionCard.value ? 860 : 720)
 
-        return () => {
+        return (): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const sortForCards = (
                 <div class={`flex items-center gap-1 text-sm ${isLargeCtrlsBar.value ? 'w-auto' : 'w-full'}`}>
                     <span class="shrink-0">{t('sortBy')}</span>

@@ -210,7 +210,7 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 import { useStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { twMerge } from 'tailwind-merge'
-import { computed, h, ref, type VNode } from 'vue'
+import { computed, h, ref, type RendererElement, type RendererNode, type VNode } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ProxyName from '../proxies/ProxyName.vue'
 const { handlerInfo } = useConnections()
@@ -240,7 +240,7 @@ const columns: ColumnDef<Connection>[] = [
         header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Close),
         enableSorting: false,
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.Close,
-        cell: ({ row }) => {
+        cell: ({ row }): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const closeButton = h(
                 'button',
                 {
@@ -290,14 +290,14 @@ const columns: ColumnDef<Connection>[] = [
     {
         header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Chains),
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.Chains,
-        accessorFn: (original) => {
+        accessorFn: (original): string => {
             const chains = [...original.chains]
 
             return proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE
                 ? chains.join(' → ')
                 : chains.reverse().join(' → ')
         },
-        cell: ({ row }) => {
+        cell: ({ row }): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const chains: VNode[] = []
             const isReverse = proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE
             let originChains = row.original.chains
@@ -335,29 +335,29 @@ const columns: ColumnDef<Connection>[] = [
         },
     },
     {
-        header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Outbound),
+        header: (): string => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Outbound),
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.Outbound,
-        accessorFn: (original) => original.chains[0],
-        cell: ({ row }) => {
+        accessorFn: (original): string => original.chains[0],
+        cell: ({ row }): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             return h(ProxyName, {
                 name: row.original.chains[0],
             })
         },
     },
     {
-        header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.ConnectTime),
+        header: (): string => t(CONNECTIONS_TABLE_ACCESSOR_KEY.ConnectTime),
         enableGrouping: false,
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.ConnectTime,
-        accessorFn: (original) => fromNow(original.start),
-        sortingFn: (prev, next) => dayjs(next.original.start).valueOf() - dayjs(prev.original.start).valueOf(),
+        accessorFn: (original): string => fromNow(original.start),
+        sortingFn: (prev, next): number => dayjs(next.original.start).valueOf() - dayjs(prev.original.start).valueOf(),
     },
     {
-        header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.DlSpeed),
+        header: (): string => t(CONNECTIONS_TABLE_ACCESSOR_KEY.DlSpeed),
         enableGrouping: false,
         sortDescFirst: true,
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.DlSpeed,
-        accessorFn: (original) => `${prettyBytesHelper(original.downloadSpeed)}/s`,
-        sortingFn: (prev, next) => prev.original.downloadSpeed - next.original.downloadSpeed,
+        accessorFn: (original): string => `${prettyBytesHelper(original.downloadSpeed)}/s`,
+        sortingFn: (prev, next): number => prev.original.downloadSpeed - next.original.downloadSpeed,
     },
     {
         header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.UlSpeed),
@@ -384,16 +384,16 @@ const columns: ColumnDef<Connection>[] = [
         sortingFn: (prev, next) => prev.original.upload - next.original.upload,
     },
     {
-        header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.SourceIP),
+        header: (): string => t(CONNECTIONS_TABLE_ACCESSOR_KEY.SourceIP),
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.SourceIP,
-        accessorFn: (original) => {
+        accessorFn: (original): string => {
             return getIPLabelFromMap(original.metadata.sourceIP)
         },
     },
     {
         header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.SourcePort),
         id: CONNECTIONS_TABLE_ACCESSOR_KEY.SourcePort,
-        accessorFn: (original) => original.metadata.sourcePort,
+        accessorFn: (original): string => original.metadata.sourcePort,
     },
     {
         header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Destination),
@@ -513,8 +513,8 @@ const parentRef = ref<HTMLElement | null>(null)
 const rowVirtualizerOptions = computed(() => {
     return {
         count: rows.value.length,
-        getScrollElement: () => parentRef.value,
-        estimateSize: () => 36,
+        getScrollElement: (): HTMLElement | null => parentRef.value,
+        estimateSize: (): number => 36,
         overscan: 24,
     }
 })
@@ -531,7 +531,7 @@ const sizeOfTable = computed(() => {
     return classMap[tableSize.value]
 })
 
-const handlerClickRow = (row: Row<Connection>) => {
+const handlerClickRow = (row: Row<Connection>): void => {
     if (isDragging.value) return
 
     if (row.getIsGrouped()) {
@@ -543,7 +543,7 @@ const handlerClickRow = (row: Row<Connection>) => {
     }
 }
 
-const handlePinColumn = (column: Column<Connection, unknown>) => {
+const handlePinColumn = (column: Column<Connection, unknown>): void => {
     if (column.getIsPinned() === 'left') {
         column.pin(false)
     } else {
@@ -565,13 +565,13 @@ const isDragging = ref(false)
 const isMouseDown = ref(false)
 const DRAG_THRESHOLD = Math.pow(3, 2)
 
-const handleMouseDown = (e: MouseEvent) => {
+const handleMouseDown = (e: MouseEvent): void => {
     if (e.button !== 0) return // 只处理左键
     isMouseDown.value = true
     e.preventDefault()
 }
 
-const handleMouseMove = (e: MouseEvent) => {
+const handleMouseMove = (e: MouseEvent): void => {
     if (!isMouseDown.value || !parentRef.value) return
 
     const deltaX = e.movementX
@@ -589,7 +589,7 @@ const handleMouseMove = (e: MouseEvent) => {
     }
 }
 
-const handleMouseUp = () => {
+const handleMouseUp = (): void => {
     // 延迟重置拖动状态，以防止在拖动结束后立即触发点击事件
     if (isDragging.value) {
         setTimeout(() => {
@@ -600,7 +600,7 @@ const handleMouseUp = () => {
 }
 
 // 复制功能
-const copyToClipboard = async (text: string) => {
+const copyToClipboard = async (text: string): Promise<void> => {
     try {
         await navigator.clipboard.writeText(text)
         showNotification({
@@ -634,7 +634,7 @@ const handleCellRightClick = (
         column: { id: string }
         getValue: () => unknown
     },
-) => {
+): void => {
     event.preventDefault()
 
     const cellValue = cell.getValue()
@@ -649,6 +649,7 @@ const handleCellRightClick = (
 th .resizer {
     @apply opacity-0;
 }
+
 th:hover .resizer {
     @apply opacity-100;
 }

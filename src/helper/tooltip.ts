@@ -13,7 +13,7 @@ export const useTooltip = (): {
         appContent = document.getElementById('app-content')!
     }
 
-    const showTip = (event: Event, content: string | HTMLElement, config: Partial<Props> = {}) => {
+    const showTip = (event: Event, content: string | HTMLElement, config: Partial<Props> = {}): void => {
         if (currentTarget === event.currentTarget) {
             return
         }
@@ -54,11 +54,11 @@ export const useTooltip = (): {
         currentTarget = event.currentTarget as HTMLElement
     }
 
-    const hideTip = () => {
+    const hideTip = (): void => {
         tippyInstance?.hide()
     }
 
-    const updateTip = (content: string | HTMLElement) => {
+    const updateTip = (content: string | HTMLElement): void => {
         tippyInstance?.setContent(content)
     }
 
@@ -71,7 +71,7 @@ export const useTooltip = (): {
 
 const { showTip } = useTooltip()
 
-export const checkTruncation = (e: Event) => {
+export const checkTruncation = (e: Event): void => {
     const target = e.target as HTMLElement
     const { scrollWidth, clientWidth } = target
 

@@ -5,12 +5,12 @@ import { proxiesTabShow, proxyProviderList } from '@/store/proxies'
 import { swipeInPages, swipeInTabs } from '@/store/settings'
 import { useSwipe } from '@vueuse/core'
 import { flatten } from 'lodash'
-import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, ref, watch, type Ref } from 'vue'
+import { useRoute, useRouter, type NavigationFailure } from 'vue-router'
 
 export const disableSwipe = ref(false)
 
-export const useSwipeRouter = () => {
+export const useSwipeRouter = (): { swiperRef: Ref<undefined, undefined> } => {
     const swiperRef = ref()
     const route = useRoute()
     const router = useRouter()
@@ -25,8 +25,8 @@ export const useSwipeRouter = () => {
                     if (r === ROUTE_NAME.proxies && proxyProviderList.value.length > 0) {
                         return Object.values(PROXY_TAB_TYPE).map((tab) => {
                             return [
-                                () => route.name === ROUTE_NAME.proxies && proxiesTabShow.value === tab,
-                                () => {
+                                (): boolean => route.name === ROUTE_NAME.proxies && proxiesTabShow.value === tab,
+                                (): void => {
                                     router.push({
                                         name: ROUTE_NAME.proxies,
                                     })
@@ -37,8 +37,8 @@ export const useSwipeRouter = () => {
                     } else if (r === ROUTE_NAME.connections) {
                         return Object.values(CONNECTION_TAB_TYPE).map((tab) => {
                             return [
-                                () => route.name === ROUTE_NAME.connections && connectionTabShow.value === tab,
-                                () => {
+                                (): boolean => route.name === ROUTE_NAME.connections && connectionTabShow.value === tab,
+                                (): void => {
                                     router.push({
                                         name: ROUTE_NAME.connections,
                                     })
@@ -49,37 +49,43 @@ export const useSwipeRouter = () => {
                     }
                 }
 
-                return [[() => route.name === r, () => router.push({ name: r })]]
+                return [
+                    [
+                        (): boolean => route.name === r,
+                        (): Promise<void | NavigationFailure | undefined> => router.push({ name: r }),
+                    ],
+                ]
             }),
         )
     })
 
-    const getNextIndexInSwipeList = () => {
+    const getNextIndexInSwipeList = (): number => {
         return swipeList.value.findIndex((s) => s[0]())
     }
 
-    const getNextRouteName = () => {
+    const getNextRouteName = (): Promise<void | NavigationFailure | undefined> => {
         const routeName = route.name as ROUTE_NAME
 
         if (routeName === ROUTE_NAME.setup) {
             return router.push({ name: ROUTE_NAME.proxies })
         }
 
-        return swipeList.value[(getNextIndexInSwipeList() + 1) % swipeList.value.length]?.[1]?.()
+        return Promise.resolve(swipeList.value[(getNextIndexInSwipeList() + 1) % swipeList.value.length]?.[1]?.())
     }
-    const getPrevRouteName = () => {
+
+    const getPrevRouteName = (): Promise<void | NavigationFailure | undefined> => {
         const routeName = route.name as ROUTE_NAME
 
         if (routeName === ROUTE_NAME.setup) {
             return router.push({ name: ROUTE_NAME.proxies })
         }
 
-        return swipeList.value[
-            (getNextIndexInSwipeList() - 1 + swipeList.value.length) % swipeList.value.length
-        ]?.[1]?.()
+        return Promise.resolve(
+            swipeList.value[(getNextIndexInSwipeList() - 1 + swipeList.value.length) % swipeList.value.length]?.[1]?.(),
+        )
     }
 
-    const isInputActive = () => {
+    const isInputActive = (): boolean | null => {
         const activeEl = document.activeElement
         return activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')
     }

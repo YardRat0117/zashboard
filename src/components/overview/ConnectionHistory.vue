@@ -254,36 +254,36 @@ const columns = computed<ColumnDef<ConnectionHistoryData>[]>(() => {
     return [
         keyColumn,
         {
-            header: () => t('download'),
+            header: (): string => t('download'),
             id: 'download',
-            accessorFn: (row) => row.download,
-            cell: ({ row }) => prettyBytesHelper(row.original.download),
-            sortingFn: (prev, next) => prev.original.download - next.original.download,
+            accessorFn: (row): number => row.download,
+            cell: ({ row }): string => prettyBytesHelper(row.original.download),
+            sortingFn: (prev, next): number => prev.original.download - next.original.download,
             sortDescFirst: true,
         },
         {
-            header: () => t('upload'),
+            header: (): string => t('upload'),
             id: 'upload',
-            accessorFn: (row) => row.upload,
-            cell: ({ row }) => prettyBytesHelper(row.original.upload),
-            sortingFn: (prev, next) => prev.original.upload - next.original.upload,
+            accessorFn: (row): number => row.upload,
+            cell: ({ row }): string => prettyBytesHelper(row.original.upload),
+            sortingFn: (prev, next): number => prev.original.upload - next.original.upload,
             sortDescFirst: true,
         },
         {
-            header: () => t('totalTraffic'),
+            header: (): string => t('totalTraffic'),
             id: 'total',
-            accessorFn: (row) => row.download + row.upload,
-            cell: ({ row }) => prettyBytesHelper(row.original.download + row.original.upload),
-            sortingFn: (prev, next) =>
+            accessorFn: (row): number => row.download + row.upload,
+            cell: ({ row }): string => prettyBytesHelper(row.original.download + row.original.upload),
+            sortingFn: (prev, next): number =>
                 prev.original.download + prev.original.upload - (next.original.download + next.original.upload),
             sortDescFirst: true,
         },
         {
-            header: () => t('connectionCount'),
+            header: (): string => t('connectionCount'),
             id: 'count',
-            accessorFn: (row) => row.count,
-            cell: ({ row }) => row.original.count.toString(),
-            sortingFn: (prev, next) => prev.original.count - next.original.count,
+            accessorFn: (row): number => row.count,
+            cell: ({ row }): string => row.original.count.toString(),
+            sortingFn: (prev, next): number => prev.original.count - next.original.count,
             sortDescFirst: true,
         },
     ]
@@ -322,8 +322,8 @@ const parentRef = ref<HTMLElement | null>(null)
 const rowVirtualizerOptions = computed(() => {
     return {
         count: rows.value.length,
-        getScrollElement: () => parentRef.value,
-        estimateSize: () => 36,
+        getScrollElement: (): HTMLElement | null => parentRef.value,
+        estimateSize: (): number => 36,
         overscan: 10,
     }
 })
@@ -359,7 +359,7 @@ const getCleanupIntervalMs = (interval: AutoCleanupInterval): number => {
     }
 }
 
-const checkAndPerformAutoCleanup = async () => {
+const checkAndPerformAutoCleanup = async (): Promise<void> => {
     if (autoCleanupInterval.value === AutoCleanupInterval.Never) {
         return
     }
@@ -379,10 +379,10 @@ const checkAndPerformAutoCleanup = async () => {
     }
 }
 
-const handleClearHistory = async () => {
+const handleClearHistory = async (): Promise<void> => {
     try {
         await clearConnectionHistoryFromIndexedDB()
-        await initAggregatedDataMap()
+        initAggregatedDataMap()
         startTime.value = Date.now()
         showClearDialog.value = false
         showNotification({

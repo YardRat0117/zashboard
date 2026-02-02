@@ -52,11 +52,15 @@ const sourceList = computed(() => {
         .sort()
 })
 
-const getScopeValueFromSouceIPByBackendID = (backendID: string, sourceIP: Partial<SourceIPLabel>) => {
+const getScopeValueFromSouceIPByBackendID = (backendID: string, sourceIP: Partial<SourceIPLabel>): boolean => {
     return sourceIP.scope?.some((item) => item === backendID) ?? false
 }
 
-const setScopeValueFromSouceIPByBackendID = (backendID: string, sourceIP: Partial<SourceIPLabel>, value: boolean) => {
+const setScopeValueFromSouceIPByBackendID = (
+    backendID: string,
+    sourceIP: Partial<SourceIPLabel>,
+    value: boolean,
+): void => {
     if (value) {
         if (!sourceIP.scope) {
             sourceIP.scope = []
@@ -75,7 +79,7 @@ const isLocked = computed(() => {
 })
 
 const { showTip } = useTooltip()
-const bindBackendMenu = (e: Event) => {
+const bindBackendMenu = (e: Event): void => {
     const backendListContent = document.createElement('div')
 
     backendListContent.classList.add('flex', 'flex-col', 'gap-2', 'py-1')

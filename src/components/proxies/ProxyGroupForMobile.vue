@@ -107,7 +107,7 @@ const cardStyle = ref<Record<string, string | number>>({
     ...INIT_STYLE,
 })
 
-const calcCardStyle = () => {
+const calcCardStyle = (): void => {
     requestAnimationFrame(() => {
         if (!cardWrapperRef.value) return
 
@@ -167,7 +167,7 @@ const calcCardStyle = () => {
     })
 }
 
-const handlerTransitionEnd = (e: TransitionEvent) => {
+const handlerTransitionEnd = (e: TransitionEvent): void => {
     if (e.propertyName !== 'width') return
 
     if (modalMode.value) {
@@ -184,7 +184,7 @@ const handlerTransitionEnd = (e: TransitionEvent) => {
     }
 }
 
-const handlerGroupClick = async () => {
+const handlerGroupClick = async (): Promise<void> => {
     modalMode.value = !modalMode.value
     disableProxiesPageScroll.value = modalMode.value
 
@@ -197,7 +197,7 @@ const handlerGroupClick = async () => {
     calcCardStyle()
 }
 
-const handlerLatencyTest = async () => {
+const handlerLatencyTest = async (): Promise<void> => {
     if (isLatencyTesting.value) return
 
     isLatencyTesting.value = true
@@ -215,7 +215,7 @@ const hiddenGroup = computed({
     },
 })
 
-const handlerGroupToggle = () => {
+const handlerGroupToggle = (): void => {
     hiddenGroup.value = !hiddenGroup.value
 }
 

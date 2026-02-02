@@ -4,13 +4,13 @@ const getLatencyFromUrlAPI = (url: string): Promise<number> => {
         const img = document.createElement('img')
         img.src = url + '?_=' + new Date().getTime()
         img.style.display = 'none'
-        img.onload = () => {
+        img.onload = (): void => {
             const endTime = performance.now()
             img.remove()
 
             resolve(endTime - startTime)
         }
-        img.onerror = () => {
+        img.onerror = (): void => {
             img.remove()
 
             resolve(0)

@@ -26,7 +26,7 @@ const themes = computed(() => {
 })
 
 const { showTip, hideTip } = useTooltip()
-const handlerDropdown = (e: Event) => {
+const handlerDropdown = (e: Event): void => {
     const themeCotainer = document.createElement('div')
 
     themeCotainer.className = 'card h-96 w-48 overflow-y-auto overscroll-contain shadow-2xl'

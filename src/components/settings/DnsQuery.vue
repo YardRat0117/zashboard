@@ -43,7 +43,7 @@ const form = reactive({
 })
 const details = ref<IPInfo | null>(null)
 const resultList = ref<DNSQuery['Answer']>([])
-const query = async () => {
+const query = async (): Promise<void> => {
     const { data } = await queryDNSAPI(form)
 
     resultList.value = data.Answer

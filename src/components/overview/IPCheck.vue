@@ -50,7 +50,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const showPrivacy = ref(false)
 const { showTip } = useTooltip()
-const handlerShowPrivacyTip = (e: Event) => {
+const handlerShowPrivacyTip = (e: Event): void => {
     showTip(e, t('ipScreenshotTip'))
 }
 
@@ -64,7 +64,7 @@ const FAILED_IP_INFO = {
     ipWithPrivacy: [t('testFailed'), ''],
 }
 
-const getIPs = () => {
+const getIPs = (): void => {
     ipForLocal.value = {
         ...QUERYING_IP_INFO,
     }

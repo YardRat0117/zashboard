@@ -24,13 +24,13 @@ const chartsData = computed(() => {
     ]
 })
 
-const labelFormatter = (value: number) => {
+const labelFormatter = (value: number): string => {
     return `${prettyBytesHelper(value, {
         maximumFractionDigits: 0,
         binary: true,
     })}`
 }
-const tooltipFormatter = (value: ToolTipParams[]) => {
+const tooltipFormatter = (value: ToolTipParams[]): string => {
     return getToolTipForParams(value[0], {
         binary: true,
         suffix: '',

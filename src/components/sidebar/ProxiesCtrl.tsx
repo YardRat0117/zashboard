@@ -21,7 +21,7 @@ import {
     twoColumnProxyGroup,
 } from '@/store/settings'
 import { BoltIcon, ChevronDownIcon, ChevronUpIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, type RendererElement, type RendererNode, type VNode } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import DialogWrapper from '../common/DialogWrapper.vue'
@@ -40,7 +40,7 @@ export default defineComponent({
             return proxyProviderList.value.length > 0
         })
 
-        const handlerClickLatencyTestAll = async () => {
+        const handlerClickLatencyTestAll = async (): Promise<void> => {
             if (isAllLatencyTesting.value) return
             isAllLatencyTesting.value = true
             try {
@@ -55,13 +55,13 @@ export default defineComponent({
             return renderGroups.value.some((name) => collapseGroupMap.value[name])
         })
 
-        const handlerClickToggleCollapse = () => {
+        const handlerClickToggleCollapse = (): void => {
             collapseGroupMap.value = Object.fromEntries(
                 renderGroups.value.map((name) => [name, !hasNotCollapsed.value]),
             )
         }
 
-        const handlerResetProxyCardWidth = () => {
+        const handlerResetProxyCardWidth = (): void => {
             minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
         }
 
@@ -74,7 +74,7 @@ export default defineComponent({
                 }
             })
         })
-        return () => {
+        return (): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const tabs = (
                 <div role="tablist" class="tabs-box tabs tabs-xs">
                     {tabsWithNumbers.value.map(({ type, count }) => {

@@ -56,7 +56,7 @@ const colorSet = {
 
 let fontFamily = ''
 
-const updateColorSet = () => {
+const updateColorSet = (): void => {
     const colorStyle = getComputedStyle(colorRef.value)
 
     colorSet.baseContent = colorStyle.getPropertyValue('--color-base-content').trim()
@@ -71,14 +71,14 @@ const updateColorSet = () => {
     }
 }
 
-const updateFontFamily = () => {
+const updateFontFamily = (): void => {
     const baseColorStyle = getComputedStyle(colorRef.value)
     fontFamily = baseColorStyle.fontFamily
 }
 
 const barData = computed(() => {
     const maxItems = isMiddleScreen.value ? 8 : 20
-    const getValue = (rule: Rule) => {
+    const getValue = (rule: Rule): number => {
         return props.type === 'hit' ? rule.extra?.hitCount || 0 : rule.extra?.missCount || 0
     }
     const rulesWithCount = rules.value
@@ -116,7 +116,7 @@ const options = computed(() => {
                 color: colorSet.baseContent,
                 fontFamily,
             },
-            formatter: (params: { name: string; value: number }) => {
+            formatter: (params: { name: string; value: number }): string => {
                 const param = Array.isArray(params) ? params[0] : params
                 const translationKey = props.type === 'hit' ? 'ruleHitCount' : 'ruleMissCount'
                 return `
@@ -181,7 +181,7 @@ const options = computed(() => {
                 label: {
                     show: true,
                     position: 'top',
-                    formatter: (params: { value: number }) => {
+                    formatter: (params: { value: number }): number => {
                         return params.value
                     },
                     color: colorSet.baseContent,
@@ -248,7 +248,7 @@ onMounted(() => {
 
     // 移动端：松手后自动隐藏 tooltip
     if (isMiddleScreen.value && chart.value) {
-        touchEndHandler = () => {
+        touchEndHandler = (): void => {
             if (myChart) {
                 myChart.dispatchAction({ type: 'hideTip' })
             }

@@ -162,7 +162,7 @@ const totalTotalStr = computed(() => {
     })
 })
 
-const getProgressColor = (percentage: number) => {
+const getProgressColor = (percentage: number): string => {
     if (percentage >= 90) return 'progress-error'
     if (percentage >= 70) return 'progress-warning'
     return 'progress-success'

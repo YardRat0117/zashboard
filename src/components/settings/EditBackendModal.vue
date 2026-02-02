@@ -129,13 +129,13 @@ watch(
     { immediate: true },
 )
 
-const handleCancel = () => {
+const handleCancel = (): void => {
     isVisible.value = false
     editForm.value = null
     selectedBackendUuid.value = ''
 }
 
-const handleSave = async () => {
+const handleSave = async (): Promise<void> => {
     if (!editForm.value || !selectedBackend.value) return
 
     isSaving.value = true

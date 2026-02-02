@@ -105,7 +105,7 @@ const subscriptionInfo = computed(() => {
 const isUpdating = ref(false)
 const isHealthChecking = ref(false)
 
-const healthCheckClickHandler = async () => {
+const healthCheckClickHandler = async (): Promise<void> => {
     if (isHealthChecking.value) return
 
     isHealthChecking.value = true
@@ -118,7 +118,7 @@ const healthCheckClickHandler = async () => {
     }
 }
 
-const updateProviderClickHandler = async () => {
+const updateProviderClickHandler = async (): Promise<void> => {
     if (isUpdating.value) return
 
     isUpdating.value = true

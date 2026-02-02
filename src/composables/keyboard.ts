@@ -1,9 +1,23 @@
+import { ROUTE_NAME } from '@/constant'
 import { renderRoutes } from '@/helper'
 import { activeBackend } from '@/store/setup'
+import type { ComputedRef } from 'vue'
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-export const useKeyboard = () => {
+export const useKeyboard = (): {
+    routeShortcuts: ComputedRef<
+        {
+            key: string
+            route:
+                | ROUTE_NAME.overview
+                | ROUTE_NAME.proxies
+                | ROUTE_NAME.connections
+                | ROUTE_NAME.logs
+                | ROUTE_NAME.settings
+        }[]
+    >
+} => {
     const router = useRouter()
 
     const routeShortcuts = computed(() => {
@@ -13,7 +27,7 @@ export const useKeyboard = () => {
         }))
     })
 
-    const handleKeydown = (event: KeyboardEvent) => {
+    const handleKeydown = (event: KeyboardEvent): void => {
         if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
             return
         }

@@ -1,8 +1,8 @@
 import { useCurrentElement, useElementBounding } from '@vueuse/core'
-import { computed, onUnmounted, watch } from 'vue'
+import { computed, onUnmounted, watch, type ComputedRef } from 'vue'
 import { ctrlsBottom } from './paddingViews'
 
-export function useCtrlsBar(width: number = 720) {
+export function useCtrlsBar(width: number = 720): { isLargeCtrlsBar: ComputedRef<boolean> } {
     const element = useCurrentElement()
     const { width: ctrlsBarWidth, bottom: ctrlsBarBottom } = useElementBounding(element)
     const isLargeCtrlsBar = computed(() => {

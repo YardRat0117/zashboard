@@ -4,7 +4,10 @@ import { getLatencyByName } from '@/store/proxies'
 import { hideUnavailableProxies } from '@/store/settings'
 import { computed, type ComputedRef } from 'vue'
 
-export function useRenderProxies(proxies: ComputedRef<string[]>, proxyGroup?: string) {
+export function useRenderProxies(
+    proxies: ComputedRef<string[]>,
+    proxyGroup?: string,
+): { renderProxies: ComputedRef<string[]>; proxiesCount: ComputedRef<string> } {
     const renderProxies = computed(() => {
         return getRenderProxies(proxies.value, proxyGroup)
     })
@@ -24,7 +27,7 @@ export function useRenderProxies(proxies: ComputedRef<string[]>, proxyGroup?: st
     }
 }
 
-const getRenderProxies = (proxies: string[], groupName?: string) => {
+const getRenderProxies = (proxies: string[], groupName?: string): string[] => {
     const latencyMap = new Map<string, number>()
 
     proxies = [...proxies]

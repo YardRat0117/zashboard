@@ -170,11 +170,11 @@ import GroupTestUrlsSettings from './GroupTestUrlsSettings.vue'
 
 const { showTip } = useTooltip()
 const { t } = useI18n()
-const independentLatencyTestTip = (e: Event) => {
+const independentLatencyTestTip = (e: Event): void => {
     return showTip(e, t('independentLatencyTestTip'))
 }
 
-const handlerProxyCardSizeChange = () => {
+const handlerProxyCardSizeChange = (): void => {
     minProxyCardWidth.value = getMinCardWidth(proxyCardSize.value)
 }
 

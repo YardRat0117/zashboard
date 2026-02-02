@@ -27,7 +27,7 @@ import { twMerge } from 'tailwind-merge'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const { showTip } = useTooltip()
-const handlerHistoryTip = (e: Event) => {
+const handlerHistoryTip = (e: Event): void => {
     const history = getHistoryByName(props.name ?? '', props.groupName)
 
     if (!history.length) return

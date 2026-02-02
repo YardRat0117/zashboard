@@ -10,7 +10,7 @@ import { head } from 'lodash'
 import { computed } from 'vue'
 import { prettyBytesHelper } from './utils'
 
-export const isProxyGroup = (name: string) => {
+export const isProxyGroup = (name: string): boolean => {
     const proxyNode = proxyMap.value[name]
 
     if (!proxyNode) {
@@ -35,7 +35,7 @@ export const isProxyGroup = (name: string) => {
     ].includes(proxyNode.type.toLowerCase() as PROXY_TYPE)
 }
 
-export const getHostFromConnection = (connection: Connection) => {
+export const getHostFromConnection = (connection: Connection): string => {
     const port = connection.metadata.destinationPort
     const host = connection.metadata.host || connection.metadata.sniffHost || connection.metadata.destinationIP
 
@@ -45,11 +45,11 @@ export const getHostFromConnection = (connection: Connection) => {
     return `${host}:${port}`
 }
 
-export const getProcessFromConnection = (connection: Connection) => {
+export const getProcessFromConnection = (connection: Connection): string => {
     return connection.metadata.process || connection.metadata.processPath.replace(/^.*[/\\](.*)$/, '$1') || '-'
 }
 
-export const getDestinationFromConnection = (connection: Connection) => {
+export const getDestinationFromConnection = (connection: Connection): string => {
     const finalProxyType = proxyMap.value[head(connection.chains) || '']?.type.toLowerCase()
 
     if (finalProxyType === PROXY_TYPE.Direct && connection.metadata.remoteDestination) {
@@ -59,7 +59,7 @@ export const getDestinationFromConnection = (connection: Connection) => {
     return connection.metadata.destinationIP || connection.metadata.host
 }
 
-export const getDestinationTypeFromConnection = (connection: Connection) => {
+export const getDestinationTypeFromConnection = (connection: Connection): string => {
     const destination = getDestinationFromConnection(connection)
 
     if (ipaddr.IPv4.isIPv4(destination)) {
@@ -71,7 +71,7 @@ export const getDestinationTypeFromConnection = (connection: Connection) => {
     }
 }
 
-export const getChainsStringFromConnection = (connection: Connection) => {
+export const getChainsStringFromConnection = (connection: Connection): string => {
     const chains = [...connection.chains]
 
     if (proxyChainDirection.value === PROXY_CHAIN_DIRECTION.NORMAL) {
@@ -81,11 +81,11 @@ export const getChainsStringFromConnection = (connection: Connection) => {
     return chains.join('')
 }
 
-export const getNetworkTypeFromConnection = (connection: Connection) => {
+export const getNetworkTypeFromConnection = (connection: Connection): string => {
     return `${connection.metadata.type} | ${connection.metadata.network}`
 }
 
-export const getInboundUserFromConnection = (connection: Connection) => {
+export const getInboundUserFromConnection = (connection: Connection): string => {
     return connection.metadata.inboundUser || connection.metadata.inboundName || connection.metadata.inboundPort || '-'
 }
 
@@ -95,7 +95,7 @@ export const getToolTipForParams = (
         suffix: string
         binary: boolean
     },
-) => {
+): string => {
     const { suffix = '', binary = false } = config
 
     // fake data
@@ -112,7 +112,7 @@ export const getToolTipForParams = (
     </div>`
 }
 
-export const getColorForLatency = (latency: number) => {
+export const getColorForLatency = (latency: number): string => {
     if (latency === NOT_CONNECTED) {
         return ''
     } else if (latency < lowLatency.value) {
@@ -130,7 +130,7 @@ export const renderRoutes = computed(() => {
     })
 })
 
-export const applyCustomThemes = () => {
+export const applyCustomThemes = (): void => {
     document.querySelectorAll('.custom-theme').forEach((style) => {
         style.remove()
     })
@@ -142,7 +142,7 @@ export const applyCustomThemes = () => {
             .join(';')
 
         style.innerHTML = `[data-theme="${theme.name}"] {
-      ${styleString} 
+      ${styleString}
     }`
 
         style.className = `custom-theme ${theme.name}`
@@ -150,7 +150,7 @@ export const applyCustomThemes = () => {
     })
 }
 
-export const isHiddenGroup = (group: string) => {
+export const isHiddenGroup = (group: string): boolean | undefined => {
     if (Reflect.has(hiddenGroupMap.value, group)) {
         return hiddenGroupMap.value[group]
     }
@@ -158,7 +158,7 @@ export const isHiddenGroup = (group: string) => {
     return proxyMap.value[group]?.hidden
 }
 
-export const handlerUpgradeSuccess = () => {
+export const handlerUpgradeSuccess = (): void => {
     showNotification({
         content: 'upgradeSuccess',
         type: 'alert-success',

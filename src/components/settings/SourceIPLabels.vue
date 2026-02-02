@@ -74,7 +74,7 @@ const newLabelForIP = ref<Omit<SourceIPLabel, 'id'>>({
     label: '',
 })
 
-const handlerLabelAdd = () => {
+const handlerLabelAdd = (): void => {
     if (!newLabelForIP.value.key || !newLabelForIP.value.label) {
         return
     }
@@ -91,14 +91,14 @@ const handlerLabelAdd = () => {
     }
 }
 
-const handlerLabelRemove = (id: string) => {
+const handlerLabelRemove = (id: string): void => {
     sourceIPLabelList.value.splice(
         sourceIPLabelList.value.findIndex((item) => item.id === id),
         1,
     )
 }
 
-const handlerLabelUpdate = (sourceIP: Partial<SourceIPLabel>) => {
+const handlerLabelUpdate = (sourceIP: Partial<SourceIPLabel>): void => {
     const index = sourceIPLabelList.value.findIndex((item) => item.id === sourceIP.id)
 
     sourceIPLabelList.value[index] = {

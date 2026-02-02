@@ -68,14 +68,14 @@ const importDialogShow = ref(false)
 
 const { showTip } = useTooltip()
 
-const handlerJsonUpload = () => {
+const handlerJsonUpload = (): void => {
     showNotification({
         content: 'importing',
     })
     const file = inputRef.value?.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = async () => {
+    reader.onload = async (): Promise<void> => {
         const settings = JSON.parse(reader.result as string)
 
         for (const key in settings) {
@@ -86,10 +86,10 @@ const handlerJsonUpload = () => {
     reader.readAsText(file)
 }
 
-const importSettingsFromFile = () => {
+const importSettingsFromFile = (): void => {
     inputRef.value?.click()
 }
-const importSettingsFromUrlHandler = async () => {
+const importSettingsFromUrlHandler = async (): Promise<void> => {
     importDialogShow.value = false
     await importSettingsFromUrl(true)
 }

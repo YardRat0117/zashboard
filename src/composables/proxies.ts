@@ -6,7 +6,7 @@ import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/stor
 import { isEmpty } from 'lodash'
 import { computed, ref } from 'vue'
 
-const filterGroups = (all: string[]) => {
+const filterGroups = (all: string[]): string[] => {
     if (manageHiddenGroup.value) {
         return all
     }
@@ -14,7 +14,7 @@ const filterGroups = (all: string[]) => {
     return all.filter((name) => !isHiddenGroup(name))
 }
 
-const getRenderGroups = () => {
+const getRenderGroups = (): string[] => {
     if (isEmpty(proxyMap.value)) {
         return []
     }

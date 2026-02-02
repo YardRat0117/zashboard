@@ -50,7 +50,7 @@ const colorSet = {
 
 let fontFamily = ''
 
-const updateColorSet = () => {
+const updateColorSet = (): void => {
     const colorStyle = getComputedStyle(colorRef.value)
 
     colorSet.baseContent = colorStyle.getPropertyValue('--color-base-content').trim()
@@ -61,7 +61,8 @@ const updateColorSet = () => {
     colorSet.info30 = colorStyle.borderLeftColor
     colorSet.info60 = colorStyle.borderRightColor
 }
-const updateFontFamily = () => {
+
+const updateFontFamily = (): void => {
     const baseColorStyle = getComputedStyle(colorRef.value)
 
     fontFamily = baseColorStyle.fontFamily
@@ -106,7 +107,7 @@ const options = computed(() => {
         yAxis: {
             type: 'value',
             splitNumber: 4,
-            max: (value: { max: number }) => {
+            max: (value: { max: number }): number => {
                 return Math.max(value.max, props.min)
             },
             axisLine: { show: false },
@@ -189,7 +190,7 @@ onMounted(() => {
 
     // 移动端：松手后自动隐藏 tooltip
     if (isMiddleScreen.value && chart.value) {
-        touchEndHandler = () => {
+        touchEndHandler = (): void => {
             if (myChart) {
                 myChart.dispatchAction({ type: 'hideTip' })
             }

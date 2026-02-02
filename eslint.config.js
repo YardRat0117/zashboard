@@ -27,7 +27,7 @@ export default [
             'vue/no-mutating-props': 'error',
             'vue/require-default-prop': 'error',
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-            // '@typescript-eslint/explicit-function-return-type': 'error',
+            '@typescript-eslint/explicit-function-return-type': 'error',
             '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/no-unused-expressions': 'error',
             'unused-imports/no-unused-imports': 'error',

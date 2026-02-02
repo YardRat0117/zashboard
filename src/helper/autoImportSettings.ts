@@ -7,7 +7,7 @@ export const importSettingsUrl = useStorage(IMPORT_SETTINGS_URL_KEY, DEFAULT_SET
 export const autoImportSettings = useStorage('config/auto-import-settings', false)
 
 const autoImportSettingsHash = useStorage('cache/auto-import-settings-hash', '')
-const calculateSettingsHash = async (settings: Record<string, unknown>) => {
+const calculateSettingsHash = async (settings: Record<string, unknown>): Promise<string> => {
     const sortedKeys = Object.keys(settings).sort()
     const hashString = sortedKeys.map((key) => `${key}:${settings[key]}`).join('|')
 
@@ -19,9 +19,9 @@ const calculateSettingsHash = async (settings: Record<string, unknown>) => {
     }
     return Math.abs(hash).toString(16).padStart(8, '0')
 }
-export const importSettingsFromUrl = async (force = false) => {
+export const importSettingsFromUrl = async (force = false): Promise<void> => {
     const res = await fetch(importSettingsUrl.value)
-    const errorHandler = () => {
+    const errorHandler = (): void => {
         showNotification({
             content: 'importFailed',
             params: { url: res.url },

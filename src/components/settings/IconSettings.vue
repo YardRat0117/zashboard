@@ -53,7 +53,7 @@ const newIconReflect = reactive({
     icon: '',
 })
 
-const addIconReflect = () => {
+const addIconReflect = (): void => {
     if (!newIconReflect.name || !newIconReflect.icon) return
     dialogVisible.value = true
     iconReflectList.value.push({
@@ -64,7 +64,7 @@ const addIconReflect = () => {
     newIconReflect.icon = ''
 }
 
-const removeIconReflect = (uuid: string) => {
+const removeIconReflect = (uuid: string): void => {
     const index = iconReflectList.value.findIndex((item) => item.uuid === uuid)
     iconReflectList.value.splice(index, 1)
 }

@@ -183,20 +183,20 @@ watch(customBackgroundURL, (value) => {
 })
 
 const inputFileRef = ref()
-const handlerClickUpload = () => {
+const handlerClickUpload = (): void => {
     inputFileRef.value?.click()
 }
-const handlerBackgroundURLChange = () => {
+const handlerBackgroundURLChange = (): void => {
     if (!customBackgroundURL.value.includes(LOCAL_IMAGE)) {
         deleteBase64FromIndexedDB()
     }
 }
 
-const handlerFileChange = (e: Event) => {
+const handlerFileChange = (e: Event): void => {
     const file = (e.target as HTMLInputElement).files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = () => {
+    reader.onload = (): void => {
         customBackgroundURL.value = LOCAL_IMAGE + '-' + Date.now()
         saveBase64ToIndexedDB(reader.result as string)
     }
@@ -213,7 +213,7 @@ const fontOptions = computed(() => {
     return Object.values(FONTS)
 })
 
-const refreshPages = async () => {
+const refreshPages = async (): Promise<void> => {
     const registrations = await navigator.serviceWorker.getRegistrations()
 
     for (const registration of registrations) {

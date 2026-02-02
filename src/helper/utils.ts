@@ -86,7 +86,15 @@ export const findScrollableParent = (el: HTMLElement | null): HTMLElement | null
     return parent ? findScrollableParent(parent) : null
 }
 
-export const getBackendFromUrl = () => {
+export const getBackendFromUrl = (): {
+    protocol: string
+    secondaryPath: string
+    host: string
+    port: string
+    password: string
+    label: string
+    disableUpgradeCore: boolean
+} | null => {
     const query = new URLSearchParams(window.location.search || location.hash.match(/\?.*$/)?.[0]?.replace('?', ''))
 
     if (query.has('hostname')) {

@@ -66,7 +66,7 @@ const proxyGroup = computed(() => proxyMap.value[props.name])
 const allProxies = computed(() => proxyGroup.value.all ?? [])
 const { proxiesCount, renderProxies } = useRenderProxies(allProxies, props.name)
 const isLatencyTesting = ref(false)
-const handlerLatencyTest = async () => {
+const handlerLatencyTest = async (): Promise<void> => {
     if (isLatencyTesting.value) return
 
     isLatencyTesting.value = true
@@ -92,7 +92,7 @@ const hiddenGroup = computed({
     },
 })
 
-const handlerGroupToggle = () => {
+const handlerGroupToggle = (): void => {
     hiddenGroup.value = !hiddenGroup.value
 }
 

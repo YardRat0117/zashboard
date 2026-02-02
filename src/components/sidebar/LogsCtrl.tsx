@@ -24,7 +24,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import dayjs from 'dayjs'
 import { debounce } from 'lodash'
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch, type RendererElement, type RendererNode, type VNode } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DialogWrapper from '../common/DialogWrapper.vue'
 import TextInput from '../common/TextInput.vue'
@@ -85,7 +85,7 @@ export default defineComponent({
             }
         })
 
-        const downloadAllLogs = () => {
+        const downloadAllLogs = (): void => {
             const blob = new Blob(
                 [
                     logs.value
@@ -108,7 +108,7 @@ export default defineComponent({
             URL.revokeObjectURL(url)
         }
 
-        return () => {
+        return (): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const levelSelect = (
                 <select class={['join-item select select-sm min-w-30']} v-model={logLevel.value} onChange={initLogs}>
                     {logLevels.value.map((opt) => (
