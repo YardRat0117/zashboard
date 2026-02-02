@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBounceOnVisible } from '@/composables/bouncein'
 import { LOG_LEVEL } from '@/constant'
 import type { LogWithSeq } from '@/types'
 import { computed } from 'vue'
@@ -44,6 +43,4 @@ const textColorMapForType = {
     [LOG_LEVEL.Fatal]: 'text-error',
     [LOG_LEVEL.Panic]: 'text-error',
 }
-
-useBounceOnVisible()
 </script>

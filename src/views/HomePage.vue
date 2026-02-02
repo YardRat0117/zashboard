@@ -2,38 +2,11 @@
     <div
         class="bg-base-200/50 home-page flex size-full"
         :class="isSidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'">
-        <SideBar v-if="!isMiddleScreen" />
-        <RouterView v-slot="{ Component, route }">
-            <div class="relative flex-1 overflow-hidden" ref="swiperRef">
-                <div class="absolute flex h-full w-full flex-col overflow-y-auto">
-                    <Transition :name="(route.meta.transition as string) || 'fade'" v-if="isMiddleScreen">
-                        <Component :is="Component" />
-                    </Transition>
-                    <Component v-else :is="Component" />
-                </div>
+        <SideBar />
 
-                <template v-if="isMiddleScreen">
-                    <div
-                        class="bg-base-100/20 dock dock-xs z-10 h-14 w-auto shadow-sm backdrop-blur-sm"
-                        :style="{
-                            padding: '0',
-                            bottom: 'calc(var(--spacing) * 2 + env(safe-area-inset-bottom))',
-                        }"
-                        ref="dockRef">
-                        <button
-                            v-for="r in renderRoutes"
-                            :key="r"
-                            @click="router.push({ name: r })"
-                            class="h-14 flex-col items-center justify-center pt-2"
-                            :class="r === route.name && 'dock-active'">
-                            <component :is="ROUTE_ICON_MAP[r]" class="h-5 w-5 flex-shrink-0" />
-                            <span class="dock-label">
-                                {{ $t(r) }}
-                            </span>
-                        </button>
-                    </div>
-                    <div class="dock-shadow"></div>
-                </template>
+        <RouterView v-slot="{ Component }">
+            <div class="relative flex-1 overflow-auto">
+                <Component :is="Component" />
             </div>
         </RouterView>
 
@@ -57,12 +30,9 @@
 import { isBackendAvailable } from '@/api'
 import DialogWrapper from '@/components/common/DialogWrapper.vue'
 import SideBar from '@/components/sidebar/SideBar.vue'
-import { dockTop } from '@/composables/paddingViews'
-import { useSwipeRouter } from '@/composables/swipe'
-import { PROXY_TAB_TYPE, ROUTE_ICON_MAP } from '@/constant'
-import { renderRoutes } from '@/helper'
+import { PROXY_TAB_TYPE } from '@/constant'
 import { showNotification } from '@/helper/notification'
-import { getLabelFromBackend, isMiddleScreen } from '@/helper/utils'
+import { getLabelFromBackend } from '@/helper/utils'
 import { fetchConfigs } from '@/store/config'
 import { initConnections } from '@/store/connections'
 import { initLogs } from '@/store/logs'
@@ -72,23 +42,9 @@ import { fetchRules } from '@/store/rules'
 import { isSidebarCollapsed } from '@/store/settings'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
 import type { Backend } from '@/types'
-import { useDocumentVisibility, useElementBounding } from '@vueuse/core'
+import { useDocumentVisibility } from '@vueuse/core'
 import { ref, watch } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
-
-const router = useRouter()
-const { swiperRef } = useSwipeRouter()
-
-const dockRef = ref<HTMLDivElement>()
-const { top: dockRefTop } = useElementBounding(dockRef)
-
-watch(
-    dockRefTop,
-    () => {
-        dockTop.value = window.innerHeight - dockRefTop.value
-    },
-    { immediate: true },
-)
+import { RouterView } from 'vue-router'
 
 watch(
     activeUuid,

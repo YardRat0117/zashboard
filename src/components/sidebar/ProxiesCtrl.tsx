@@ -1,5 +1,4 @@
 import { renderGroups } from '@/composables/proxies'
-import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { PROXY_TAB_TYPE, ROUTE_NAME, SETTINGS_MENU_KEY } from '@/constant'
 import { getMinCardWidth } from '@/helper/utils'
 import {
@@ -34,7 +33,6 @@ export default defineComponent({
         const router = useRouter()
         const isAllLatencyTesting = ref(false)
         const settingsModel = ref(false)
-        const { isLargeCtrlsBar } = useCtrlsBar()
 
         const hasProviders = computed(() => {
             return proxyProviderList.value.length > 0
@@ -114,7 +112,7 @@ export default defineComponent({
 
             const searchInput = (
                 <TextInput
-                    class={['w-32 flex-1', isLargeCtrlsBar.value && 'max-w-80']}
+                    class="w-32 max-w-80 flex-1"
                     v-model={proxiesFilter.value}
                     placeholder={`${t('search')} | ${t('searchMultiple')}`}
                     clearable={true}
@@ -180,27 +178,19 @@ export default defineComponent({
                 </>
             )
 
-            const content = !isLargeCtrlsBar.value ? (
-                <div class="flex flex-col gap-2 p-2">
-                    {hasProviders.value && <div class="flex gap-2">{tabs}</div>}
-                    <div class="flex w-full gap-2">
-                        {searchInput}
-                        {settingsModal}
-                        {toggleCollapseAll}
-                        {latencyTestAll}
+            return (
+                <div class="ctrls-bar">
+                    <div class="flex flex-col gap-2 p-2">
+                        {hasProviders.value && <div class="flex gap-2">{tabs}</div>}
+                        <div class="flex w-full gap-2">
+                            {searchInput}
+                            {settingsModal}
+                            {toggleCollapseAll}
+                            {latencyTestAll}
+                        </div>
                     </div>
                 </div>
-            ) : (
-                <div class="flex gap-2 p-2">
-                    {hasProviders.value && tabs}
-                    <div class="flex flex-1">{searchInput}</div>
-                    {settingsModal}
-                    {toggleCollapseAll}
-                    {latencyTestAll}
-                </div>
             )
-
-            return <div class="ctrls-bar">{content}</div>
         }
     },
 })

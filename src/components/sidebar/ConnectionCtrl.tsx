@@ -1,5 +1,4 @@
 import { disconnectAllAPI, disconnectByIdAPI } from '@/api'
-import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { ROUTE_NAME, SETTINGS_MENU_KEY, SORT_DIRECTION, SORT_TYPE } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
@@ -56,13 +55,12 @@ export default defineComponent({
         const router = useRouter()
         const settingsModel = ref(false)
         const { showTip, updateTip } = useTooltip()
-        const { isLargeCtrlsBar } = useCtrlsBar(useConnectionCard.value ? 860 : 720)
 
         return (): VNode<RendererNode, RendererElement, { [key: string]: undefined }> => {
             const sortForCards = (
-                <div class={`flex items-center gap-1 text-sm ${isLargeCtrlsBar.value ? 'w-auto' : 'w-full'}`}>
+                <div class={`flex w-auto items-center gap-1 text-sm`}>
                     <span class="shrink-0">{t('sortBy')}</span>
-                    <div class={`join flex-1 ${isLargeCtrlsBar.value ? 'min-w-46' : ''}`}>
+                    <div class={`join min-w-46 flex-1`}>
                         <select class="join-item select select-sm flex-1" v-model={connectionSortType.value}>
                             {(Object.values(SORT_TYPE) as string[]).map((opt) => (
                                 <option key={opt} value={opt}>
@@ -137,7 +135,7 @@ export default defineComponent({
                     placeholder={`${t('search')} | ${t('searchMultiple')}`}
                     clearable={true}
                     before-close={true}
-                    class={isLargeCtrlsBar.value ? 'w-32 max-w-80 flex-1' : 'w-full'}
+                    class={'w-32 max-w-80 flex-1'}
                 />
             )
 
@@ -169,41 +167,32 @@ export default defineComponent({
                 </>
             )
 
-            const content = !isLargeCtrlsBar.value ? (
-                <div class="flex flex-wrap items-center gap-2 p-2">
-                    <div class="flex w-full items-center justify-between gap-2">
-                        <ConnectionTabs />
-                        {!useConnectionCard.value && (
-                            <div class="flex items-center gap-1">
+            return (
+                <div class="ctrls-bar">
+                    <div class="flex flex-wrap items-center gap-2 p-2">
+                        <div class="flex w-full items-center justify-between gap-2">
+                            <ConnectionTabs />
+                            {!useConnectionCard.value && (
+                                <div class="flex items-center gap-1">
+                                    {settingsModal}
+                                    {buttons}
+                                </div>
+                            )}
+                        </div>
+                        {useConnectionCard.value && (
+                            <div class="flex w-full items-center gap-2">
+                                {sortForCards}
                                 {settingsModal}
                                 {buttons}
                             </div>
                         )}
-                    </div>
-                    {useConnectionCard.value && (
-                        <div class="flex w-full items-center gap-2">
-                            {sortForCards}
-                            {settingsModal}
-                            {buttons}
+                        <div class="join w-full">
+                            <SourceIPFilter class="w-40" />
+                            {searchInput}
                         </div>
-                    )}
-                    <div class="join w-full">
-                        <SourceIPFilter class="w-40" />
-                        {searchInput}
                     </div>
-                </div>
-            ) : (
-                <div class="flex items-center gap-2 p-2">
-                    <ConnectionTabs />
-                    {useConnectionCard.value && sortForCards}
-                    <SourceIPFilter class="w-40" />
-                    <div class="flex flex-1">{searchInput}</div>
-                    {settingsModal}
-                    {buttons}
                 </div>
             )
-
-            return <div class="ctrls-bar">{content}</div>
         }
     },
 })

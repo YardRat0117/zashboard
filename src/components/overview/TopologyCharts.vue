@@ -50,7 +50,6 @@
 <script setup lang="ts">
 import { backgroundImage } from '@/helper/indexeddb'
 import { getIPLabelFromMap } from '@/helper/sourceip'
-import { isMiddleScreen } from '@/helper/utils'
 import { activeConnections } from '@/store/connections'
 import { blurIntensity, dashboardTransparent, font, theme } from '@/store/settings'
 import { ArrowsPointingInIcon, ArrowsPointingOutIcon, PauseCircleIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
@@ -76,17 +75,11 @@ const fullScreenMyChart = ref<echarts.ECharts>()
 const { width: windowWidth, height: windowHeight } = useWindowSize()
 
 const shouldRotate = computed(() => {
-    return isFullScreen.value && isMiddleScreen.value && windowHeight.value > windowWidth.value
+    return false
 })
 
 const fullChartStyle = computed(() => {
-    const baseStyle = `backdrop-filter: blur(${blurIntensity.value}px);`
-
-    if (shouldRotate.value) {
-        return `${baseStyle} transform: rotate(90deg); width: 100vh; height: 100vw; position: absolute; top: 50%; left: 50%; margin-top: -50vw; margin-left: -50vh;`
-    }
-
-    return baseStyle
+    return `backdrop-filter: blur(${blurIntensity.value}px);`
 })
 const colorSet = {
     baseContent10: '',
@@ -289,10 +282,10 @@ const options = computed(() => ({
             },
             label: {
                 color: colorSet.baseContent,
-                fontSize: isMiddleScreen.value ? 10 : 12,
+                fontSize: 12,
                 formatter: (params: { name: string }): string => {
                     const name = params.name
-                    const length = isFullScreen.value ? 45 : isMiddleScreen.value ? 20 : 30
+                    const length = isFullScreen.value ? 45 : 30
                     return name.length > length ? name.substring(0, length) + '...' : name
                 },
             },
@@ -401,7 +394,7 @@ onMounted(() => {
     watch(width, resize)
 
     // 监听窗口大小变化和旋转状态变化，确保全屏图表正确调整大小
-    watch([windowWidth, windowHeight, shouldRotate], () => {
+    watch([windowWidth, windowHeight], () => {
         if (isFullScreen.value && fullScreenMyChart.value) {
             nextTick(() => {
                 fullScreenMyChart.value?.resize()

@@ -14,7 +14,7 @@ import {
     TEST_URL,
     type THEME,
 } from '@/constant'
-import { getMinCardWidth, isMiddleScreen } from '@/helper/utils'
+import { getMinCardWidth } from '@/helper/utils'
 import type { SourceIPLabel } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
@@ -31,10 +31,6 @@ export const language = useStorage<LANG>(
 export const isSidebarCollapsedConfig = useStorage('config/is-sidebar-collapsed', true)
 export const isSidebarCollapsed = computed({
     get: () => {
-        if (isMiddleScreen.value) {
-            return true
-        }
-
         return isSidebarCollapsedConfig.value
     },
     set: (value) => {

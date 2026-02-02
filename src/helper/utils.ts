@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import prettyBytes, { type Options } from 'pretty-bytes'
 
 export const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
-export const isMiddleScreen = useMediaQuery('(max-width: 768px)')
 export const isPWA = ((): boolean | undefined => {
     return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone
 })()

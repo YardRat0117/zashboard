@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { isMiddleScreen } from '@/helper/utils'
 import { font, theme } from '@/store/settings'
 import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/vue/24/outline'
 import { useElementSize } from '@vueuse/core'
@@ -161,7 +160,7 @@ const options = computed(() => {
 })
 
 let myChart: echarts.ECharts | null = null
-let touchEndHandler: ((e: TouchEvent) => void) | null = null
+const touchEndHandler: ((e: TouchEvent) => void) | null = null
 
 onMounted(() => {
     updateColorSet()
@@ -187,16 +186,6 @@ onMounted(() => {
     }, 100)
 
     watch(width, resize)
-
-    // 移动端：松手后自动隐藏 tooltip
-    if (isMiddleScreen.value && chart.value) {
-        touchEndHandler = (): void => {
-            if (myChart) {
-                myChart.dispatchAction({ type: 'hideTip' })
-            }
-        }
-        chart.value.addEventListener('touchend', touchEndHandler)
-    }
 })
 
 onUnmounted(() => {

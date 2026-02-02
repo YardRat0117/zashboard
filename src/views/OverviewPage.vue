@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full overflow-x-hidden overflow-y-auto" :style="padding">
+    <div class="h-full overflow-x-hidden overflow-y-auto">
         <OverviewCtrl />
         <div class="flex flex-col gap-1 p-2">
             <component v-for="item in visibleCards" :key="item" :is="cardComponents[item.card]" />
@@ -15,15 +15,10 @@ import ProviderTrafficOverview from '@/components/overview/ProviderTrafficOvervi
 import RuleHitCountCard from '@/components/overview/RuleHitCountCard.vue'
 import TopologyCharts from '@/components/overview/TopologyCharts.vue'
 import OverviewCtrl from '@/components/sidebar/OverviewCtrl.vue'
-import { usePaddingForViews } from '@/composables/paddingViews'
 import { overviewCardOrder } from '@/store/settings'
 import type { Component } from 'vue'
 import { computed } from 'vue'
 
-const { padding } = usePaddingForViews({
-    offsetTop: 0,
-    offsetBottom: 0,
-})
 const visibleCards = computed(() => {
     return overviewCardOrder.value.filter((card) => card.visible)
 })

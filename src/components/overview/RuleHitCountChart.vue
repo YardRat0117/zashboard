@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { isMiddleScreen } from '@/helper/utils'
 import { rules } from '@/store/rules'
 import { font, theme } from '@/store/settings'
 import type { Rule } from '@/types'
@@ -77,7 +76,7 @@ const updateFontFamily = (): void => {
 }
 
 const barData = computed(() => {
-    const maxItems = isMiddleScreen.value ? 8 : 20
+    const maxItems = 20
     const getValue = (rule: Rule): number => {
         return props.type === 'hit' ? rule.extra?.hitCount || 0 : rule.extra?.missCount || 0
     }
@@ -198,7 +197,7 @@ const options = computed(() => {
 })
 
 let myChart: echarts.ECharts | null = null
-let touchEndHandler: ((e: TouchEvent) => void) | null = null
+const touchEndHandler: ((e: TouchEvent) => void) | null = null
 
 onMounted(() => {
     updateColorSet()
@@ -230,31 +229,12 @@ onMounted(() => {
         }
     })
 
-    watch(isMiddleScreen, () => {
-        if (isPaused.value) {
-            return
-        }
-        if (myChart && barData.value.length > 0) {
-            myChart.setOption(options.value)
-        }
-    })
-
     const { width } = useElementSize(chart)
     const resize = debounce(() => {
         myChart?.resize()
     }, 100)
 
     watch(width, resize)
-
-    // 移动端：松手后自动隐藏 tooltip
-    if (isMiddleScreen.value && chart.value) {
-        touchEndHandler = (): void => {
-            if (myChart) {
-                myChart.dispatchAction({ type: 'hideTip' })
-            }
-        }
-        chart.value.addEventListener('touchend', touchEndHandler)
-    }
 })
 
 onUnmounted(() => {

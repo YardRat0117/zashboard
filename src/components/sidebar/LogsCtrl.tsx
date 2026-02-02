@@ -1,4 +1,3 @@
-import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { LOG_LEVEL } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
@@ -33,7 +32,6 @@ export default defineComponent({
     setup() {
         const { t } = useI18n()
         const settingsModel = ref(false)
-        const { isLargeCtrlsBar } = useCtrlsBar()
         const { showTip, updateTip } = useTooltip()
         const insertLogSearchHistory = debounce((log: string) => {
             if (!log) {
@@ -132,9 +130,7 @@ export default defineComponent({
             )
 
             const logTypeSelect = (
-                <select
-                    class={['join-item select select-sm', isLargeCtrlsBar.value ? 'w-36' : 'w-24 max-w-40 flex-1']}
-                    v-model={logTypeFilter.value}>
+                <select class="join-item select select-sm w-36" v-model={logTypeFilter.value}>
                     <option value="">{t('all')}</option>
                     <optgroup label={t('logLevel')}>
                         {logFilterOptions.value.levels.map((opt) => (
@@ -218,31 +214,20 @@ export default defineComponent({
                 </div>
             )
 
-            const content = !isLargeCtrlsBar.value ? (
-                <div class="flex flex-col gap-2 p-2">
-                    <div class="flex w-full justify-between gap-2">
-                        <div class="join flex-1">{levelSelect}</div>
-                        {buttons}
-                    </div>
-                    <div class="join">
-                        {logTypeSelect}
-                        {searchInput}
-                    </div>
-                </div>
-            ) : (
-                <div class="flex items-center justify-between gap-2 p-2">
-                    <div class="flex items-center gap-2">
-                        {levelSelect}
-                        <div class="join w-96">
+            return (
+                <div class="ctrls-bar">
+                    <div class="flex flex-col gap-2 p-2">
+                        <div class="flex w-full justify-between gap-2">
+                            <div class="join flex-1">{levelSelect}</div>
+                            {buttons}
+                        </div>
+                        <div class="join">
                             {logTypeSelect}
                             {searchInput}
                         </div>
                     </div>
-                    {buttons}
                 </div>
             )
-
-            return <div class="ctrls-bar">{content}</div>
         }
     },
 })

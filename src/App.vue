@@ -5,28 +5,21 @@ import { useKeyboard } from './composables/keyboard'
 import { autoImportSettings, importSettingsFromUrl } from './helper/autoImportSettings'
 import { backgroundImage } from './helper/indexeddb'
 import { initNotification } from './helper/notification'
-import { getBackendFromUrl, isPreferredDark } from './helper/utils'
+import { getBackendFromUrl } from './helper/utils'
 import { blurIntensity, dashboardTransparent, disablePullToRefresh, theme } from './store/settings'
 import { activeUuid, backendList } from './store/setup'
 import type { Backend } from './types'
 
 const app = ref<HTMLElement>()
-const toast = ref<HTMLElement>()
 
+// Init notification
+const toast = ref<HTMLElement>()
 initNotification(toast as Ref<HTMLElement>)
+
+// Init colorscheme
 
 // Hard-encoded System Font
 const fontClassName = 'font-SystemUI-NotoEmoji'
-
-const setThemeColor = (): void => {
-    const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]')
-    if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', themeColor)
-    }
-}
-
-watch(isPreferredDark, setThemeColor)
 
 watch(
     disablePullToRefresh,
@@ -78,7 +71,6 @@ onMounted(() => {
         theme,
         () => {
             document.body.setAttribute('data-theme', theme.value)
-            setThemeColor()
         },
         {
             immediate: true,

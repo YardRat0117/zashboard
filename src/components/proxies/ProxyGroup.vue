@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { isHiddenGroup } from '@/helper'
 import { prettyBytesHelper } from '@/helper/utils'
@@ -95,6 +94,4 @@ const hiddenGroup = computed({
 const handlerGroupToggle = (): void => {
     hiddenGroup.value = !hiddenGroup.value
 }
-
-useBounceOnVisible()
 </script>

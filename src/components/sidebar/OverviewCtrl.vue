@@ -17,13 +17,10 @@
 <script setup lang="ts">
 import BackendVersion from '@/components/common/BackendVersion.vue'
 import OverviewCardSettingsDialog from '@/components/overview/OverviewCardSettingsDialog.vue'
-import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend } from '@/store/setup'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 const showCardSettingsDialog = ref(false)
-
-useCtrlsBar()
 </script>

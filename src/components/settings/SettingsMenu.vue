@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { useCtrlsBar } from '@/composables/useCtrlsBar'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import { useElementSize, useSwipe } from '@vueuse/core'
@@ -70,8 +69,6 @@ const activeStyle = computed(() => {
         width: `${activeWidth.value}px`,
     }
 })
-
-useCtrlsBar()
 
 const updateActiveMenuLeft = async (): Promise<void> => {
     await nextTick()

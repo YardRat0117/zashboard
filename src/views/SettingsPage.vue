@@ -5,7 +5,7 @@
             :menu-items="menuItems"
             :active-menu-key="activeMenuKey"
             @menu-click="handleMenuClick" />
-        <div class="grid grid-cols-1 gap-2 p-2" :style="padding">
+        <div class="grid grid-cols-1 gap-2 p-2">
             <div class="flex flex-col gap-4">
                 <div
                     v-for="item in menuItems"
@@ -27,7 +27,6 @@ import OverviewSettings from '@/components/settings/OverviewSettings.vue'
 import ProxiesSettings from '@/components/settings/ProxiesSettings.vue'
 import SettingsMenu from '@/components/settings/SettingsMenu.vue'
 import ZashboardSettings from '@/components/settings/ZashboardSettings.vue'
-import { usePaddingForViews } from '@/composables/paddingViews'
 import { SETTINGS_MENU_KEY } from '@/constant'
 import { hiddenSettingsItems, settingsMenuOrder } from '@/store/settings'
 import { ArrowsRightLeftIcon, CubeTransparentIcon, GlobeAltIcon, HomeIcon, ServerIcon } from '@heroicons/vue/24/outline'
@@ -43,7 +42,6 @@ type MenuItem = {
     component: Component
 }
 
-const { padding } = usePaddingForViews()
 const route = useRoute()
 
 const scrollContainerRef = ref<HTMLDivElement>()

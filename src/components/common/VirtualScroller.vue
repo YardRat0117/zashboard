@@ -16,10 +16,7 @@
                     v-for="row in virtualRows"
                     :key="row.key.toString()"
                     :data-index="row.index"
-                    :ref="(ref) => measureElement(ref as Element | null)"
-                    :style="{
-                        marginBottom: marginBottom(row.index),
-                    }">
+                    :ref="(ref) => measureElement(ref as Element | null)">
                     <slot :item="data[row.index]" :index="row.index" />
                 </div>
             </div>
@@ -31,15 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { usePaddingForViews } from '@/composables/paddingViews'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import { computed, nextTick, ref } from 'vue'
 
-const { paddingTop, paddingBottom } = usePaddingForViews({
-    offsetTop: 0,
-    offsetBottom: 0,
-})
 const parentRef = ref<HTMLElement | null>(null)
+
 const props = withDefaults(
     defineProps<{
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,23 +46,17 @@ const props = withDefaults(
         overscan: 24,
     },
 )
-const virutalOptions = computed(() => {
-    return {
-        count: props.data.length,
-        getScrollElement: (): HTMLElement | null => parentRef.value,
-        estimateSize: (): number => props.size,
-        overscan: props.overscan,
-        paddingStart: paddingTop.value,
-    }
-})
+const virtualOptions = computed(() => ({
+    count: props.data.length,
+    getScrollElement: (): HTMLElement | null => parentRef.value,
+    estimateSize: (): number => props.size,
+    overscan: props.overscan,
+}))
 
-const rowVirtualizer = useVirtualizer(virutalOptions)
+const rowVirtualizer = useVirtualizer(virtualOptions)
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-const marginBottom = (index: number): string => {
-    return index === props.data.length - 1 ? `${paddingBottom.value}px` : '4px'
-}
 const measureElement = (el: Element | null): void => {
     if (!el) {
         return

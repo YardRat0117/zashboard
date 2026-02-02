@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex size-full flex-col overflow-hidden" :style="!useConnectionCard && padding">
+    <div class="relative flex size-full flex-col overflow-hidden">
         <template v-if="useConnectionCard">
             <ConnectionCardList />
         </template>
@@ -16,12 +16,7 @@ import ConnectionCardList from '@/components/connections/ConnectionCardList.vue'
 import ConnectionDetails from '@/components/connections/ConnectionDetails.vue'
 import ConnectionTable from '@/components/connections/ConnectionTable.vue'
 import ConnectionCtrl from '@/components/sidebar/ConnectionCtrl.tsx'
-import { usePaddingForViews } from '@/composables/paddingViews'
 import { useConnectionCard } from '@/store/settings'
-const { padding } = usePaddingForViews({
-    offsetTop: 0,
-    offsetBottom: 0,
-})
 </script>
 
 <style>
@@ -34,6 +29,7 @@ const { padding } = usePaddingForViews({
         Bitstream Vera Sans Mono,
         monospace;
 }
+
 .vjs-tree-node.is-highlight,
 .vjs-tree-node:hover {
     background-color: var(--color-base-200);
