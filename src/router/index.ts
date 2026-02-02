@@ -1,5 +1,4 @@
 import { ROUTE_NAME } from '@/constant'
-// import { renderRoutes } from '@/helper'
 import { i18n } from '@/i18n'
 import { language } from '@/store/settings'
 import { activeBackend } from '@/store/setup'
@@ -51,58 +50,45 @@ const router = createRouter({
         // Normal routing
         {
             path: '/',
-            redirect: ROUTE_NAME.overview,
+            redirect: ROUTE_NAME.setup,
             component: HomePage,
             children: panelRouter,
         },
-        // If backend unavailable, route to the SetupPage
         {
             path: '/setup',
             name: ROUTE_NAME.setup,
             component: SetupPage,
         },
-        // Route to overview by default
+        // Route to setupby default
         {
             path: '/:catchAll(.*)',
-            redirect: ROUTE_NAME.overview,
+            redirect: ROUTE_NAME.setup,
         },
     ],
 })
 
-// IDK what this is for.
-// router.beforeEach((to, from) => {
-//   const toIndex = renderRoutes.value.findIndex((item) => item === to.name)
-//   const fromIndex = renderRoutes.value.findIndex((item) => item === from.name)
-
-//   if (toIndex === 0 && fromIndex === renderRoutes.value.length - 1) {
-//     to.meta.transition = 'slide-left'
-//   } else if (toIndex === renderRoutes.value.length - 1 && fromIndex === 0) {
-//     to.meta.transition = 'slide-right'
-//   } else if (toIndex !== fromIndex) {
-//     to.meta.transition = toIndex < fromIndex ? 'slide-right' : 'slide-left'
-//   }
-
-//   if (!activeBackend.value && to.name !== ROUTE_NAME.setup) {
-//     router.push({ name: ROUTE_NAME.setup })
-//   }
-// })
-
-router.afterEach((to) => {
-    setTitleByName(to.name)
+// Route to setup if backend unavailable.
+router.beforeEach(() => {
+    if (!activeBackend.value) {
+        router.push({ name: ROUTE_NAME.setup })
+    }
 })
 
+// Update title after routing
 const title = useTitle('zashboard')
 const setTitleByName = (name: string | symbol | undefined): void => {
     if (typeof name === 'string' && activeBackend.value) {
-        // Must be hard-encoded, or it repeats
         title.value = `zashboard | ${i18n.global.t(name)}`
     }
 }
-
+router.afterEach((to) => {
+    setTitleByName(to.name)
+})
 watch(language, () => {
     setTimeout(() => {
         setTitleByName(router.currentRoute.value.name)
     })
 })
 
+// Export as default router
 export default router
