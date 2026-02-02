@@ -109,7 +109,7 @@ watch(
 
 const autoSwitchBackendDialog = ref(false)
 
-const autoSwitchBackend = async () => {
+const autoSwitchBackend = async (): Promise<void> => {
     const otherEnds = backendList.value.filter((end) => end.uuid !== activeUuid.value)
 
     autoSwitchBackendDialog.value = false

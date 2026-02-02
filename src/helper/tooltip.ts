@@ -4,7 +4,11 @@ let appContent: HTMLElement
 let tippyInstance: Instance | null = null
 let currentTarget: HTMLElement | null = null
 
-export const useTooltip = () => {
+export const useTooltip = (): {
+    showTip: (event: Event, content: string | HTMLElement, config?: Partial<Props>) => void
+    hideTip: () => void
+    updateTip: (content: string | HTMLElement) => void
+} => {
     if (!appContent) {
         appContent = document.getElementById('app-content')!
     }

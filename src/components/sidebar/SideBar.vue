@@ -48,7 +48,7 @@ import VerticalInfos from './VerticalInfos.vue'
 const { showTip } = useTooltip()
 const { t } = useI18n()
 
-const mouseenterHandler = (e: MouseEvent, r: string) => {
+const mouseenterHandler = (e: MouseEvent, r: string): void => {
     if (!isSidebarCollapsed.value) return
     showTip(e, t(r), {
         placement: 'right',

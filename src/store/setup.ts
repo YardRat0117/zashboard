@@ -9,7 +9,7 @@ export const backendList = useStorage<Backend[]>('setup/api-list', [])
 export const activeUuid = useStorage<string>('setup/active-uuid', '')
 export const activeBackend = computed(() => backendList.value.find((backend) => backend.uuid === activeUuid.value))
 
-export const addBackend = (backend: Omit<Backend, 'uuid'>) => {
+export const addBackend = (backend: Omit<Backend, 'uuid'>): void => {
     const currentEnd = backendList.value.find((end) => {
         return isEqual(omit(end, 'uuid'), backend)
     })
@@ -28,7 +28,7 @@ export const addBackend = (backend: Omit<Backend, 'uuid'>) => {
     activeUuid.value = id
 }
 
-export const updateBackend = (uuid: string, backend: Omit<Backend, 'uuid'>) => {
+export const updateBackend = (uuid: string, backend: Omit<Backend, 'uuid'>): void => {
     const index = backendList.value.findIndex((end) => end.uuid === uuid)
     if (index !== -1) {
         backendList.value[index] = {
@@ -38,7 +38,7 @@ export const updateBackend = (uuid: string, backend: Omit<Backend, 'uuid'>) => {
     }
 }
 
-export const removeBackend = (uuid: string) => {
+export const removeBackend = (uuid: string): void => {
     backendList.value = backendList.value.filter((end) => end.uuid !== uuid)
     sourceIPLabelList.value.forEach((label) => {
         if (label.scope && label.scope.includes(uuid)) {

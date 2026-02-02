@@ -117,14 +117,14 @@ watch(
     },
     { immediate: true },
 )
-const getItemRef = (key: SETTINGS_MENU_KEY) => {
+const getItemRef = (key: SETTINGS_MENU_KEY): HTMLElement | null => {
     return document.getElementById(`item-${key}`)
 }
 
 const isTriggerByClick = ref(false)
 const timeoutId = ref<number>()
 
-const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
+const handleMenuClick = (key: SETTINGS_MENU_KEY): void => {
     activeMenuKey.value = key
 
     const index = menuItems.value.findIndex((item) => item.key === key)
@@ -150,7 +150,7 @@ const handleMenuClick = (key: SETTINGS_MENU_KEY) => {
 }
 
 const scrollTop = ref(0)
-const updateActiveMenuByScroll = () => {
+const updateActiveMenuByScroll = (): void => {
     if (!scrollContainerRef.value || isTriggerByClick.value) return
 
     const containerRect = scrollContainerRef.value.getBoundingClientRect()

@@ -1,4 +1,4 @@
-const getLatencyFromUrlAPI = (url: string) => {
+const getLatencyFromUrlAPI = (url: string): Promise<number> => {
     return new Promise<number>((resolve) => {
         const startTime = performance.now()
         const img = document.createElement('img')
@@ -20,18 +20,18 @@ const getLatencyFromUrlAPI = (url: string) => {
     })
 }
 
-export const getGoogleLatencyAPI = () => {
+export const getGoogleLatencyAPI = (): Promise<number> => {
     return getLatencyFromUrlAPI('https://www.google.com/favicon.ico')
 }
 
-export const getCloudflareLatencyAPI = () => {
+export const getCloudflareLatencyAPI = (): Promise<number> => {
     return getLatencyFromUrlAPI('https://www.cloudflare.com/favicon.ico')
 }
 
-export const getGithubLatencyAPI = () => {
+export const getGithubLatencyAPI = (): Promise<number> => {
     return getLatencyFromUrlAPI('https://github.githubassets.com/favicon.ico')
 }
 
-export const getDockerLatencyAPI = () => {
+export const getDockerLatencyAPI = (): Promise<number> => {
     return getLatencyFromUrlAPI('https://www.docker.com/favicon.ico')
 }

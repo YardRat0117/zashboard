@@ -16,7 +16,7 @@ export const uploadSpeedHistory = ref([...initValue])
 
 let cancel: () => void
 
-export const initSatistic = () => {
+export const initSatistic = (): void => {
     cancel?.()
 
     downloadSpeedHistory.value = [...initValue]
@@ -79,7 +79,7 @@ export const initSatistic = () => {
         },
     )
 
-    cancel = () => {
+    cancel = (): void => {
         memoryWsClose()
         trafficWsClose()
         unwatchMemory()

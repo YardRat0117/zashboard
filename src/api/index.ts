@@ -4,6 +4,7 @@ import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { activeBackend, activeUuid } from '@/store/setup'
 import type { Backend, Config, DNSQuery, Proxy, ProxyProvider, Rule } from '@/types'
+import type { AxiosResponse } from 'axios'
 import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
@@ -52,7 +53,7 @@ axios.interceptors.response.use(
 )
 
 export const version = ref()
-export const fetchVersionAPI = () => {
+export const fetchVersionAPI = (): Promise<AxiosResponse<{ version: string }>> => {
     return axios.get<{ version: string }>('/version')
 }
 export const zashboardVersion = ref(__APP_VERSION__)
@@ -68,11 +69,15 @@ watch(
     { immediate: true },
 )
 
-export const fetchProxiesAPI = () => {
+export const fetchProxiesAPI = (): Promise<AxiosResponse<{ proxies: Record<string, Proxy> }>> => {
     return axios.get<{ proxies: Record<string, Proxy> }>('/proxies')
 }
 
-export const fetchProxyLatencyAPI = (proxyName: string, url: string, timeout: number) => {
+export const fetchProxyLatencyAPI = (
+    proxyName: string,
+    url: string,
+    timeout: number,
+): Promise<AxiosResponse<{ delay: number }>> => {
     return axios.get<{ delay: number }>(`/proxies/${encodeURIComponent(proxyName)}/delay`, {
         params: {
             url,
@@ -81,7 +86,11 @@ export const fetchProxyLatencyAPI = (proxyName: string, url: string, timeout: nu
     })
 }
 
-export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeout: number) => {
+export const fetchProxyGroupLatencyAPI = (
+    proxyName: string,
+    url: string,
+    timeout: number,
+): Promise<AxiosResponse<Record<string, number>>> => {
     return axios.get<Record<string, number>>(`/group/${encodeURIComponent(proxyName)}/delay`, {
         params: {
             url,
@@ -90,23 +99,23 @@ export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeou
     })
 }
 
-export const fetchProxyProviderAPI = () => {
+export const fetchProxyProviderAPI = (): Promise<AxiosResponse<{ providers: Record<string, ProxyProvider> }>> => {
     return axios.get<{
         providers: Record<string, ProxyProvider>
     }>('/providers/proxies')
 }
 
-export const proxyProviderHealthCheckAPI = (name: string) => {
+export const proxyProviderHealthCheckAPI = (name: string): Promise<AxiosResponse<Record<string, number>>> => {
     return axios.get<Record<string, number>>(`/providers/proxies/${encodeURIComponent(name)}/healthcheck`, {
         timeout: 15000,
     })
 }
 
-export const fetchRulesAPI = () => {
+export const fetchRulesAPI = (): Promise<AxiosResponse<{ rules: Rule[] }>> => {
     return axios.get<{ rules: Rule[] }>('/rules')
 }
 
-export const updateRuleProviderAPI = (name: string) => {
+export const updateRuleProviderAPI = (name: string): Promise<AxiosResponse<unknown>> => {
     return axios.put(`/providers/rules/${encodeURIComponent(name)}`)
 }
 

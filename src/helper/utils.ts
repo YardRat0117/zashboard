@@ -6,22 +6,22 @@ import prettyBytes, { type Options } from 'pretty-bytes'
 
 export const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
 export const isMiddleScreen = useMediaQuery('(max-width: 768px)')
-export const isPWA = (() => {
+export const isPWA = ((): boolean | undefined => {
     return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone
 })()
 
-export const prettyBytesHelper = (bytes: number, opts?: Options) => {
+export const prettyBytesHelper = (bytes: number, opts?: Options): string => {
     return prettyBytes(bytes, {
         binary: false,
         ...opts,
     })
 }
 
-export const fromNow = (timestamp: string) => {
+export const fromNow = (timestamp: string): string => {
     return dayjs(timestamp).fromNow()
 }
 
-export const exportSettings = () => {
+export const exportSettings = (): void => {
     const settings: Record<string, string | null> = {}
 
     for (const key in localStorage) {
@@ -41,21 +41,21 @@ export const exportSettings = () => {
     URL.revokeObjectURL(url)
 }
 
-export const getUrlFromBackend = (end: Omit<Backend, 'uuid'>) => {
+export const getUrlFromBackend = (end: Omit<Backend, 'uuid'>): string => {
     return `${end.protocol}://${end.host}:${end.port}${end.secondaryPath || ''}`
 }
 
-export const getLabelFromBackend = (end: Omit<Backend, 'uuid'>) => {
+export const getLabelFromBackend = (end: Omit<Backend, 'uuid'>): string => {
     return end.label || getUrlFromBackend(end)
 }
 
-export const getMinCardWidth = (size: PROXY_CARD_SIZE) => {
+export const getMinCardWidth = (size: PROXY_CARD_SIZE): number => {
     return size === PROXY_CARD_SIZE.LARGE ? MIN_PROXY_CARD_WIDTH.LARGE : MIN_PROXY_CARD_WIDTH.SMALL
 }
 
 export const SCROLLABLE_PARENT_CLASS = 'scrollable-parent'
 
-export const scrollIntoCenter = (el: HTMLElement) => {
+export const scrollIntoCenter = (el: HTMLElement): void => {
     const scrollableParent = findScrollableParent(el)
 
     if (!scrollableParent) return

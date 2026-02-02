@@ -18,7 +18,7 @@ initNotification(toast as Ref<HTMLElement>)
 // Hard-encoded System Font
 const fontClassName = 'font-SystemUI-NotoEmoji'
 
-const setThemeColor = () => {
+const setThemeColor = (): void => {
     const themeColor = getComputedStyle(app.value!).getPropertyValue('background-color').trim()
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
     if (metaThemeColor) {
@@ -45,7 +45,7 @@ watch(
     },
 )
 
-const isSameBackend = (b1: Omit<Backend, 'uuid'>, b2: Omit<Backend, 'uuid'>) => {
+const isSameBackend = (b1: Omit<Backend, 'uuid'>, b2: Omit<Backend, 'uuid'>): boolean => {
     return (
         b1.host === b2.host &&
         b1.port === b2.port &&
@@ -55,7 +55,7 @@ const isSameBackend = (b1: Omit<Backend, 'uuid'>, b2: Omit<Backend, 'uuid'>) => 
     )
 }
 
-const autoSwitchToURLBackendIfExists = () => {
+const autoSwitchToURLBackendIfExists = (): void => {
     const backend = getBackendFromUrl()
 
     if (backend) {

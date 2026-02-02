@@ -1,12 +1,12 @@
-import { disconnectByIdAPI, fetchConnectionsAPI } from '@/api'
+import { fetchConnectionsAPI } from '@/api'
 import { CONNECTION_TAB_TYPE, SORT_DIRECTION, SORT_TYPE } from '@/constant'
 import { getChainsStringFromConnection, getInboundUserFromConnection } from '@/helper'
 import type { Connection, ConnectionRawMessage } from '@/types'
-import { useStorage, watchOnce } from '@vueuse/core'
+import { useStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
 import { initAggregatedDataMap, saveConnectionHistory } from './connHistory'
-import { autoDisconnectIdleUDP, autoDisconnectIdleUDPTime, useConnectionCard } from './settings'
+import { useConnectionCard } from './settings'
 
 export const connectionTabShow = ref(CONNECTION_TAB_TYPE.ACTIVE)
 export const connectionSortType = useStorage<SORT_TYPE>('config/connection-sort-type', SORT_TYPE.HOST)
@@ -30,7 +30,7 @@ export const uploadTotal = ref(0)
 let cancel: () => void
 let previousConnectionsMap = new Map<string, Connection>()
 
-export const initConnections = () => {
+export const initConnections = (): void => {
     cancel?.()
     activeConnections.value = []
     closedConnections.value = []
@@ -91,22 +91,7 @@ export const initConnections = () => {
         previousConnectionsMap = currentConnectionsMap
     })
 
-    if (autoDisconnectIdleUDP.value) {
-        watchOnce(activeConnections, () => {
-            activeConnections.value
-                .filter((conn) => conn.metadata.network !== 'tcp')
-                .forEach((conn) => {
-                    const now = dayjs()
-                    const start = dayjs(conn.start)
-
-                    if (now.diff(start, 'minute') > autoDisconnectIdleUDPTime.value) {
-                        disconnectByIdAPI(conn.id)
-                    }
-                })
-        })
-    }
-
-    cancel = () => {
+    cancel = (): void => {
         unwatch()
         ws.close()
     }

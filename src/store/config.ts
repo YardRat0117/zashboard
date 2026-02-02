@@ -19,6 +19,6 @@ export const configs = ref<Config>({
         enable: false,
     },
 })
-export const fetchConfigs = async () => {
+export const fetchConfigs = async (): Promise<void> => {
     configs.value = (await getConfigsAPI()).data
 }

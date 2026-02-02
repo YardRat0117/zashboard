@@ -5,6 +5,6 @@ import { ref } from 'vue'
 // Reserved for ruleset hit count
 export const rules = ref<Rule[]>([])
 
-export const fetchRules = async () => {
+export const fetchRules = async (): Promise<void> => {
     rules.value = (await fetchRulesAPI()).data.rules
 }

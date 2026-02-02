@@ -15,6 +15,7 @@ const props = withDefaults(
         margin?: number
     }>(),
     {
+        fill: undefined,
         size: 16,
         margin: 4,
     },

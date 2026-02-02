@@ -92,7 +92,7 @@ router.afterEach((to) => {
 })
 
 const title = useTitle('zashboard')
-const setTitleByName = (name: string | symbol | undefined) => {
+const setTitleByName = (name: string | symbol | undefined): void => {
     if (typeof name === 'string' && activeBackend.value) {
         // Must be hard-encoded, or it repeats
         title.value = `zashboard | ${i18n.global.t(name)}`

@@ -10,7 +10,7 @@ const sourceIPRegexList: {
     label: string
 }[] = []
 
-const preprocessSourceIPList = () => {
+const preprocessSourceIPList = (): void => {
     ipLabelCache.clear()
     sourceIPMap.clear()
     sourceIPRegexList.length = 0
@@ -28,7 +28,7 @@ const preprocessSourceIPList = () => {
     }
 }
 
-const cacheResult = (ip: string, label: string) => {
+const cacheResult = (ip: string, label: string): string => {
     ipLabelCache.set(ip, label)
 
     if (ipLabelCache.size > CACHE_SIZE) {
@@ -47,7 +47,7 @@ watch(() => [sourceIPLabelList.value, activeBackend.value], preprocessSourceIPLi
     deep: true,
 })
 
-export const getIPLabelFromMap = (ip: string) => {
+export const getIPLabelFromMap = (ip: string): string => {
     if (!ip) return ip === '' ? 'Inner' : ''
 
     if (ipLabelCache.has(ip)) {

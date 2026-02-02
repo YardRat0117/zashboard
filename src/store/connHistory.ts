@@ -14,7 +14,7 @@ const isInitializedPromise = ref(
         resolve(false)
     }),
 )
-const uuid = () => activeBackend.value?.uuid || ''
+const uuid = (): string => activeBackend.value?.uuid || ''
 const allHistoryTypes = [ConnectionHistoryType.Destination, ConnectionHistoryType.Outbound]
 
 export const aggregatedDataMap = ref<Record<ConnectionHistoryType, ConnectionHistoryData[]>>({
@@ -22,7 +22,7 @@ export const aggregatedDataMap = ref<Record<ConnectionHistoryType, ConnectionHis
     [ConnectionHistoryType.Outbound]: [],
 })
 
-export const initAggregatedDataMap = () => {
+export const initAggregatedDataMap = (): void => {
     aggregatedDataMap.value = {
         [ConnectionHistoryType.Destination]: [],
         [ConnectionHistoryType.Outbound]: [],
@@ -106,7 +106,7 @@ export const mergeAggregatedData = (
     return Array.from(map.values())
 }
 
-export const saveConnectionHistory = async (newClosedConnections: Connection[]) => {
+export const saveConnectionHistory = async (newClosedConnections: Connection[]): Promise<void> => {
     if (newClosedConnections.length === 0) {
         return
     }

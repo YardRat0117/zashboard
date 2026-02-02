@@ -24,6 +24,7 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { first, last } from 'lodash'
+import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import type { JSX } from 'vue/jsx-runtime'
 import ProxyName from '../proxies/ProxyName.vue'
@@ -32,7 +33,11 @@ export default defineComponent<{
     conn: Connection
 }>({
     props: {
-        conn: Object,
+        conn: {
+            type: Object as PropType<Connection>,
+            required: true,
+            default: undefined,
+        },
     },
     name: 'ConnectionCard',
     setup(props) {

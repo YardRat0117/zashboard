@@ -8,7 +8,7 @@ export interface IPInfo {
 }
 
 // Local
-export const getLocalIPInfo = async () => {
+export const getLocalIPInfo = async (): Promise<IPInfo> => {
     const response = await fetch('https://myip.ipip.net/json?t=' + Date.now())
     const result = (await response.json()) as {
         ret: string
@@ -25,12 +25,13 @@ export const getLocalIPInfo = async () => {
         country: country || '',
         region: region || '',
         city: city || '',
+        asn: '',
         org: org || '',
     }
 }
 
 // Global
-export const getGlobalIPInfo = async () => {
+export const getGlobalIPInfo = async (): Promise<IPInfo> => {
     const response = await fetch('https://ipapi.co/json/')
     const result = (await response.json()) as {
         ip: string

@@ -25,7 +25,7 @@ const sliceLogs = throttle(() => {
 }, 500)
 
 const ipSourceMatchs: [RegExp, string][] = []
-const restructMatchs = () => {
+const restructMatchs = (): void => {
     ipSourceMatchs.length = 0
     for (const { key, label, scope } of sourceIPLabelList.value) {
         if (scope && !scope.includes(activeBackend.value?.uuid as string)) continue
@@ -52,7 +52,7 @@ watch(
     },
 )
 
-export const initLogs = () => {
+export const initLogs = (): void => {
     cancel?.()
     logs.value = []
     logsTemp = []
@@ -83,7 +83,7 @@ export const initLogs = () => {
         sliceLogs()
     })
 
-    cancel = () => {
+    cancel = (): void => {
         unwatch()
         ws.close()
     }

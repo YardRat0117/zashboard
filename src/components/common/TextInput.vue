@@ -24,6 +24,7 @@
 <script lang="ts" setup>
 import { useTooltip } from '@/helper/tooltip'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import type { RendererElement, RendererNode, VNode } from 'vue'
 import { createApp, defineComponent, h } from 'vue'
 
 const emits = defineEmits<{
@@ -43,13 +44,13 @@ const props = defineProps<{
 }>()
 
 const inputValue = defineModel<string>()
-const clearInput = () => {
+const clearInput = (): void => {
     inputValue.value = ''
 }
 
 const { showTip, hideTip } = useTooltip()
 
-const handlerSearchInputClick = (e: Event) => {
+const handlerSearchInputClick = (e: Event): void => {
     if (!props.menus?.length) {
         return
     }
@@ -65,7 +66,7 @@ const handlerSearchInputClick = (e: Event) => {
             },
         },
         setup(props: { menus: string[]; menusDeleteable: boolean }) {
-            return () =>
+            return (): VNode<RendererNode, RendererElement, { [key: string]: unknown }> =>
                 h(
                     'div',
                     {

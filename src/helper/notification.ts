@@ -15,11 +15,11 @@ const alertMap = new Map<
 >()
 let toastRef: Ref<HTMLElement> | null = null
 
-export const initNotification = (toast: Ref<HTMLElement>) => {
+export const initNotification = (toast: Ref<HTMLElement>): void => {
     toastRef = toast
 }
 
-const pauseTimer = (alertKey: string) => {
+const pauseTimer = (alertKey: string): void => {
     const alertData = alertMap.get(alertKey)
     if (alertData && !alertData.isPaused) {
         clearTimeout(alertData.timer)
@@ -29,7 +29,7 @@ const pauseTimer = (alertKey: string) => {
     }
 }
 
-const resumeTimer = (alertKey: string) => {
+const resumeTimer = (alertKey: string): void => {
     const alertData = alertMap.get(alertKey)
     if (alertData && alertData.isPaused) {
         alertData.isPaused = false
@@ -42,7 +42,7 @@ const resumeTimer = (alertKey: string) => {
     }
 }
 
-const setTimer = (alert: HTMLElement, timeout: number, alertKey?: string, progressBar?: HTMLElement | null) => {
+const setTimer = (alert: HTMLElement, timeout: number, alertKey?: string, progressBar?: HTMLElement | null): void => {
     let timer = -1
 
     if (timeout !== 0) {
@@ -71,7 +71,7 @@ const setTimer = (alert: HTMLElement, timeout: number, alertKey?: string, progre
     }
 }
 
-const closeAlert = (alert: HTMLElement, alertKey?: string) => {
+const closeAlert = (alert: HTMLElement, alertKey?: string): void => {
     if (alertKey) {
         const alertData = alertMap.get(alertKey)
         if (alertData) {
@@ -136,7 +136,7 @@ export const showNotification = ({
     key?: string
     type?: 'alert-warning' | 'alert-success' | 'alert-error' | 'alert-info' | ''
     timeout?: number
-}) => {
+}): void => {
     const alertKey = key || content
 
     if (alertKey && alertMap.has(alertKey)) {

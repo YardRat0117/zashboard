@@ -27,7 +27,7 @@ export type Config = {
     }
 }
 
-export type History = {
+export type ProxyHistory = {
     time: string
     delay: number
 }[]
@@ -35,12 +35,12 @@ export type History = {
 export type Proxy = {
     name: string
     type: string
-    history: History
+    history: ProxyHistory
     extra: Record<
         string,
         {
             alive: boolean
-            history: History
+            history: ProxyHistory
         }
     >
     all?: string[]

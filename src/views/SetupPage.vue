@@ -134,17 +134,17 @@ watch(
     { immediate: true },
 )
 
-const selectBackend = (uuid: string) => {
+const selectBackend = (uuid: string): void => {
     activeUuid.value = uuid
     router.push({ name: ROUTE_NAME.proxies })
 }
 
-const editBackend = (backend: Backend) => {
+const editBackend = (backend: Backend): void => {
     editingBackendUuid.value = backend.uuid
     showEditModal.value = true
 }
 
-const handleSubmit = async (form: Omit<Backend, 'uuid'>, quiet = false) => {
+const handleSubmit = async (form: Omit<Backend, 'uuid'>, quiet = false): Promise<void> => {
     const { protocol, host, port, password } = form
 
     if (!protocol || !host || !port) {
