@@ -1,11 +1,6 @@
 <template>
-    <div
-        ref="menuRef"
-        class="settings-menu scrollbar-hidden ctrls-bar p-1 px-2"
-        @touchstart.passive.stop
-        @touchmove.passive.stop
-        @touchend.passive.stop>
-        <div class="relative flex w-full max-w-7xl flex-row">
+    <div ref="menuRef" class="settings-menu scrollbar-hidden ctrls-bar p-1 px-2">
+        <div class="max-w relative flex w-full flex-row">
             <div
                 class="bg-neutral absolute top-1 left-0 -z-1 h-8 rounded-lg"
                 :class="[!isSwiping ? 'transition-transform duration-300 will-change-transform' : '']"

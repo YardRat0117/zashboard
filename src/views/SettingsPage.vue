@@ -12,7 +12,7 @@
                     :key="item.key"
                     :id="`item-${item.key}`"
                     :data-key="item.key"
-                    class="card">
+                    class="card w-full">
                     <component :is="item.component" />
                 </div>
             </div>
@@ -151,30 +151,49 @@ const scrollTop = ref(0)
 const updateActiveMenuByScroll = (): void => {
     if (!scrollContainerRef.value || isTriggerByClick.value) return
 
-    const containerRect = scrollContainerRef.value.getBoundingClientRect()
-    const newScrollTop = scrollContainerRef.value.scrollTop
-    const containerCenter = containerRect.top + containerRect.height * (newScrollTop > scrollTop.value ? 0.8 : 0.3)
+    const container = scrollContainerRef.value
+    const newScrollTop = container.scrollTop
 
-    let minDistance = Infinity
-    let closestKey: SETTINGS_MENU_KEY | null = null
+    const viewportTop = newScrollTop
+    const viewportCenter = newScrollTop + container.clientHeight * 0.5
+
+    let activeItemKey: SETTINGS_MENU_KEY | null = null
+    let minDistanceToTop = Infinity
+    let minDistanceToCenter = Infinity
 
     menuItems.value.forEach((item) => {
         const element = getItemRef(item.key)
         if (!element) return
 
         const elementRect = element.getBoundingClientRect()
-        const elementCenter = elementRect.top + elementRect.height / 2
-        const distance = Math.abs(elementCenter - containerCenter)
+        const containerRect = container.getBoundingClientRect()
 
-        if (distance < minDistance) {
-            minDistance = distance
-            closestKey = item.key
+        const elementTop = elementRect.top - containerRect.top + newScrollTop
+        const elementCenter = elementTop + elementRect.height * 0.5
+
+        if (elementTop >= viewportTop) {
+            const distanceToTop = elementTop - viewportTop
+            if (distanceToTop < minDistanceToTop) {
+                minDistanceToTop = distanceToTop
+                activeItemKey = item.key
+            }
+        }
+
+        const distanceToCenter = Math.abs(elementCenter - viewportCenter)
+        if (distanceToCenter < minDistanceToCenter) {
+            minDistanceToCenter = distanceToCenter
+            if (!activeItemKey) {
+                activeItemKey = item.key
+            }
         }
     })
 
-    // 如果找到了最近的元素，更新激活菜单
-    if (closestKey && closestKey !== activeMenuKey.value) {
-        activeMenuKey.value = closestKey
+    if (newScrollTop + container.clientHeight >= container.scrollHeight - 10) {
+        activeItemKey = menuItems.value[menuItems.value.length - 1]?.key || activeItemKey
+    }
+
+    if (activeItemKey && activeItemKey !== activeMenuKey.value) {
+        activeMenuKey.value = activeItemKey
     }
 
     scrollTop.value = newScrollTop

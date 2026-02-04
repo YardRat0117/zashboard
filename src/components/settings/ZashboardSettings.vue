@@ -1,22 +1,33 @@
 <template>
     <!-- dashboard -->
-    <div v-if="hasVisibleItems" class="relative flex flex-col gap-2 p-4 text-sm">
+    <div v-if="hasVisibleItems" class="max-full relative flex flex-col gap-2 p-4 text-sm">
         <div class="settings-title">
             <div class="indicator">
-                <a href="https://github.com/Zephyruso/zashboard" target="_blank">
+                <a href="https://github.com/YardRat0117/zashboard" target="_blank" title="访问 zashboard 仓库">
                     <span>zashboard</span>
-                    <span class="text-sm font-normal">
-                        {{ zashboardVersion }}
-                        <span v-if="commitId" class="text-xs">
-                            {{ commitId }}
-                        </span>
-                    </span>
                 </a>
+                <template v-if="zashboardVersion || commitId">
+                    <span class="text-sm font-normal">
+                        <a
+                            v-if="zashboardVersion"
+                            :href="`https://github.com/YardRat0117/zashboard/releases/tag/${zashboardVersion}`"
+                            target="_blank"
+                            :title="`查看版本 ${zashboardVersion}`">
+                            {{ zashboardVersion }}
+                        </a>
+                    </span>
+                    <span class="text-sm font-normal" v-if="zashboardVersion && commitId">&nbsp;@&nbsp;</span>
+                    <span class="text-sm font-normal">
+                        <a
+                            v-if="commitId"
+                            :href="`https://github.com/YardRat0117/zashboard/commit/${commitId}`"
+                            target="_blank"
+                            :title="`查看提交 ${commitId}`">
+                            {{ commitId }}
+                        </a>
+                    </span>
+                </template>
             </div>
-            <button class="btn btn-sm absolute top-2 right-2" @click="refreshPages" v-if="isPWA">
-                {{ $t('refresh') }}
-                <ArrowPathIcon class="h-4 w-4" />
-            </button>
         </div>
         <div class="settings-grid">
             <LanguageSelect v-if="!hiddenSettingsItems[`${SETTINGS_MENU_KEY.panel}.zashboardSettings.language`]" />
@@ -25,7 +36,7 @@
                     {{ $t('fonts') }}
                 </div>
                 <select class="select select-sm w-48" v-model="font">
-                    <option v-for="opt in fontOptions" :key="opt" :value="opt">
+                    <option v-for="opt in fonts" :key="opt" :value="opt">
                         {{ opt }}
                     </option>
                 </select>
@@ -134,7 +145,7 @@ import { zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { FONTS, SETTINGS_MENU_KEY } from '@/constant'
 import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
-import { exportSettings, isPWA } from '@/helper/utils'
+import { exportSettings } from '@/helper/utils'
 import {
     blurIntensity,
     customBackgroundURL,
@@ -143,7 +154,7 @@ import {
     hiddenSettingsItems,
     theme,
 } from '@/store/settings'
-import { AdjustmentsHorizontalIcon, ArrowPathIcon, ArrowUpTrayIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { AdjustmentsHorizontalIcon, ArrowUpTrayIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { computed, ref, watch } from 'vue'
 import ImportSettings from '../common/ImportSettings.vue'
 import TextInput from '../common/TextInput.vue'
@@ -203,7 +214,7 @@ const handlerFileChange = (e: Event): void => {
     reader.readAsDataURL(file)
 }
 
-const fontOptions = computed(() => {
+const fonts = computed(() => {
     const mode = import.meta.env.MODE
 
     if (Object.values(FONTS).includes(mode as FONTS)) {
@@ -212,13 +223,4 @@ const fontOptions = computed(() => {
 
     return Object.values(FONTS)
 })
-
-const refreshPages = async (): Promise<void> => {
-    const registrations = await navigator.serviceWorker.getRegistrations()
-
-    for (const registration of registrations) {
-        registration.unregister()
-    }
-    window.location.reload()
-}
 </script>
